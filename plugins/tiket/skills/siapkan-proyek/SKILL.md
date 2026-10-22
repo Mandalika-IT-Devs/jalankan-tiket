@@ -31,7 +31,7 @@ Ask everything in one round, in the format of `${CLAUDE_PLUGIN_ROOT}/reference/o
 1. **Project language:** Bahasa Indonesia or English.
 2. **Product name and summary:** one or two sentences on what the product is, who uses it, and what it leaves out.
 3. **Repository:**
-   - **New project:** the repository name and its visibility. Recommend public when the owner has no paid GitHub plan. Two reasons:
+   - **New project:** the repository name and its visibility, or the name of the empty repository the owner already created on GitHub. For a new repository, recommend public when the owner has no paid GitHub plan. Two reasons:
      - rulesets that protect `main` exist only on public repositories or paid plans;
      - Actions minutes are free on public repositories.
    - **Existing project:** confirm the remote you found.
@@ -56,7 +56,11 @@ This step is done when every question has an answer.
 
 Do this step before you write `.claude/settings.json`. That file's permission rules deny agents some of these commands, and the rules apply as soon as the file exists.
 
-1. **Create the repository, new projects only.** Run `git init -b main` if the folder is not a repository yet. Then run `gh repo create <owner>/<name> --<visibility> --source . --remote origin`.
+1. **Connect the repository, new projects only.** Run `git init -b main` if the folder is not a repository yet. Then check whether the owner already created the repository on GitHub, with `gh repo view <owner>/<name> --json isEmpty`.
+   - **It exists and is empty:** add it with `git remote add origin https://github.com/<owner>/<name>.git`.
+   - **It exists and holds only a README or a license:** add it as `origin`, then run `git pull origin <its default branch>` before you write anything.
+   - **It exists and holds anything else:** it is an existing project, not a new one. Tell the owner, and continue with `EXISTING.md`.
+   - **It does not exist:** create it with `gh repo create <owner>/<name> --<visibility> --source . --remote origin`.
 2. **Write the config.** Copy `templates/common/.github/jalankan-tiket.json` and fill its placeholders. `${CLAUDE_PLUGIN_ROOT}/templates/README.md` lists every placeholder. `kitVersion` is the `version` in `${CLAUDE_PLUGIN_ROOT}/.claude-plugin/plugin.json`. The stack values come from the stack profile.
 3. **Create the labels.** Run `bash ${CLAUDE_PLUGIN_ROOT}/scripts/buat-label.sh`. It creates every configured label that the repository lacks.
 4. **Create the first milestone.** Run `gh api repos/<owner>/<name>/milestones -f title=M1`.
