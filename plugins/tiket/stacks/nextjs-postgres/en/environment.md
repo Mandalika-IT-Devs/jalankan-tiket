@@ -1,3 +1,6 @@
 - **Local:** copy `.env.example` to `.env`, then run `docker compose up -d` to start PostgreSQL on port {{PORT_DEV_POSTGRES}}.
-- **CI:** CI provides its own PostgreSQL for tests. The test variables are in `.env.ci`, with no real secrets, and CI loads them automatically.
+- **Tests:** end-to-end tests always load `.env.ci`, which points at the database `app_test` on the same local PostgreSQL. The development database `app` stays untouched.
+  - `app_test` is created automatically when the PostgreSQL volume is first created.
+  - If the volume already existed before that, create it once with `docker compose exec postgres createdb -U app app_test`.
+- **CI:** CI provides its own PostgreSQL for tests. It points the port in `.env.ci` at that PostgreSQL, then loads the variables. `.env.ci` holds no real secrets.
 - **CI order:** CI runs `pnpm verify`, then `pnpm test:e2e` if that script exists.

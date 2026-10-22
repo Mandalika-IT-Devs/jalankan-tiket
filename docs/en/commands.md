@@ -11,6 +11,8 @@
 | `/tiket:catat-keputusan` | After a report with questions | Yes, briefly | A decision PR, and tickets that can continue |
 | `/tiket:cek-proyek` | Whenever you are unsure | No | A list of problems and the next step |
 
+`/tiket:jalankan` works every ready ticket. To limit a run, add issue numbers or a milestone name after the command, for example `/tiket:jalankan #12 #15` or `/tiket:jalankan M2`.
+
 In Claude Desktop, type `/tiket`, then pick the command from the menu.
 
 ## Skills from mattpocock-skills that the kit uses

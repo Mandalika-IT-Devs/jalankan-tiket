@@ -105,7 +105,11 @@ jobs:
       - name: Load the test environment from .env.ci
         if: steps.check.outputs.ready == '1'
         run: |
-          if [ -f .env.ci ]; then grep -Ev '^\s*(#|$)' .env.ci >> "$GITHUB_ENV"; fi
+          # .env.ci points at the project's local PostgreSQL port. Here it must point at the postgres service above.
+          if [ -f .env.ci ]; then
+            sed -i -E "s#@localhost:[0-9]+/#@localhost:5432/#" .env.ci
+            grep -Ev '^\s*(#|$)' .env.ci >> "$GITHUB_ENV"
+          fi
       - if: steps.check.outputs.ready == '1'
         uses: pnpm/action-setup@v6
       - if: steps.check.outputs.ready == '1'

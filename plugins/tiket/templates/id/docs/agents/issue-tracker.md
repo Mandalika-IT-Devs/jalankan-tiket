@@ -4,7 +4,7 @@ Tiket di repo ini adalah GitHub Issues, dan diakses dengan `gh`. `gh` mengenali 
 
 ## Operasi
 
-- **Membaca tiket** beserta jawaban pemilik: `gh issue view <n> --comments`.
+- **Membaca tiket** beserta jawaban pemilik: `gh issue view <n> --json title,body,comments`. Dengan `--comments` saja, `gh` hanya mencetak komentar tanpa isi tiket.
 - **Daftar tiket siap:** `gh issue list --state open --label {{LABEL_READY_FOR_AGENT}} --json number,title,body,labels`.
 - **Membuat tiket:**
 
@@ -47,4 +47,4 @@ Buat issue GitHub dengan format di atas.
 
 ## Saat sebuah skill menyebut "fetch the relevant ticket"
 
-Baca issue-nya dengan `gh issue view <n> --comments`.
+Baca issue-nya dengan `gh issue view <n> --json title,body,comments`.

@@ -1,6 +1,7 @@
 ---
 name: jalankan
 description: Work every ready GitHub ticket through to a merge, one ticket per round, without waiting for a human.
+argument-hint: "[issue numbers or milestone, optional]"
 disable-model-invocation: true
 ---
 
@@ -35,11 +36,13 @@ The state of the work lives on GitHub: issues, labels, branches and PRs. Running
    - it does not carry `labels.needsInfo`;
    - every issue in its "Blocked by" section is closed.
 
-   Match `[<ticketPrefix><nn>]` in the title and take the smallest number. If a branch `<prefix in lower case><nn>-…` or an open PR already exists for that ticket, continue from there. An empty frontier goes to **Final report**.
-3. **Start.** Create the branch `<prefix in lower case><nn>-<slug>` from `main`. Comment on the issue that automated work has started.
+   **Scope.** Text the owner typed after the command limits the frontier. Issue numbers (`#12 #15`) keep only those issues, and a milestone name (`M2`) keeps only that milestone's issues. Without text, the whole frontier counts. The text this time: "$ARGUMENTS".
+
+   The **ticket id** is the bracketed part of the title: `[<ticketPrefix><nn>]`, or `[<ticketPrefix><nn>-b]` for a follow-up ticket. Take the smallest number; a follow-up comes right after its base number. If a branch named after the id or an open PR already exists for that ticket, continue from there. An empty frontier goes to **Final report**.
+3. **Start.** Create the branch `<id in lower case>-<slug>` from `main`, for example `t04-b-batas-eksemplar`. Comment on the issue that automated work has started.
 4. **Implement.** Dispatch `tiket:pelaksana` with:
    - the issue number;
-   - the issue's full text with its comments (`gh issue view <n> --comments`);
+   - the issue's full text with its comments (`gh issue view <n> --json title,body,comments`);
    - the branch name.
 
    Act on its status:
@@ -61,7 +64,7 @@ The state of the work lives on GitHub: issues, labels, branches and PRs. Running
    - Keep its description unchanged and push.
    - Post the update as a PR comment with `gh pr comment <pr> --body-file <file>`. The comment lists the owner decisions applied, any new technical decisions and the latest review result.
    - Then run `gh pr ready <pr>`.
-7. **CI.** Run `gh pr checks <pr> --watch`.
+7. **CI.** Run `gh pr checks <pr> --watch`. The owner started this run to merge on green, so this wait is part of the run, also in apps that offer their own CI monitoring.
    - **Green:** go to step 8.
    - **Red in verify or end-to-end tests:** read the log with `gh run view <run> --log-failed`.
      - If the failing test is one the diff does not touch, rerun the failed jobs once with `gh run rerun <run> --failed` and watch again. Note the test as a flaky-test candidate for the final report.

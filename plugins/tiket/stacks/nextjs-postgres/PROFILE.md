@@ -27,6 +27,7 @@ A single Next.js application on PostgreSQL. This is the kit's tested reference p
 |---|---|
 | `files/.gitignore` | `.gitignore`. In an existing project, add the missing lines instead. |
 | `files/scripts/verify.mjs` | `scripts/verify.mjs` |
+| `files/scripts/postgres-init.sql` | `scripts/postgres-init.sql` |
 | `files/.dependency-cruiser.cjs` | `.dependency-cruiser.cjs` |
 | `files/docker-compose.yml` | `docker-compose.yml` |
 | `files/.env.example` | `.env.example` |
@@ -49,6 +50,7 @@ A port counts as **used** when any of these holds:
 Projects set up before the kit existed are missing from the registry, so check all four sources.
 
 - **`devPostgres`** is the host port for the local PostgreSQL in `docker-compose.yml`. Use 5432 when it is not used. Otherwise take the first unused port from 56432 upward.
+  - `.env.example` and `.env.ci` use the same port. Development uses the database `app`, and tests use `app_test` on the same server, so local tests never reach another project's PostgreSQL.
 - **`ciPostgres` and `ciE2e`** are needed only for a self-hosted runner. They are the PostgreSQL service port and the end-to-end server port of CI on the runner machine.
   - `ciPostgres` takes the first unused port from 56500 upward.
   - `ciE2e` takes the first unused port from 3500 upward.

@@ -1,3 +1,6 @@
 - **Lokal:** salin `.env.example` menjadi `.env`, lalu jalankan `docker compose up -d` untuk menyalakan PostgreSQL di port {{PORT_DEV_POSTGRES}}.
-- **CI:** menyediakan PostgreSQL sendiri untuk test. Variabel test ada di `.env.ci`, tanpa rahasia asli, dan dimuat otomatis oleh CI.
+- **Test:** test e2e selalu memuat `.env.ci`, yang menunjuk database `app_test` di PostgreSQL lokal yang sama. Database pengembangan `app` tidak tersentuh.
+  - `app_test` dibuat otomatis saat volume PostgreSQL pertama kali dibuat.
+  - Bila volume sudah ada sebelum itu, buat sekali dengan `docker compose exec postgres createdb -U app app_test`.
+- **CI:** menyediakan PostgreSQL sendiri untuk test. CI mengganti port di `.env.ci` ke port PostgreSQL miliknya, lalu memuat variabelnya. `.env.ci` tidak berisi rahasia asli.
 - **Urutan CI:** CI menjalankan `pnpm verify`, lalu `pnpm test:e2e` bila skrip itu ada.

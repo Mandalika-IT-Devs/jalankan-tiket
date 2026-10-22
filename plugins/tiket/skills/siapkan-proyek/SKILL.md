@@ -90,7 +90,7 @@ Do this step before you write `.claude/settings.json`. That file's permission ru
 4. **Ruleset file.** Copy `templates/common/.github/ruleset-main.json` to `.github/ruleset-main.json`. The owner applies it in step 6.
 5. **Permissions, last.** Copy `templates/common/.claude/settings.json` and fill `{{STACK_ALLOW_RULES}}` and `{{LABEL_OWNER_APPROVED}}`.
 6. **Check your work.**
-   - `grep -rnE '\{\{[A-Z_]+\}\}' --exclude-dir=.git .` must find no unfilled placeholder. Kit placeholders are written in capitals. GitHub Actions expressions such as `${{ github.ref }}` are not placeholders.
+   - `grep -rnE '\{\{[A-Z0-9_]+\}\}' --exclude-dir=.git .` must find no unfilled placeholder. Kit placeholders are written in capitals and digits. GitHub Actions expressions such as `${{ github.ref }}` are not placeholders.
    - `bash ${CLAUDE_PLUGIN_ROOT}/scripts/cek-proyek.sh ${CLAUDE_PLUGIN_ROOT}` must report no FAIL. The one exception is the missing foundation code, which is reported as INFO.
 
 ## 5. Commit and push (new project)

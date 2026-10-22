@@ -2,6 +2,17 @@
 
 All notable changes to the `tiket` plugin. Versions follow `plugins/tiket/.claude-plugin/plugin.json`. Changes to files the kit writes into projects also get a section in `plugins/tiket/MIGRATIONS.md`.
 
+## 0.1.6 (unreleased)
+
+Findings from validating `/tiket:jalankan` on the sample project (four tickets merged, one parked):
+
+- Skills, the reviewer and `docs/agents/issue-tracker.md` read issues with `gh issue view <n> --json title,body,comments`. With `--comments` alone, `gh` prints the comments without the ticket body.
+- `nextjs-postgres`: `.env.ci` points at the project's own local PostgreSQL port, database `app_test`, created by `scripts/postgres-init.sql` on the first `docker compose up`. Before, local end-to-end tests went to whatever listened on port 5432, which can be another project's PostgreSQL. Both CI templates rewrite the port to their own PostgreSQL service.
+- `/tiket:jalankan` takes optional issue numbers or a milestone after the command to limit the run, and recognises follow-up tickets `[T04-b]`.
+- `/tiket:jalankan` states that waiting on `gh pr checks --watch` is part of the run, also where the app offers its own CI monitoring.
+- The leftover-placeholder check in `/tiket:siapkan-proyek` and the kit's own parity check also match placeholders with digits, such as `{{PORT_CI_E2E}}`.
+- First entry in `MIGRATIONS.md` (0.1.6), so `/tiket:cek-proyek` updates existing projects.
+
 ## 0.1.5 (unreleased)
 
 - The `nextjs-postgres` profile takes the Node.js version from the owner's machine (the installed LTS, 22 or later) instead of fixing Node.js 24. CI, ADR-0001 and the implementer then run the same version. The foundation ticket points to ADR-0001 for the version.

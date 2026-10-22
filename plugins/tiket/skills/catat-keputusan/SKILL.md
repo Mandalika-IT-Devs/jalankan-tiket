@@ -12,7 +12,7 @@ The owner answers the questions that the coordinator or a planning session asked
 
 The questions come from three sources:
 - the coordinator's final report, when it is in this conversation;
-- every open issue that carries the needs-info label, through the question comment it holds (`gh issue view <n> --comments`);
+- every open issue that carries the needs-info label, through the question comment it holds (`gh issue view <n> --json title,body,comments`);
 - comments headed as questions for the owner on recently closed issues.
 
 Number the questions the way the report numbered them. When there is no report, number them in issue order.

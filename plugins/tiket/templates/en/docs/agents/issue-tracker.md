@@ -4,7 +4,7 @@ The tickets in this repo are GitHub Issues, and they are reached with `gh`. `gh`
 
 ## Operations
 
-- **Read a ticket** with the owner's answers: `gh issue view <n> --comments`.
+- **Read a ticket** with the owner's answers: `gh issue view <n> --json title,body,comments`. With `--comments` alone, `gh` prints the comments without the ticket body.
 - **List ready tickets:** `gh issue list --state open --label {{LABEL_READY_FOR_AGENT}} --json number,title,body,labels`.
 - **Create a ticket:**
 
@@ -47,4 +47,4 @@ Create a GitHub issue in the format above.
 
 ## When a skill says "fetch the relevant ticket"
 
-Read the issue with `gh issue view <n> --comments`.
+Read the issue with `gh issue view <n> --json title,body,comments`.

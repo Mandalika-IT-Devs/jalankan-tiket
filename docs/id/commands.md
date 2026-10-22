@@ -11,6 +11,8 @@
 | `/tiket:catat-keputusan` | Setelah ada laporan berisi pertanyaan | Ya, singkat | PR keputusan dan tiket yang bisa dilanjutkan |
 | `/tiket:cek-proyek` | Kapan saja Anda ragu | Tidak | Daftar masalah dan langkah berikutnya |
 
+`/tiket:jalankan` mengerjakan semua tiket yang siap. Untuk membatasinya, tulis nomor issue atau nama milestone di belakang perintah, misalnya `/tiket:jalankan #12 #15` atau `/tiket:jalankan M2`.
+
 Di Claude Desktop, ketik `/tiket` lalu pilih perintahnya dari menu.
 
 ## Skill mattpocock-skills yang dipakai kit

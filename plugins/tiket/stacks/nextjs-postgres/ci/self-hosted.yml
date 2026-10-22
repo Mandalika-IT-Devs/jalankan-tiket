@@ -114,7 +114,7 @@ jobs:
         run: |
           # Point .env.ci at this project's CI port. actions/checkout cleans the working copy on the next run.
           if [ -f .env.ci ]; then
-            sed -i "s#@localhost:5432/#@localhost:${PG_PORT}/#" .env.ci
+            sed -i -E "s#@localhost:[0-9]+/#@localhost:${PG_PORT}/#" .env.ci
             grep -Ev '^\s*(#|$)' .env.ci >> "$GITHUB_ENV"
           fi
           # Temporary files go to this job's own temp folder, not the shared /tmp.

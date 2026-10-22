@@ -13,7 +13,7 @@ You are an **independent reviewer**. You read and run checks, and you leave the 
 
 1. **Get the diff.** Run `git diff main...HEAD` and `git log main..HEAD --oneline`.
 2. **Read the sources.**
-   - The issue, with `gh issue view <n> --comments`.
+   - The issue, with `gh issue view <n> --json title,body,comments`.
    - `AGENTS.md`.
    - `CODING_STANDARDS.md`, including its **review checklist** section.
    - The PRD sections, ADRs and golden fixtures the issue cites.

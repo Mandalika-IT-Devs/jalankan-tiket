@@ -17,8 +17,8 @@ pair() { # Indonesian folder, English folder
     fail "$id and $en do not hold the same files: $(diff <(cd "$id" && find . -type f | sort) <(cd "$en" && find . -type f | sort) | grep '^[<>]' | tr '\n' ' ')"
   while IFS= read -r f; do
     [ -f "$en/$f" ] || continue
-    a=$(grep -oE '\{\{[A-Z_]+\}\}' "$id/$f" | sort | uniq -c)
-    b=$(grep -oE '\{\{[A-Z_]+\}\}' "$en/$f" | sort | uniq -c)
+    a=$(grep -oE '\{\{[A-Z0-9_]+\}\}' "$id/$f" | sort | uniq -c)
+    b=$(grep -oE '\{\{[A-Z0-9_]+\}\}' "$en/$f" | sort | uniq -c)
     [ "$a" = "$b" ] || fail "placeholders differ between $id/$f and $en/$f"
   done < <(cd "$id" && find . -type f | sed 's#^\./##')
 }
@@ -34,8 +34,8 @@ done < <(find . -name '*.json' -not -path './.git/*' -not -path './plugins/tiket
 
 # JSON templates, filled with sample values
 fill() {
-  sed -e 's#"{{[A-Z_]*}}"#"x"#g' -e 's#{{E2E_COMMAND}}#null#g' -e 's#{{PORTS}}#{}#g' \
-    -e 's#{{STACK_ALLOW_RULES}}#"Bash(x *)"#g' -e 's#{{[A-Z_]*}}#x#g' "$1"
+  sed -e 's#"{{[A-Z0-9_]*}}"#"x"#g' -e 's#{{E2E_COMMAND}}#null#g' -e 's#{{PORTS}}#{}#g' \
+    -e 's#{{STACK_ALLOW_RULES}}#"Bash(x *)"#g' -e 's#{{[A-Z0-9_]*}}#x#g' "$1"
 }
 for f in plugins/tiket/templates/common/.github/jalankan-tiket.json plugins/tiket/templates/common/.claude/settings.json \
   plugins/tiket/templates/common/.github/ruleset-main.json; do
