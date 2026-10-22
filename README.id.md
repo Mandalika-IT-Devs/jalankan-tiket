@@ -1,6 +1,6 @@
 # jalankan-tiket
 
-> **Status: v0.1, masih dikembangkan.** Panduan lengkapnya sudah siap. Validasi menyeluruh dijalankan sebelum v1.0.
+> **Status: v0.1, masih dikembangkan.** Panduan lengkapnya sudah siap. Seluruh alur sudah divalidasi dari awal sampai akhir di proyek contoh yang baru. Berikutnya validasi di proyek lama, sebelum v1.0.
 
 Plugin Claude Code untuk menjalankan seluruh proyek perangkat lunak dari tiket GitHub. Anda cukup merencanakan produk bersama Claude satu kali. Setelah itu Claude mengerjakan setiap tiket yang siap, sendiri dan satu per satu:
 

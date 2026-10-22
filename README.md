@@ -1,6 +1,6 @@
 # jalankan-tiket
 
-> **Status: v0.1, in development.** The full guide is ready. The workflow still needs its end-to-end validation before v1.0.
+> **Status: v0.1, in development.** The full guide is ready. The whole workflow has been validated end to end on a new sample project. Validation on an existing project comes next, before v1.0.
 
 A Claude Code plugin that runs a whole software project from GitHub tickets. You plan the product with Claude once. After that, Claude works every ready ticket on its own, one at a time:
 
