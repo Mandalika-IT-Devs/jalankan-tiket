@@ -5,7 +5,7 @@ The repo foundation: an empty Next.js application that passes `pnpm verify` and 
 ## In scope
 
 - **Application:**
-  - Next.js App Router, TypeScript strict, pnpm and Node.js 24 LTS. Set `packageManager` and `engines` in `package.json`.
+  - Next.js App Router, TypeScript strict, pnpm and the Node.js LTS version recorded in ADR-0001. Set `packageManager` and `engines` in `package.json`.
   - One home page that shows the product name.
 - **Database:**
   - PostgreSQL through Drizzle ORM. `docker-compose.yml` and `.env.example` already exist.

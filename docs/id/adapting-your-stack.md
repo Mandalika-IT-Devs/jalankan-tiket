@@ -24,7 +24,7 @@ Kit tidak terikat pada satu teknologi. Yang wajib adalah **kontrak stack**: tuju
 ## Profil bawaan: Next.js + PostgreSQL
 
 Profil ini sudah teruji. Isinya:
-- Next.js App Router, TypeScript strict, pnpm, dan Node.js 24;
+- Next.js App Router, TypeScript strict, pnpm, dan Node.js LTS (22 atau 24);
 - PostgreSQL dengan Drizzle;
 - Tailwind dan shadcn/ui;
 - Vitest dan Playwright.

@@ -24,7 +24,7 @@ The kit is not tied to one technology. What it requires is the **stack contract*
 ## Default profile: Next.js + PostgreSQL
 
 This profile is tested. It contains:
-- Next.js App Router, TypeScript strict, pnpm and Node.js 24;
+- Next.js App Router, TypeScript strict, pnpm and Node.js LTS (22 or 24);
 - PostgreSQL with Drizzle;
 - Tailwind and shadcn/ui;
 - Vitest and Playwright.

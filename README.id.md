@@ -73,7 +73,7 @@ Di sesi Claude Code (CLI atau tab Code di Claude Desktop):
 - Claude Code 2.1.299 atau lebih baru.
 - `git`, GitHub CLI `gh` yang sudah login dengan izin `repo` dan `workflow`, serta `jq`.
 - Untuk stack bawaan Next.js + PostgreSQL, tambahkan:
-  - Node.js 24;
+  - Node.js 22 atau 24 (LTS);
   - pnpm;
   - Docker.
 

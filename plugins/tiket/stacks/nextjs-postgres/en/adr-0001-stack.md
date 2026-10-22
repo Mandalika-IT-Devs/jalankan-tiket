@@ -7,7 +7,7 @@ date: {{DATE}}
 
 Autonomous agents build this project one ticket at a time. Every extra layer of technology is one more place where an agent can get lost, with no real benefit. So we chose a single monolithic application:
 
-- **Language and framework:** Node.js 24 LTS, pnpm, Next.js App Router and TypeScript strict.
+- **Language and framework:** Node.js {{NODE_MAJOR}} LTS, pnpm, Next.js App Router and TypeScript strict.
 - **Data:** PostgreSQL with Drizzle ORM. Docker Compose is used for the local environment.
 - **Validation and user interface:**
   - Zod for validation;

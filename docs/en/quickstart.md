@@ -10,7 +10,7 @@ This guide takes you from zero to Claude working on its first ticket by itself.
   - If the `workflow` scope is missing, add it with `gh auth refresh -s workflow`.
 - **`jq`.**
 - **For the default stack (Next.js + PostgreSQL):**
-  - Node.js 24 LTS;
+  - Node.js LTS, version 22 or 24;
   - pnpm (turn it on with `corepack enable`);
   - Docker that works without `sudo`.
 

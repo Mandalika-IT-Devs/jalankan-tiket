@@ -70,7 +70,7 @@ In a Claude Code session (CLI or the Claude Desktop Code tab):
 - Claude Code 2.1.299 or later.
 - `git`, the GitHub CLI `gh` (logged in with the `repo` and `workflow` scopes), and `jq`.
 - For the built-in Next.js + PostgreSQL stack, also:
-  - Node.js 24;
+  - Node.js 22 or 24 (LTS);
   - pnpm;
   - Docker.
 

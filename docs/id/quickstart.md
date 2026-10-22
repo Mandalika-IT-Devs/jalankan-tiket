@@ -10,7 +10,7 @@ Panduan ini membawa Anda dari nol sampai Claude mengerjakan tiket pertama sendir
   - Bila izin `workflow` belum ada, tambahkan dengan `gh auth refresh -s workflow`.
 - **`jq`.**
 - **Untuk stack bawaan (Next.js + PostgreSQL):**
-  - Node.js 24 LTS;
+  - Node.js LTS, versi 22 atau 24;
   - pnpm (aktifkan dengan `corepack enable`);
   - Docker yang bisa dipakai tanpa `sudo`.
 

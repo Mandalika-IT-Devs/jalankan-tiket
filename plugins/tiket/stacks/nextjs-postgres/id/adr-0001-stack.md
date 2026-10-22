@@ -7,7 +7,7 @@ date: {{DATE}}
 
 Proyek ini dibangun per tiket oleh agent otonom. Setiap lapisan teknologi tambahan menjadi tempat agent bisa tersesat, tanpa manfaat nyata. Karena itu kami memilih satu aplikasi monolit:
 
-- **Bahasa dan framework:** Node.js 24 LTS, pnpm, Next.js App Router, dan TypeScript strict.
+- **Bahasa dan framework:** Node.js {{NODE_MAJOR}} LTS, pnpm, Next.js App Router, dan TypeScript strict.
 - **Data:** PostgreSQL dengan Drizzle ORM. Docker Compose dipakai untuk lingkungan lokal.
 - **Validasi dan tampilan:**
   - Zod untuk validasi;

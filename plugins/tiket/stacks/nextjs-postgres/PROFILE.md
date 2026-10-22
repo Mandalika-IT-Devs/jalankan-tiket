@@ -19,6 +19,7 @@ A single Next.js application on PostgreSQL. This is the kit's tested reference p
 | `{{PORT_DEV_POSTGRES}}` | `devPostgres` (see **Ports**) |
 | `{{PORT_CI_POSTGRES}}`, `{{PORT_CI_E2E}}` | `ciPostgres` and `ciE2e`. Used only in `ci/self-hosted.yml` |
 | `{{PROJECT_SLUG}}` | the repository name, in lowercase kebab-case |
+| `{{NODE_MAJOR}}` | the major version of the Node.js on the owner's machine (`node --version`) when it is a maintained LTS, 22 or later. When Node.js is missing or older, give the owner the install steps for Node.js 24 LTS and use 24. CI and the implementer then run the same version as the owner's machine. |
 
 ## Files to copy
 

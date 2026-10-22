@@ -5,7 +5,7 @@ Fondasi repo: aplikasi Next.js kosong yang lolos `pnpm verify` dan CI. Tiket ini
 ## Dalam scope
 
 - **Aplikasi:**
-  - Next.js App Router, TypeScript strict, pnpm, dan Node.js 24 LTS. Tulis `packageManager` dan `engines` di `package.json`.
+  - Next.js App Router, TypeScript strict, pnpm, dan Node.js versi LTS yang tercatat di ADR-0001. Tulis `packageManager` dan `engines` di `package.json`.
   - Satu halaman awal yang menampilkan nama produk.
 - **Database:**
   - PostgreSQL lewat Drizzle ORM. `docker-compose.yml` dan `.env.example` sudah ada.
