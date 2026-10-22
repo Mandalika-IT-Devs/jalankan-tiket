@@ -5,7 +5,7 @@ This format applies to every question that needs the owner:
 - non-blocking questions in a final report;
 - open decisions raised while planning.
 
-Write each question in the project language, in plain words.
+Write each question in the project language, in plain words. Use that one language for the whole message: never give the same text twice in two languages.
 
 ## Each question carries
 

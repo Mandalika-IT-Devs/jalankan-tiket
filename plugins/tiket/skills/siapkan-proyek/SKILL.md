@@ -6,7 +6,12 @@ disable-model-invocation: true
 
 # Set up a project
 
-You set up the current folder for the jalankan-tiket workflow. Ask the owner first, then write. Use the **project language** chosen in step 2 for every file you create and for everything you tell the owner. The templates, the stack profiles and the scripts all live in `${CLAUDE_PLUGIN_ROOT}`.
+You set up the current folder for the jalankan-tiket workflow. Ask the owner first, then write. The templates, the stack profiles and the scripts all live in `${CLAUDE_PLUGIN_ROOT}`.
+
+Talk to the owner in **one language only**, and never mix two languages in a message.
+- Before the project language is chosen, speak the language the owner writes in.
+- If the owner has typed nothing but the command, run `echo $LANG`. Speak Indonesian when it starts with `id`, and English otherwise.
+- Once the owner chooses the **project language** in step 2, use it for every file you create and for everything you tell the owner.
 
 ## 1. Explore (read only)
 
@@ -26,9 +31,9 @@ This step is done when you can name the mode and every fact above. If mattpocock
 
 ## 2. Ask the owner
 
-Ask everything in one round, in the format of `${CLAUDE_PLUGIN_ROOT}/reference/owner-questions.md`. The project language is not known yet, so write this first round in both Indonesian and English.
+Ask everything in one round, in the format of `${CLAUDE_PLUGIN_ROOT}/reference/owner-questions.md`, in the language you are speaking.
 
-1. **Project language:** Bahasa Indonesia or English.
+1. **Project language:** Indonesian or English. Recommend the language you are already speaking. It sets the language of the documents, issues, PRs and commits, and of every later conversation about this project.
 2. **Product name and summary:** one or two sentences on what the product is, who uses it, and what it leaves out.
 3. **Repository:**
    - **New project:** the repository name and its visibility, or the name of the empty repository the owner already created on GitHub. For a new repository, recommend public when the owner has no paid GitHub plan. Two reasons:
