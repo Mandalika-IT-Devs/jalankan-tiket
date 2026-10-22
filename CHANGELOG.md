@@ -2,6 +2,14 @@
 
 All notable changes to the `tiket` plugin. Versions follow `plugins/tiket/.claude-plugin/plugin.json`. Changes to files the kit writes into projects also get a section in `plugins/tiket/MIGRATIONS.md`.
 
+## 0.1.3 (unreleased)
+
+Findings from validating `/tiket:rencanakan-produk`:
+
+- PRs that change protected files without coming from a ticket (planning, decisions, adoption, kit migrations) now open an issue first, so CI's `Closes #n` check passes. The steps live in one place, `reference/owner-pr.md`, which also gives these PRs their own body shape instead of the ticket template.
+- `/tiket:rencanakan-produk` records a question found while writing as an open decision, and names it in the PR and the report.
+- `kitVersion` is documented as changing only through migrations.
+
 ## 0.1.2 (unreleased)
 
 Findings from the first validation run (setting up a new public project):

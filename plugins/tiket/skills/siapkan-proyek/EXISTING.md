@@ -39,10 +39,12 @@ Compare the project's tools with `${CLAUDE_PLUGIN_ROOT}/stacks/CONTRACT.md`.
 
 ## Finish
 
-1. Commit on `adopsi-jalankan-tiket` and push the branch.
-2. Open the PR with `gh pr create`. In its description, list:
+1. Follow the steps in `${CLAUDE_PLUGIN_ROOT}/reference/owner-pr.md` to open the PR.
+   - The issue is titled `[Kit] Adopsi jalankan-tiket` (`[Kit] Adopt jalankan-tiket` in English projects).
+   - The branch is `adopsi-jalankan-tiket`.
+2. In the PR description, list:
    - every file created;
    - every file changed, with the reason;
    - the gaps in the verify contract.
-3. Ask the owner to add the owner-approved label and to merge the PR. After that, continue with step 6 of `SKILL.md`.
+3. Once the PR is merged, continue with step 6 of `SKILL.md`.
 4. The next step after the merge is `/tiket:rencanakan-produk`. It writes the PRD and the glossary from the existing code and from questions to the owner.

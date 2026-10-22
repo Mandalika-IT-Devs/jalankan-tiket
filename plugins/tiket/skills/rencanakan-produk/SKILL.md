@@ -54,6 +54,8 @@ Write each document in the shape its template already gives (see the comment at 
 - **`tests/golden/`**: one JSON file per rule that has a number or a formula. Each file lists cases with inputs, expected outputs and the PRD reference. Rules that have no golden case yet go into `tests/golden/NOTES.md`.
 - **`docs/DESIGN.md`**, for projects with a user interface only. Suggest the impeccable plugin (`/impeccable`) for this file, or write a first version from the owner's answers.
 
+Writing can reveal a question that the interview missed. Record each such question as an open decision, with an example value and the owner as the person who decides. Name it in the PR and in your report. Never settle it in the text.
+
 This step is done when all of these hold:
 - every PRD rule that has a number is covered by a golden case or listed in `NOTES.md`;
 - every PRD section has a UAT scenario;
@@ -61,11 +63,9 @@ This step is done when all of these hold:
 
 ## 4. Deliver
 
-These documents are protected files, so they reach `main` through a PR that the owner approves:
-
-1. Create the branch `rencana-produk`, commit, push, and open a PR with `gh pr create`.
-2. Ask the owner to add the owner-approved label.
-3. When CI is green and the owner agrees, merge with `gh pr merge <pr> --squash --delete-branch`.
+These documents are protected files. They reach `main` through the steps in `${CLAUDE_PLUGIN_ROOT}/reference/owner-pr.md`:
+- the issue is titled `[Rencana] …` (`[Plan] …` in English projects);
+- the branch is `rencana-produk`.
 
 ## 5. Report
 

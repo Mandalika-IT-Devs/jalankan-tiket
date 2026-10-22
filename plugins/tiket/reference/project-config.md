@@ -4,7 +4,7 @@
 
 | Key | Meaning | Example |
 |---|---|---|
-| `kitVersion` | The kit version that the project's kit-made files match. `/tiket:cek-proyek` compares it with the installed plugin. | `"0.1.0"` |
+| `kitVersion` | The kit version that the project's kit-made files match. It changes only when a migration from `MIGRATIONS.md` is applied, so a newer plugin by itself leaves it unchanged. `/tiket:cek-proyek` warns when a migration is pending. | `"0.1.0"` |
 | `language` | The **project language**, used for everything written for the owner: issues, PRs, comments, questions, reports and commit messages. Either `id` or `en`. | `"id"` |
 | `verifyCommand` | The one command that must be green before every commit and in CI. | `"pnpm verify"` |
 | `domainModulePath` | The pure domain module folder, with a trailing slash (ADR-0002). | `"src/domain/"` |

@@ -47,10 +47,9 @@ This step is done when every answered question has its rule written, its source 
 
 ## 4. Deliver
 
-The PRD and the other decision files are protected:
-1. Create the branch `keputusan-<YYYY-MM-DD>`, commit, push, and open a PR.
-2. Ask the owner to add the owner-approved label.
-3. Merge once CI is green and the owner agrees.
+The PRD and the other decision files are protected. They reach `main` through the steps in `${CLAUDE_PLUGIN_ROOT}/reference/owner-pr.md`:
+- the issue is titled `[Keputusan] …` (`[Decision] …` in English projects);
+- the branch is `keputusan-<YYYY-MM-DD>`.
 
 The decision PR must merge before `/tiket:jalankan` runs again. Until then, the reviewer checks the parked tickets against the old PRD.
 

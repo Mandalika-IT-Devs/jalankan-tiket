@@ -26,7 +26,10 @@ This step is done when you can say three things:
 
 1. Propose what the milestone delivers, in the owner question format of `${CLAUDE_PLUGIN_ROOT}/reference/owner-questions.md`.
 2. For every entry in `docs/OPEN-DECISIONS.md` that the milestone's tickets need, ask the owner to decide now or to keep the example value. Call the Skill tool with "grilling" when the answers open further questions.
-3. Record the decisions the owner makes now the way `/tiket:catat-keputusan` does. They go into the PRD as `▶` blocks, and the matching rows leave OPEN-DECISIONS. The decision PR merges before the tickets are published, so the tickets can cite the PRD.
+3. Record the decisions the owner makes now, the way `/tiket:catat-keputusan` does.
+   - Each decision goes into the PRD as a `▶` block, and its row leaves OPEN-DECISIONS.
+   - The decisions reach `main` through `${CLAUDE_PLUGIN_ROOT}/reference/owner-pr.md`.
+   - That PR merges before the tickets are published, so the tickets can cite the PRD.
 
 ## 3. Slice into tickets
 

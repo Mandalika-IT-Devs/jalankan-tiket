@@ -11,8 +11,11 @@ disable-model-invocation: true
 3. **Explain each FAIL and WARN** in plain words, with its fix. Who carries out a fix depends on what it touches:
    - **No owner decision, no protected file:** fix it yourself.
    - **Labels, rulesets or other repository settings:** give the owner the command to type with `!` in the session. The project's permission rules keep these changes with the owner.
-   - **A protected file:** make the change on a branch, open a PR, and ask the owner to add the owner-approved label.
-4. **Handle a kit-version warning.** The script warns only when `${CLAUDE_PLUGIN_ROOT}/MIGRATIONS.md` lists changes to project files after `kitVersion`. Apply every section it names on one branch, `kit-v<newest version>`, in one PR. That PR also sets `kitVersion` to the newest version. Then ask the owner to add the owner-approved label.
+   - **A protected file:** follow `${CLAUDE_PLUGIN_ROOT}/reference/owner-pr.md`, with an issue titled `[Kit] …`.
+4. **Handle a kit-version warning.** The script warns only when `${CLAUDE_PLUGIN_ROOT}/MIGRATIONS.md` lists changes to project files after `kitVersion`.
+   - Apply every section the warning names in one PR, following `${CLAUDE_PLUGIN_ROOT}/reference/owner-pr.md`.
+   - The issue is `[Kit] Pembaruan ke <newest version>` (`[Kit] Update to <newest version>` in English projects), and the branch is `kit-v<newest version>`.
+   - The same PR sets `kitVersion` to the newest version.
 5. **Name the next step** from the project's state. Use the first row that applies:
 
    | Project state | Next step |
