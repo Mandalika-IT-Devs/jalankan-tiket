@@ -19,7 +19,7 @@ Fondasi repo: aplikasi Next.js kosong yang lolos `pnpm verify` dan CI. Tiket ini
   - Playwright dengan satu test e2e untuk halaman awal.
   - Server e2e memakai port dari variabel `E2E_PORT`; bila tidak diisi, pakai 3100.
   - Server e2e memuat `.env.ci` dengan override, supaya e2e tidak pernah memakai database pengembangan.
-- **Konfigurasi alat:** ESLint, Prettier, dan knip dikonfigurasi supaya `pnpm verify` hijau.
+- **Konfigurasi alat:** ESLint, Prettier, dan knip dikonfigurasi supaya `pnpm verify` hijau. ESLint, Prettier, Vitest, dan knip mengabaikan `.claude/worktrees/`, tempat Claude Code membuat worktree.
 
 ## Di luar scope
 

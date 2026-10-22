@@ -15,8 +15,9 @@ playwright-report/
 blob-report/
 coverage/
 
-# Personal Claude Code settings
+# Personal Claude Code settings, and the worktrees Claude Code creates inside the project
 .claude/settings.local.json
+.claude/worktrees/
 
 # OS and editor files
 .DS_Store

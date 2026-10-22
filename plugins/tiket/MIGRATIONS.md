@@ -13,6 +13,13 @@ Format of a section:
 
 Paths such as `stacks/…` are relative to the plugin folder.
 
+## 0.1.11
+
+- **Projects on the `nextjs-postgres` stack only.** Claude Code may create worktrees in `.claude/worktrees/`, and their files must stay out of the project's checks.
+  - **`.gitignore`**: add `.claude/worktrees/`.
+  - When `pnpm verify` would read files under `.claude/worktrees/`, add that folder to the ignore lists of ESLint, Vitest and knip.
+- Last step: set `kitVersion` in `.github/jalankan-tiket.json` to `0.1.11`.
+
 ## 0.1.10
 
 - **`AGENTS.md`** (or `CLAUDE.md` when the project keeps its rules there): add the language section of `templates/<language>/AGENTS.md` right after the summary, unless the file already states that every message to the owner, status lines included, uses the project language.

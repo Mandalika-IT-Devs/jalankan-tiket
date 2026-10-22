@@ -19,7 +19,7 @@ The repo foundation: an empty Next.js application that passes `pnpm verify` and 
   - Playwright, with one e2e test for the home page.
   - The e2e server uses the port from the `E2E_PORT` variable; if it is not set, it uses 3100.
   - The e2e server loads `.env.ci` with override, so that e2e tests never use the development database.
-- **Tool configuration:** ESLint, Prettier and knip are configured so that `pnpm verify` is green.
+- **Tool configuration:** ESLint, Prettier and knip are configured so that `pnpm verify` is green. ESLint, Prettier, Vitest and knip skip `.claude/worktrees/`, where Claude Code creates worktrees.
 
 ## Out of scope
 

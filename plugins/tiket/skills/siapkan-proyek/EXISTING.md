@@ -39,7 +39,7 @@ Go through every file that `SKILL.md` step 4 would write:
   - add the missing allow and deny rules;
   - add the `jalankan-tiket` marketplace and `enabledPlugins`.
 
-  Keep every rule the project already has.
+  Keep every rule the project already has. In Auto mode, changing the active `.claude/settings.json` counts as changing your own permissions and is refused. Write the merged file elsewhere first, show the owner the difference, and copy it into place once the owner agrees.
 
 ## CI
 

@@ -2,6 +2,13 @@
 
 All notable changes to the `tiket` plugin. Versions follow `plugins/tiket/.claude-plugin/plugin.json`. Changes to files the kit writes into projects also get a section in `plugins/tiket/MIGRATIONS.md`.
 
+## 0.1.11 (unreleased)
+
+More findings from the same adoption:
+
+- In Auto mode, merging the kit's rules into an existing `.claude/settings.json` is refused as self-modification. `EXISTING.md` now prepares the merged file elsewhere, shows the owner the difference, and writes it after the owner agrees, which is what the session did on its own.
+- Worktrees that Claude Code creates in `.claude/worktrees/` made lint red. The `nextjs-postgres` `.gitignore` and the foundation ticket keep that folder out of the checks, and migration 0.1.11 does the same for existing projects.
+
 ## 0.1.10 (unreleased)
 
 Finding from adopting the kit in a real project that already ran an earlier copy of the workflow (adoption merged, CI and deploy green):
