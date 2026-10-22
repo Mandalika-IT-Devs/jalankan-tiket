@@ -2,6 +2,10 @@
 
 All notable changes to the `tiket` plugin. Versions follow `plugins/tiket/.claude-plugin/plugin.json`. Changes to files the kit writes into projects also get a section in `plugins/tiket/MIGRATIONS.md`.
 
+## 0.1.9 (unreleased)
+
+- Adopting an existing project starts the branch from the latest `origin/main`, and works around commands that the project's own permission rules deny.
+
 ## 0.1.8 (unreleased)
 
 Preparing the adoption of a project that already runs an earlier copy of this workflow:

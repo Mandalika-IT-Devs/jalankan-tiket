@@ -2,6 +2,9 @@
 
 An existing project already has its own files, so you add the kit beside them and never overwrite them. All the work happens on the branch `adopsi-jalankan-tiket` and reaches `main` through one PR. That PR changes protected paths, so the owner adds the owner-approved label before it can merge.
 
+- **Start from the latest `main`.** Run `git fetch origin`, then `git switch -c adopsi-jalankan-tiket origin/main`. A local `main` may be behind GitHub.
+- **The project's own permission rules may deny a command this setup uses**, such as `gh api` or `gh label`. Read the same facts with another command, for example the labels on issues through `gh issue list --json labels`, or give the owner the command to type with `!`.
+
 ## An earlier copy of this workflow
 
 Some projects already run their own copy of this workflow: a coordinator skill in `.claude/skills/`, implementer and reviewer agents in `.claude/agents/`, and CI jobs named `kebersihan-pr` and `verify`. The plugin replaces that copy. On top of the rest of this file:
