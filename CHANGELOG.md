@@ -12,6 +12,11 @@ Findings from validating `/tiket:catat-keputusan` (five questions from three iss
 - Decisions also update `GLOSSARY.md` for a new term and `docs/UAT.md` for new behaviour. Source issues are commented after the PR exists, so the comment links it.
 - A PR for protected files adds `-2`, `-3` to a branch name that is already taken, for example a second decision PR on the same day.
 
+Findings from validating `/tiket:cek-proyek` and the first migration (0.1.0 → 0.1.6 on the sample project, local end-to-end tests now on the project's own `app_test`):
+
+- `/tiket:cek-proyek` names an open owner PR (plan, decision or kit) as the next step, before `/tiket:jalankan`.
+- The 0.1.6 migration replaces the old CI line in `AGENTS.md` instead of adding a second one.
+
 ## 0.1.6 (unreleased)
 
 Findings from validating `/tiket:jalankan` on the sample project (four tickets merged, one parked):

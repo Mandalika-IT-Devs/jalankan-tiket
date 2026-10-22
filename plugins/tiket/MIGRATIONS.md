@@ -21,6 +21,6 @@ Paths such as `stacks/…` are relative to the plugin folder.
   - **`scripts/postgres-init.sql`**: copy it from `stacks/nextjs-postgres/files/scripts/postgres-init.sql`.
   - **`docker-compose.yml`**: mount that file in the postgres service, as `stacks/nextjs-postgres/files/docker-compose.yml` does.
   - **`.github/workflows/ci.yml`**: in the step that loads `.env.ci`, rewrite the port before loading, as `stacks/nextjs-postgres/ci/<runner>.yml` does. `<runner>` is the `runner` value in the config.
-  - **`AGENTS.md`**: in the environment section, add the test and CI lines of `stacks/nextjs-postgres/<language>/environment.md`, with the port filled in.
+  - **`AGENTS.md`**: in the environment section, replace the CI line and add the test line, both from `stacks/nextjs-postgres/<language>/environment.md`, with the port filled in.
   - **On this machine:** an existing PostgreSQL volume never runs the init script. Create the test database once with `docker compose exec postgres createdb -U app app_test`, unless it already exists. Write in the PR body that every other machine with an existing volume needs the same command.
 - Last step: set `kitVersion` in `.github/jalankan-tiket.json` to `0.1.6`.

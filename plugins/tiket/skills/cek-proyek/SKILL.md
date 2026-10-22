@@ -21,6 +21,7 @@ disable-model-invocation: true
    | Project state | Next step |
    |---|---|
    | A setup file FAILs | the fixes above, or `/tiket:siapkan-proyek` |
+   | An owner PR (`[Rencana]`, `[Keputusan]`, `[Kit]`, or their English titles) is still open | the owner checks it and adds the owner-approved label; merge it before `/tiket:jalankan` |
    | `docs/PRD.md` is still the empty template | put material in `docs/input/`, then run `/tiket:rencanakan-produk` |
    | No open milestone holds open tickets | `/tiket:rencanakan-tahap` |
    | Open issues carry the needs-info label | the owner answers them, then runs `/tiket:catat-keputusan` |
