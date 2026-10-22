@@ -48,9 +48,9 @@ if [ -z "$MISSING_KEYS" ]; then ok "config"; else fail "config" "missing keys:$M
 KIT=$(jq -r .kitVersion "$CFG")
 PLUGIN=$(jq -r .version "$ROOT/.claude-plugin/plugin.json")
 PENDING=""
-for v in $(grep -oE '^## [0-9]+\.[0-9]+\.[0-9]+' "$ROOT/MIGRATIONS.md" | awk '{print $2}'); do
+while read -r _ v; do
   if [ "$v" != "$KIT" ] && [ "$(printf '%s\n%s\n' "$KIT" "$v" | sort -V | tail -1)" = "$v" ]; then PENDING="$PENDING $v"; fi
-done
+done < <(grep -oE '^## [0-9]+\.[0-9]+\.[0-9]+' "$ROOT/MIGRATIONS.md")
 if [ -n "$PENDING" ]; then
   warn "kit version" "project files are at $KIT; MIGRATIONS.md has changes for:$PENDING"
 else
@@ -130,7 +130,7 @@ if [ -f "$INSTALLED" ]; then
   VERSION=$(jq -r '[.plugins["mattpocock-skills@claude-plugins-official"][]?.version] | first // empty' "$INSTALLED")
   if [ -z "$VERSION" ]; then
     warn "mattpocock-skills" "not installed from claude-plugins-official"
-  elif printf '%s\n' $TESTED | grep -qxF "$VERSION"; then
+  elif jq -e --arg v "$VERSION" '.mattpocockSkills | index($v)' "$ROOT/reference/tested-versions.json" >/dev/null; then
     ok "mattpocock-skills $VERSION (tested)"
   else
     warn "mattpocock-skills" "$VERSION is not among the tested versions ($TESTED); /tiket:jalankan still checks the coupling points before it starts"
