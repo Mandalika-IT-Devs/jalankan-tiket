@@ -1,0 +1,6 @@
+# Personal Claude Code settings
+.claude/settings.local.json
+
+# OS and editor files
+.DS_Store
+*.swp

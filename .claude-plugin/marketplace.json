@@ -1,0 +1,18 @@
+{
+  "name": "jalankan-tiket",
+  "owner": {
+    "name": "mandalikadev",
+    "url": "https://github.com/mandalikadev"
+  },
+  "description": "The jalankan-tiket workflow for Claude Code. Plan a product with its owner, then let Claude work GitHub tickets autonomously through an implementer, a reviewer, a PR, CI and a merge.",
+  "allowCrossMarketplaceDependenciesOn": ["claude-plugins-official"],
+  "plugins": [
+    {
+      "name": "tiket",
+      "source": "./plugins/tiket",
+      "description": "Autonomous GitHub-ticket workflow: set up a project, plan it through grilling, then run tickets through implementer and reviewer subagents, PR, CI and merge.",
+      "category": "engineering",
+      "keywords": ["workflow", "github", "tickets", "autonomous", "ci", "grilling"]
+    }
+  ]
+}
