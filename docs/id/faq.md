@@ -23,7 +23,7 @@ PR itu mengubah dokumen atau aturan yang dilindungi. Bila perubahannya memang An
 Koordinator menjalankan ulang job yang gagal satu kali bila test itu tidak disentuh perubahan, lalu mencatatnya di laporan. Buat tiket kecil untuk memperbaikinya, karena test yang tidak stabil bisa membuat tiket diparkir.
 
 **Di mode Auto, perintah merge PR perencanaan atau keputusan ditolak.**
-Pengklasifikasi mode Auto hanya menerima izin yang Anda ketik sendiri di sesi itu. Izin yang diteruskan dari sesi lain tidak dihitung. Ada dua cara melanjutkannya:
+Pengklasifikasi mode Auto bisa menolak izin yang tidak Anda ketik sendiri di sesi itu, misalnya izin yang diteruskan dari sesi lain. Ada dua cara melanjutkannya:
 - ketik izinnya langsung di sesi itu, misalnya "silakan merge";
 - tekan **Squash and merge** di halaman PR di GitHub.
 
