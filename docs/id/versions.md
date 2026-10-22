@@ -2,7 +2,7 @@
 
 | Komponen | Versi |
 |---|---|
-| Kit (plugin `tiket`) | 0.1.5 |
+| Kit (plugin `tiket`) | 1.0.0 |
 | Claude Code | 2.1.299 |
 | mattpocock-skills | 1.3.1 |
 | GitHub Actions | `actions/checkout@v7`, `actions/setup-node@v7`, `pnpm/action-setup@v6` |

@@ -1,6 +1,6 @@
 # jalankan-tiket
 
-> **Status: v0.1, masih dikembangkan.** Panduan lengkapnya sudah siap. Seluruh alur sudah divalidasi dari awal sampai akhir di proyek contoh yang baru. Berikutnya validasi di proyek lama, sebelum v1.0.
+> **Status: v1.0.** Sudah divalidasi dari awal sampai akhir di proyek baru dan di proyek lama; jalur yang sudah tervalidasi ada di [Versi teruji](docs/id/versions.md). Contoh: [mandalikadev/contoh-perpustakaan](https://github.com/mandalikadev/contoh-perpustakaan), aplikasi perpustakaan kecil yang dibangun dengan kit ini, lengkap dengan tiket dan PR-nya.
 
 Plugin Claude Code untuk menjalankan seluruh proyek perangkat lunak dari tiket GitHub. Anda cukup merencanakan produk bersama Claude satu kali. Setelah itu Claude mengerjakan setiap tiket yang siap, sendiri dan satu per satu:
 

@@ -1,6 +1,6 @@
 # jalankan-tiket
 
-> **Status: v0.1, in development.** The full guide is ready. The whole workflow has been validated end to end on a new sample project. Validation on an existing project comes next, before v1.0.
+> **Status: v1.0.** Validated end to end on a new project and on an existing one; [Tested versions](docs/en/versions.md) lists the validated paths. Example: [mandalikadev/contoh-perpustakaan](https://github.com/mandalikadev/contoh-perpustakaan), a small library app built with the kit, with its tickets and PRs.
 
 A Claude Code plugin that runs a whole software project from GitHub tickets. You plan the product with Claude once. After that, Claude works every ready ticket on its own, one at a time:
 

@@ -2,6 +2,10 @@
 
 All notable changes to the `tiket` plugin. Versions follow `plugins/tiket/.claude-plugin/plugin.json`. Changes to files the kit writes into projects also get a section in `plugins/tiket/MIGRATIONS.md`.
 
+## 1.0.0
+
+First public release. The workflow is validated end to end on a new project (setup, product and milestone planning, automatic tickets, a parked ticket and its decision, a kit migration) and on an existing project that already ran an earlier copy of the workflow (adoption and a kit migration). Self-hosted runners are not validated through the kit yet; `docs/en/versions.md` lists the validated paths.
+
 ## 0.1.12 (unreleased)
 
 - After adopting a project whose PRD already describes the product, the kit no longer names planning a new milestone as the next step. The adoption is complete; `/tiket:rencanakan-tahap` is for when the owner has new work.
