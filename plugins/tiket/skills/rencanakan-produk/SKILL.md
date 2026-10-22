@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Plan the product
 
-You turn what the owner knows into the documents that the automatic workflow builds from. This session needs the owner to answer questions, and it is the longest one in the workflow. Use the **project language** (`language` in `.github/jalankan-tiket.json`) for every document and every question. Use it also for every message in this conversation, short status lines included. Never mix two languages in a message.
+You turn what the owner knows into the documents that the automatic workflow builds from. This session needs the owner to answer questions, and it is the longest one in the workflow. Use the **project language** (`language` in `.github/jalankan-tiket.json`) for every document and every question. Use it also for every message in this conversation, including the one-line status updates between tool calls, such as "Sekarang PRD §4: aturan peminjaman" in an Indonesian project. Never mix two languages in a message.
 
 ## 1. Gather
 

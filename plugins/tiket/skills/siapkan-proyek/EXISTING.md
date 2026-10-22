@@ -25,6 +25,7 @@ Go through every file that `SKILL.md` step 4 would write:
 - **Absent:** create it from the template, exactly as for a new project.
 - **Present and owned by the kit** (`.github/ISSUE_TEMPLATE/ticket.md`, `.github/pull_request_template.md`, `.github/protected-paths.txt`, `docs/agents/*.md`): keep the project's version. Add only the parts the kit needs. Write each addition into the PR description.
 - **`AGENTS.md` or `CLAUDE.md` present:** keep the project's text. Add any of these sections that is missing:
+  - the language rule;
   - the sources of truth;
   - how the automatic workflow runs;
   - the scope guardrails;

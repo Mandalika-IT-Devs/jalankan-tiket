@@ -2,6 +2,12 @@
 
 All notable changes to the `tiket` plugin. Versions follow `plugins/tiket/.claude-plugin/plugin.json`. Changes to files the kit writes into projects also get a section in `plugins/tiket/MIGRATIONS.md`.
 
+## 0.1.10 (unreleased)
+
+Finding from adopting the kit in a real project that already ran an earlier copy of the workflow (adoption merged, CI and deploy green):
+
+- The session wrote 13 one-line status updates in English during long file work, in an Indonesian project. Every skill now names those updates explicitly, with an example in the project language, and project `AGENTS.md` gets a language section that stays loaded in every session, also after a conversation is compacted. Migration 0.1.10 adds that section to existing projects.
+
 ## 0.1.9 (unreleased)
 
 - Adopting an existing project starts the branch from the latest `origin/main`, and works around commands that the project's own permission rules deny.

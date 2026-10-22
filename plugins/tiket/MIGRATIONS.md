@@ -13,6 +13,11 @@ Format of a section:
 
 Paths such as `stacks/…` are relative to the plugin folder.
 
+## 0.1.10
+
+- **`AGENTS.md`** (or `CLAUDE.md` when the project keeps its rules there): add the language section of `templates/<language>/AGENTS.md` right after the summary, unless the file already states that every message to the owner, status lines included, uses the project language.
+- Last step: set `kitVersion` in `.github/jalankan-tiket.json` to `0.1.10`.
+
 ## 0.1.6
 
 - **`docs/agents/issue-tracker.md`**: replace every `gh issue view <n> --comments` with `gh issue view <n> --json title,body,comments`. With `--comments` alone, `gh` prints the comments without the ticket body. Keep the rest of the file.

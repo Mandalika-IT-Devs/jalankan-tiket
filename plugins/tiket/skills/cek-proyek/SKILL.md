@@ -7,7 +7,7 @@ disable-model-invocation: true
 # Check the project
 
 1. **Run the checks.** From the repository root, run `bash ${CLAUDE_PLUGIN_ROOT}/scripts/cek-proyek.sh ${CLAUDE_PLUGIN_ROOT}`. Each line it prints is OK, INFO, WARN or FAIL.
-2. **Find the project language.** Read `language` in `.github/jalankan-tiket.json`. Every message to the owner uses this language, short status lines included, and never mixes two languages. If the config is missing, use the language the owner writes in.
+2. **Find the project language.** Read `language` in `.github/jalankan-tiket.json`. Every message to the owner uses this language, including the one-line status updates between tool calls, such as "Sekarang migrasi 0.1.6: .env.ci" in an Indonesian project. Never mix two languages in a message. If the config is missing, use the language the owner writes in.
 3. **Explain each FAIL and WARN** in plain words, with its fix. Who carries out a fix depends on what it touches:
    - **No owner decision, no protected file:** fix it yourself.
    - **Labels, rulesets or other repository settings:** give the owner the command to type with `!` in the session. The project's permission rules keep these changes with the owner.

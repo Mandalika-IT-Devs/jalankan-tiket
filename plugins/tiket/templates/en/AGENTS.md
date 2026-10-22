@@ -2,6 +2,10 @@
 
 {{PROJECT_SUMMARY}}
 
+## Language
+
+Everything written for the owner is in English: every message in the conversation, including the short status lines between commands such as "Now the CI: …", and issues, PRs, comments and commits. One message uses one language.
+
 ## Sources of truth
 
 - **Business rules:** `docs/PRD.md`. A `▶ Decision` block overrides the text above it. The files in `docs/input/` are not rules.

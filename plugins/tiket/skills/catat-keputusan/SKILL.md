@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Record the owner's decisions
 
-The owner answers the questions that the coordinator or a planning session asked. You turn the answers into rules and update the tickets, so that `/tiket:jalankan` can continue. Use the **project language** (`language` in `.github/jalankan-tiket.json`) for every file you change and every message, short status lines included. Never mix two languages in a message.
+The owner answers the questions that the coordinator or a planning session asked. You turn the answers into rules and update the tickets, so that `/tiket:jalankan` can continue. Use the **project language** (`language` in `.github/jalankan-tiket.json`) for every file you change and every message, including the one-line status updates between tool calls, such as "Sekarang PRD §4.1: blok ▶ Keputusan" in an Indonesian project. Never mix two languages in a message.
 
 ## 1. Collect the questions
 

@@ -2,6 +2,10 @@
 
 {{PROJECT_SUMMARY}}
 
+## Bahasa
+
+Semua yang ditulis untuk pemilik memakai bahasa Indonesia: setiap pesan di percakapan, termasuk baris status singkat di sela perintah seperti "Sekarang CI: …", juga issue, PR, komentar, dan commit. Satu pesan memakai satu bahasa saja.
+
 ## Sumber kebenaran
 
 - **Aturan bisnis:** `docs/PRD.md`. Blok `▶ Keputusan` mengalahkan teks di atasnya. Bahan di `docs/input/` bukan aturan.

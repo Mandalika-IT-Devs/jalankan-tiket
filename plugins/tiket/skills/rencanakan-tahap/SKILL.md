@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Plan a milestone
 
-You turn the next part of the PRD into tickets that `/tiket:jalankan` can work on its own. The owner answers questions in this session. Use the **project language** (`language` in `.github/jalankan-tiket.json`) for every question and every ticket. Use it also for every message in this conversation, short status lines included. Never mix two languages in a message.
+You turn the next part of the PRD into tickets that `/tiket:jalankan` can work on its own. The owner answers questions in this session. Use the **project language** (`language` in `.github/jalankan-tiket.json`) for every question and every ticket. Use it also for every message in this conversation, including the one-line status updates between tool calls, such as "Sekarang tiket T05: …" in an Indonesian project. Never mix two languages in a message.
 
 The plugin root is `${CLAUDE_PLUGIN_ROOT}`. Supporting files such as the stack's `PROFILE.md` write it as the literal text `${CLAUDE_PLUGIN_ROOT}`. Read that text as this path.
 
