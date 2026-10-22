@@ -2,6 +2,10 @@
 
 All notable changes to the `tiket` plugin. Versions follow `plugins/tiket/.claude-plugin/plugin.json`. Changes to files the kit writes into projects also get a section in `plugins/tiket/MIGRATIONS.md`.
 
+## 0.1.4 (unreleased)
+
+- Every skill now names short status lines, such as "what I read, what comes next", as part of the project language. Validating `/tiket:rencanakan-tahap` showed a status line in English followed by questions in Indonesian.
+
 ## 0.1.3 (unreleased)
 
 Findings from validating `/tiket:rencanakan-produk`:

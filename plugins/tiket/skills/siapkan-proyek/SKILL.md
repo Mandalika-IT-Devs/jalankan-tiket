@@ -14,7 +14,7 @@ The plugin's paths:
 
 The supporting files you read (`RUNNER.md`, `EXISTING.md`, the stack's `PROFILE.md`) write these paths as the literal text `${CLAUDE_PLUGIN_ROOT}` and `${CLAUDE_PLUGIN_DATA}`. Read them as the two paths above.
 
-Talk to the owner in **one language only**, and never mix two languages in a message.
+Talk to the owner in **one language only**, short status lines included, and never mix two languages in a message.
 - Before the project language is chosen, speak the language the owner writes in.
 - If the owner has typed nothing but the command, run `echo $LANG`. Speak Indonesian when it starts with `id`, and English otherwise.
 - Once the owner chooses the **project language** in step 2, use it for every file you create and for everything you tell the owner.

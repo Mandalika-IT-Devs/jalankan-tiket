@@ -1,7 +1,7 @@
 {
   "name": "tiket",
   "displayName": "Jalankan Tiket",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Autonomous GitHub-ticket workflow: set up a project, plan it through grilling, then run tickets through implementer and reviewer subagents, PR, CI and merge.",
   "author": {
     "name": "mandalikadev",

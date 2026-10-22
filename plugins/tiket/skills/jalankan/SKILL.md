@@ -19,7 +19,7 @@ The state of the work lives on GitHub: issues, labels, branches and PRs. Running
 
 1. **Read the project config.** Read `.github/jalankan-tiket.json` (its keys are explained in `${CLAUDE_PLUGIN_ROOT}/reference/project-config.md`) and `AGENTS.md`.
    - Done when you can state `language`, `verifyCommand`, `ticketPrefix`, `exampleMarker` and every name under `labels`.
-   - Everything you write for the owner uses the **project language** from `language`. That covers issues, PR bodies, comments and the final report.
+   - Everything you write for the owner uses the **project language** from `language`. That covers issues, PR bodies, comments, the final report and every message in this conversation, short status lines included. Never mix two languages in a message.
    - If the config file is missing, stop and tell the owner to run `/tiket:siapkan-proyek`.
 2. **Check the mattpocock-skills coupling.**
    - `GLOSSARY.md` exists at the repo root.
