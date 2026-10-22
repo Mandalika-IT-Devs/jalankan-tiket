@@ -26,6 +26,8 @@ Runner sendiri tetap GitHub Actions, dan koordinator membacanya dengan cara yang
 
 ## Memasang runner sendiri
 
+> Jalur ini belum tervalidasi lewat kit di proyek sungguhan. Templatnya diambil dari CI sebuah proyek yang sudah berjalan di runner sendiri.
+
 Syaratnya: Linux, dan Docker yang bisa dipakai tanpa `sudo`. GitHub hanya menjalankan container layanan, seperti database untuk test, di runner Linux.
 
 1. Saat `/tiket:siapkan-proyek`, pilih runner self-hosted. Claude memilih port CI yang tidak bentrok dengan proyek lain di mesin ini, lalu menyalin skrip pemasang ke repo.

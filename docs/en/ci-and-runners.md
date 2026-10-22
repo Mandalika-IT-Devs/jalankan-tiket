@@ -26,6 +26,8 @@ Your own runner is still GitHub Actions, and the coordinator reads it in the sam
 
 ## Installing your own runner
 
+> This path has not been validated through the kit in a real project yet. Its templates come from the CI of a project that already runs on its own runner.
+
 Requirements: Linux, and Docker that works without `sudo`. GitHub runs service containers, such as a database for tests, only on Linux runners.
 
 1. During `/tiket:siapkan-proyek`, choose the self-hosted runner. Claude picks CI ports that do not clash with other projects on this machine, then copies the install script into the repo.
