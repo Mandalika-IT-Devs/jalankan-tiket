@@ -6,6 +6,7 @@ This repository is a Claude Code marketplace, `jalankan-tiket`, that ships one p
 
 - `.claude-plugin/marketplace.json`: the marketplace. It lists the `tiket` plugin and allows that plugin's dependency on the `claude-plugins-official` marketplace.
 - `plugins/tiket/`: the plugin root. Everything a user's Claude Code loads lives here: `skills/`, `agents/`, and the templates, stack profiles, CI files and scripts that the skills copy into a project.
+- `plugins/tiket/reference/`: reference that more than one skill or agent needs, such as the project config keys and the format of questions for the owner. Skills point to these files through `${CLAUDE_PLUGIN_ROOT}/reference/...`. User-invoked skills cannot call each other, so shared reference lives here and not inside a skill.
 - `docs/id/` and `docs/en/`: the user guide, in Indonesian and English.
 - `docs/adr/`: decisions about the kit itself. Read ADR-0001 first.
 
