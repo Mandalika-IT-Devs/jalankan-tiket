@@ -61,11 +61,12 @@ fi
 DOMAIN=$(jq -r '.domainModulePath // empty' "$CFG")
 MISSING=""
 for f in AGENTS.md CLAUDE.md CODING_STANDARDS.md GLOSSARY.md docs/PRD.md docs/OPEN-DECISIONS.md docs/UAT.md \
-  docs/GUIDE.md docs/adr/0001-stack.md docs/agents/issue-tracker.md docs/agents/triage-labels.md \
+  docs/GUIDE.md docs/agents/issue-tracker.md docs/agents/triage-labels.md \
   docs/agents/domain.md tests/golden/NOTES.md .github/ISSUE_TEMPLATE/ticket.md .github/pull_request_template.md \
   .github/protected-paths.txt .github/CODEOWNERS .github/dependency-allowlist.txt .claude/settings.json; do
   [ -e "$f" ] || MISSING="$MISSING $f"
 done
+ls docs/adr/0001-*.md >/dev/null 2>&1 || MISSING="$MISSING docs/adr/0001-*.md"
 ls docs/adr/0002-*.md >/dev/null 2>&1 || MISSING="$MISSING docs/adr/0002-*.md"
 ls .github/workflows/*.yml >/dev/null 2>&1 || MISSING="$MISSING .github/workflows/*.yml"
 [ -n "$DOMAIN" ] && { [ -e "${DOMAIN}AGENTS.md" ] || MISSING="$MISSING ${DOMAIN}AGENTS.md"; }

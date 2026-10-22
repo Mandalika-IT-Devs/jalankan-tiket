@@ -17,7 +17,16 @@ Kit bisa dipasang di repo yang sudah berjalan, tanpa menimpa berkas Anda.
 
 Setelah itu alurnya sama seperti proyek baru: `/tiket:rencanakan-tahap`, lalu `/tiket:jalankan`.
 
+## Proyek yang sudah memakai salinan lama workflow ini
+
+Bila repo Anda sudah punya koordinator sendiri di `.claude/skills/`, agent di `.claude/agents/`, dan job CI `kebersihan-pr` serta `verify`, plugin menggantikan salinan itu:
+- Aturan khusus proyek di salinan lama dipindah dulu ke berkas proyek: hal yang diperiksa peninjau ke `CODING_STANDARDS.md`, aturan lain ke `AGENTS.md`. Setelah itu salinan lamanya dihapus di PR adopsi. Perintahnya kini `/tiket:jalankan`.
+- Berkas yang perannya sama tetapi namanya lain, misalnya `tiket.md` atau `PANDUAN.md`, diganti namanya menjadi nama kit (`ticket.md`, `GUIDE.md`).
+- Job CI yang sudah ada diperbarui di tempat, tidak ditambah job kembar.
+- Label yang sudah ada tetap dipakai. Bila tahap dicatat sebagai label seperti `M3`, tahap berikutnya menjadi milestone GitHub `M4`.
+- Nomor tiket melanjutkan nomor terakhir.
+- PRD, keputusan terbuka, UAT, desain, dan ADR yang sudah ada dipertahankan. Bila PRD sudah menggambarkan produk, langkah setelah PR adopsi di-merge adalah `/tiket:rencanakan-tahap`.
+
 ## Tips
 
 - Mulailah dari tahap kecil. Tiket pertama sebaiknya menutup celah kontrak dulu, baru kemudian fitur.
-- Bila repo memakai salinan lama workflow ini, misalnya `.claude/skills/jalankan-tiket`, hapus salinan itu di PR adopsi, supaya hanya versi plugin yang dipakai.

@@ -17,7 +17,16 @@ You can install the kit in a repo that is already in use, without overwriting yo
 
 After that, the flow is the same as for a new project: `/tiket:rencanakan-tahap`, then `/tiket:jalankan`.
 
+## Projects that already use an old copy of this workflow
+
+If your repo already has its own coordinator in `.claude/skills/`, agents in `.claude/agents/`, and the CI jobs `kebersihan-pr` and `verify`, the plugin replaces that copy:
+- The project's own rules in the old copy move into the project's files first: what the reviewer checks goes to `CODING_STANDARDS.md`, other rules go to `AGENTS.md`. Then the old copy is deleted in the adoption PR. The command is now `/tiket:jalankan`.
+- Files with the same role under another name, such as `tiket.md` or `PANDUAN.md`, are renamed to the kit's names (`ticket.md`, `GUIDE.md`).
+- Existing CI jobs are updated in place, without adding a duplicate job.
+- Existing labels stay in use. If milestones are labels such as `M3`, the next milestone becomes the GitHub milestone `M4`.
+- Ticket numbers continue from the last one.
+- The existing PRD, open decisions, UAT, design and ADRs are kept. If the PRD already describes the product, the step after the adoption PR is merged is `/tiket:rencanakan-tahap`.
+
 ## Tips
 
 - Start with a small milestone. The first tickets should close the contract gaps first, and only then add features.
-- If the repo uses an old copy of this workflow, for example `.claude/skills/jalankan-tiket`, delete that copy in the adoption PR, so that only the plugin version is used.

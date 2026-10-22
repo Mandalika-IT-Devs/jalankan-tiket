@@ -2,6 +2,15 @@
 
 All notable changes to the `tiket` plugin. Versions follow `plugins/tiket/.claude-plugin/plugin.json`. Changes to files the kit writes into projects also get a section in `plugins/tiket/MIGRATIONS.md`.
 
+## 0.1.8 (unreleased)
+
+Preparing the adoption of a project that already runs an earlier copy of this workflow:
+
+- `/tiket:siapkan-proyek` detects an earlier copy (a coordinator skill, agents, CI jobs `kebersihan-pr` and `verify`) and, for an existing project, the labels, milestones, highest ticket number and ruleset.
+- `EXISTING.md` gains a section for that case: project rules move into the project's files before the old copy is deleted, same-role files get the kit's names, existing CI jobs are updated in place, protected paths move to `.github/protected-paths.txt`, milestones kept as labels continue as GitHub milestones, ticket numbers continue, and the existing PRD leads to `/tiket:rencanakan-tahap`.
+- Setup skips the `M1` milestone when the project already has milestones, and gives the owner the command when the project's own permission rules deny it.
+- In an existing project, a kit ADR is skipped when the project already records that decision, and otherwise takes the next free ADR number. `/tiket:cek-proyek` accepts any `docs/adr/0001-*.md`.
+
 ## 0.1.7 (unreleased)
 
 Findings from validating `/tiket:catat-keputusan` (five questions from three issues, two answers that differ from the recommendation):

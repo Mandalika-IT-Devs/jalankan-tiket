@@ -31,7 +31,9 @@ Find out, without changing anything:
 - For an existing project:
   - its language, framework and package manifest;
   - its test and lint tools and its CI files;
-  - any `AGENTS.md`, `CLAUDE.md`, `CONTEXT.md`, `GLOSSARY.md`, `docs/` or `.claude/settings.json`.
+  - any `AGENTS.md`, `CLAUDE.md`, `CONTEXT.md`, `GLOSSARY.md`, `docs/` or `.claude/settings.json`;
+  - any earlier copy of this workflow: a coordinator skill in `.claude/skills/`, agents in `.claude/agents/`, or CI jobs named `kebersihan-pr` and `verify`;
+  - the labels in use, the milestones (GitHub milestones, or labels such as `M3`), the highest ticket number, and whether a ruleset protects `main` (`gh ruleset list`).
 - Whether the `grilling` and `tdd` skills from mattpocock-skills are available.
 
 This step is done when you can name the mode and every fact above. If mattpocock-skills is missing, stop and give the owner the steps in `${CLAUDE_PLUGIN_ROOT}/reference/install.md`.
@@ -77,7 +79,7 @@ Do this step before you write `.claude/settings.json`. That file's permission ru
    - **It does not exist:** create it with `gh repo create <owner>/<name> --<visibility> --source . --remote origin`.
 2. **Write the config.** Copy `templates/common/.github/jalankan-tiket.json` and fill its placeholders. `${CLAUDE_PLUGIN_ROOT}/templates/README.md` lists every placeholder. `kitVersion` is the `version` in `${CLAUDE_PLUGIN_ROOT}/.claude-plugin/plugin.json`. The stack values come from the stack profile.
 3. **Create the labels.** Run `bash ${CLAUDE_PLUGIN_ROOT}/scripts/buat-label.sh`. It creates every configured label that the repository lacks.
-4. **Create the first milestone.** Run `gh api repos/<owner>/<name>/milestones -f title=M1`.
+4. **Create the first milestone**, unless the project already has milestones, as GitHub milestones or as labels such as `M3`. Run `gh api repos/<owner>/<name>/milestones -f title=M1`. When the project's own permission rules deny that command, give it to the owner to type with `!`.
 5. **Self-hosted runner only.** Choose the ports as described in `${CLAUDE_PLUGIN_ROOT}/skills/siapkan-proyek/RUNNER.md`.
 
 ## 4. Write the files
@@ -107,7 +109,7 @@ Some steps change GitHub settings or need the owner's password. Give the owner e
   ! gh api -X POST repos/<owner>/<name>/rulesets --input .github/ruleset-main.json
   ```
 
-  A 403 response means the plan has no rulesets. In that case the agent guardrails and CI enforce the rule instead.
+  A 403 response means the plan has no rulesets. In that case the agent guardrails and CI enforce the rule instead. When a ruleset already protects `main`, `EXISTING.md` says what to compare instead.
 - **Self-hosted runner.** Use the steps in `RUNNER.md`.
 
 ## 7. Report
@@ -115,4 +117,4 @@ Some steps change GitHub settings or need the owner's password. Give the owner e
 Tell the owner, in plain words:
 - what was created: the repository link, the labels, milestone M1 and the CI runner;
 - the steps from step 6 that are still open;
-- the next step: put raw material about the product in `docs/input/`, then run `/tiket:rencanakan-produk`.
+- the next step: put raw material about the product in `docs/input/`, then run `/tiket:rencanakan-produk`. An existing project takes the next step that `EXISTING.md` names.
