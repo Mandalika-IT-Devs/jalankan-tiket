@@ -93,6 +93,8 @@ Write the final report for the owner, in plain words. It contains:
 
 Every question follows `${CLAUDE_PLUGIN_ROOT}/reference/owner-questions.md`.
 
+Also post each non-blocking question as a comment on its source issue. Head the comment "Pertanyaan untuk pemilik" in Indonesian projects, or "Question for the owner" in English ones. That way `/tiket:catat-keputusan` can still find the question in a later session.
+
 ## Guardrails
 
 - Work on one ticket at a time, so that `main` moves forward in a straight line.

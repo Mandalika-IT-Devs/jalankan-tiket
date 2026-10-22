@@ -1,0 +1,20 @@
+{
+  "kitVersion": "{{KIT_VERSION}}",
+  "language": "{{LANGUAGE}}",
+  "verifyCommand": "{{VERIFY_COMMAND}}",
+  "domainModulePath": "{{DOMAIN_MODULE_PATH}}",
+  "e2eCommand": {{E2E_COMMAND}},
+  "ticketPrefix": "{{TICKET_PREFIX}}",
+  "exampleMarker": "{{EXAMPLE_MARKER}}",
+  "labels": {
+    "needsTriage": "{{LABEL_NEEDS_TRIAGE}}",
+    "needsInfo": "{{LABEL_NEEDS_INFO}}",
+    "readyForAgent": "{{LABEL_READY_FOR_AGENT}}",
+    "readyForHuman": "{{LABEL_READY_FOR_HUMAN}}",
+    "wontfix": "{{LABEL_WONTFIX}}",
+    "ownerApproved": "{{LABEL_OWNER_APPROVED}}"
+  },
+  "stack": "{{STACK}}",
+  "runner": "{{RUNNER}}",
+  "ports": {{PORTS}}
+}

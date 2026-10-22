@@ -1,0 +1,3 @@
+- **Lokal:** salin `.env.example` menjadi `.env`, lalu jalankan `docker compose up -d` untuk menyalakan PostgreSQL di port {{PORT_DEV_POSTGRES}}.
+- **CI:** menyediakan PostgreSQL sendiri untuk test. Variabel test ada di `.env.ci`, tanpa rahasia asli, dan dimuat otomatis oleh CI.
+- **Urutan CI:** CI menjalankan `pnpm verify`, lalu `pnpm test:e2e` bila skrip itu ada.

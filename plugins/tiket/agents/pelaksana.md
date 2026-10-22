@@ -17,7 +17,7 @@ Read `.github/jalankan-tiket.json` for `language`, `verifyCommand`, `ticketPrefi
    - `docs/DESIGN.md`, when you touch the user interface;
    - the golden fixtures the issue cites.
 
-   This step is done when you can quote the issue's "In scope" list and its acceptance criteria, and name every OPEN-DECISIONS entry whose example value you will use.
+   This step is done when you can quote the issue's "In scope" list and its acceptance criteria, and name every OPEN-DECISIONS entry whose example value you will use. In an Indonesian project those sections are titled "Dalam scope" and "Kriteria penerimaan".
 2. **Red, then green, one criterion at a time.** Call the Skill tool with "tdd" for the loop.
    - Your seams are the ones named by the issue and by the test section of `CODING_STANDARDS.md`. They count as agreed, so start the loop without asking anyone.
    - Expected values come from `tests/golden/`, the PRD or literal examples in the issue.

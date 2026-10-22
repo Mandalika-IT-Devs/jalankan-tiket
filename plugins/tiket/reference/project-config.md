@@ -7,6 +7,7 @@
 | `kitVersion` | The kit version that the project's kit-made files match. `/tiket:cek-proyek` compares it with the installed plugin. | `"0.1.0"` |
 | `language` | The **project language**, used for everything written for the owner: issues, PRs, comments, questions, reports and commit messages. Either `id` or `en`. | `"id"` |
 | `verifyCommand` | The one command that must be green before every commit and in CI. | `"pnpm verify"` |
+| `domainModulePath` | The pure domain module folder, with a trailing slash (ADR-0002). | `"src/domain/"` |
 | `e2eCommand` | End-to-end tests that CI runs after the verify command. Set it to `null` when the project has none. | `"pnpm test:e2e"` |
 | `ticketPrefix` | The letter in front of ticket numbers. | `"T"` |
 | `exampleMarker` | The marker for example values from `docs/OPEN-DECISIONS.md` in seeds and tests. | `"[CONTOH]"` |
@@ -36,6 +37,7 @@ Example (Indonesian project):
   "kitVersion": "0.1.0",
   "language": "id",
   "verifyCommand": "pnpm verify",
+  "domainModulePath": "src/domain/",
   "e2eCommand": "pnpm test:e2e",
   "ticketPrefix": "T",
   "exampleMarker": "[CONTOH]",
@@ -48,6 +50,9 @@ Example (Indonesian project):
     "ownerApproved": "disetujui-pemilik"
   },
   "stack": "nextjs-postgres",
-  "runner": "github-hosted"
+  "runner": "github-hosted",
+  "ports": { "devPostgres": 5432, "ciPostgres": null, "ciE2e": null }
 }
 ```
+
+`ports` holds the stack profile's ports for this project. For the reference profile, see `stacks/nextjs-postgres/PROFILE.md`.

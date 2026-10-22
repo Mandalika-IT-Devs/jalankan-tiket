@@ -1,0 +1,140 @@
+#!/usr/bin/env bash
+# Checks the current project against the jalankan-tiket kit. Read-only.
+# Usage, from the repository root: bash cek-proyek.sh <plugin-root>
+# Prints one line per check (OK, INFO, WARN, FAIL) and exits non-zero when any check fails.
+set -uo pipefail
+
+ROOT="${1:?usage: cek-proyek.sh <plugin-root>}"
+FAILS=0
+ok() { printf 'OK    %s\n' "$1"; }
+info() { printf 'INFO  %s: %s\n' "$1" "$2"; }
+warn() { printf 'WARN  %s: %s\n' "$1" "$2"; }
+fail() {
+  printf 'FAIL  %s: %s\n' "$1" "$2"
+  FAILS=$((FAILS + 1))
+}
+finish() {
+  printf '\nSummary: %d FAIL\n' "$FAILS"
+  [ "$FAILS" -eq 0 ]
+  exit $?
+}
+
+# Repository
+if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then ok "git repository"; else fail "git repository" "this folder is not a git repository"; fi
+REMOTE=$(git remote get-url origin 2>/dev/null || true)
+case "$REMOTE" in
+  *github.com*) ok "GitHub remote ($REMOTE)" ;;
+  "") fail "GitHub remote" "no origin remote" ;;
+  *) fail "GitHub remote" "origin is not on GitHub: $REMOTE" ;;
+esac
+
+# Project config
+CFG=.github/jalankan-tiket.json
+if [ ! -f "$CFG" ]; then
+  fail "config" "$CFG is missing: run /tiket:siapkan-proyek"
+  finish
+fi
+if ! jq empty "$CFG" 2>/dev/null; then
+  fail "config" "$CFG is not valid JSON"
+  finish
+fi
+MISSING_KEYS=""
+for key in kitVersion language verifyCommand domainModulePath ticketPrefix exampleMarker labels stack runner; do
+  jq -e "has(\"$key\")" "$CFG" >/dev/null || MISSING_KEYS="$MISSING_KEYS $key"
+done
+if [ -z "$MISSING_KEYS" ]; then ok "config"; else fail "config" "missing keys:$MISSING_KEYS"; fi
+
+# Kit version
+KIT=$(jq -r .kitVersion "$CFG")
+PLUGIN=$(jq -r .version "$ROOT/.claude-plugin/plugin.json")
+if [ "$KIT" = "$PLUGIN" ]; then ok "kit version $KIT"; else warn "kit version" "project files are at $KIT, the plugin is at $PLUGIN: apply MIGRATIONS.md"; fi
+
+# Required files
+DOMAIN=$(jq -r '.domainModulePath // empty' "$CFG")
+MISSING=""
+for f in AGENTS.md CLAUDE.md CODING_STANDARDS.md GLOSSARY.md docs/PRD.md docs/OPEN-DECISIONS.md docs/UAT.md \
+  docs/GUIDE.md docs/adr/0001-stack.md docs/agents/issue-tracker.md docs/agents/triage-labels.md \
+  docs/agents/domain.md tests/golden/NOTES.md .github/ISSUE_TEMPLATE/ticket.md .github/pull_request_template.md \
+  .github/protected-paths.txt .github/CODEOWNERS .github/dependency-allowlist.txt .claude/settings.json; do
+  [ -e "$f" ] || MISSING="$MISSING $f"
+done
+ls docs/adr/0002-*.md >/dev/null 2>&1 || MISSING="$MISSING docs/adr/0002-*.md"
+ls .github/workflows/*.yml >/dev/null 2>&1 || MISSING="$MISSING .github/workflows/*.yml"
+[ -n "$DOMAIN" ] && { [ -e "${DOMAIN}AGENTS.md" ] || MISSING="$MISSING ${DOMAIN}AGENTS.md"; }
+if [ -z "$MISSING" ]; then ok "required files"; else fail "required files" "missing:$MISSING"; fi
+
+# Glossary: mattpocock-skills 1.3 and later read GLOSSARY.md only
+if [ -e CONTEXT.md ]; then
+  fail "glossary" "CONTEXT.md exists: rename it to GLOSSARY.md with git mv and update every reference"
+elif [ -e GLOSSARY.md ]; then
+  ok "glossary"
+fi
+
+# Labels: config, triage-labels.md and GitHub agree
+ROLES="needsTriage needsInfo readyForAgent readyForHuman wontfix ownerApproved"
+NAMES=""
+for role in $ROLES; do
+  name=$(jq -r ".labels.$role // empty" "$CFG")
+  if [ -z "$name" ]; then
+    fail "labels" "the config has no labels.$role"
+    continue
+  fi
+  NAMES="$NAMES $name"
+  grep -qF "\`$name\`" docs/agents/triage-labels.md 2>/dev/null || warn "labels" "docs/agents/triage-labels.md does not mention \`$name\` ($role)"
+done
+if command -v gh >/dev/null && gh auth status >/dev/null 2>&1; then
+  EXISTING=$(gh label list --limit 200 --json name --jq '.[].name' 2>/dev/null || true)
+  if [ -n "$EXISTING" ]; then
+    ABSENT=""
+    for name in $NAMES; do printf '%s\n' "$EXISTING" | grep -qxF "$name" || ABSENT="$ABSENT $name"; done
+    if [ -z "$ABSENT" ]; then ok "GitHub labels"; else fail "GitHub labels" "missing on GitHub:$ABSENT"; fi
+  else
+    warn "GitHub labels" "could not list the repository's labels"
+  fi
+else
+  warn "GitHub" "gh is not logged in"
+fi
+
+# CODEOWNERS covers every protected path
+if [ -f .github/protected-paths.txt ] && [ -f .github/CODEOWNERS ]; then
+  GAPS=""
+  while IFS= read -r path; do
+    case "$path" in '' | '#'*) continue ;; esac
+    grep -qF "/$path " .github/CODEOWNERS || GAPS="$GAPS $path"
+  done < .github/protected-paths.txt
+  if [ -z "$GAPS" ]; then ok "CODEOWNERS"; else warn "CODEOWNERS" "does not cover:$GAPS (run buat-codeowners.sh)"; fi
+fi
+
+# Agent guardrails and kit auto-update in the project settings
+S=.claude/settings.json
+if [ -f "$S" ]; then
+  if jq -e '.enabledPlugins["tiket@jalankan-tiket"] == true' "$S" >/dev/null 2>&1; then ok "plugin enabled for the project"; else warn "settings" "tiket@jalankan-tiket is not enabled in $S"; fi
+  if jq -e '.extraKnownMarketplaces["jalankan-tiket"].autoUpdate == true' "$S" >/dev/null 2>&1; then ok "kit auto-update"; else warn "settings" "the jalankan-tiket marketplace has no autoUpdate in $S"; fi
+  APPROVED=$(jq -r .labels.ownerApproved "$CFG")
+  if jq -e --arg rule "Bash(*${APPROVED}*)" '.permissions.deny | index($rule)' "$S" >/dev/null 2>&1; then ok "owner-approved label guarded"; else warn "settings" "no deny rule for commands that name '$APPROVED'"; fi
+fi
+
+# mattpocock-skills version against the versions the kit was tested with
+INSTALLED="${CLAUDE_CONFIG_DIR:-$HOME/.claude}/plugins/installed_plugins.json"
+TESTED=$(jq -r '.mattpocockSkills | join(" ")' "$ROOT/reference/tested-versions.json")
+if [ -f "$INSTALLED" ]; then
+  VERSION=$(jq -r '[.plugins["mattpocock-skills@claude-plugins-official"][]?.version] | first // empty' "$INSTALLED")
+  if [ -z "$VERSION" ]; then
+    warn "mattpocock-skills" "not installed from claude-plugins-official"
+  elif printf '%s\n' $TESTED | grep -qxF "$VERSION"; then
+    ok "mattpocock-skills $VERSION (tested)"
+  else
+    warn "mattpocock-skills" "$VERSION is not among the tested versions ($TESTED); /tiket:jalankan still checks the coupling points before it starts"
+  fi
+fi
+
+# Foundation of the reference stack
+if [ "$(jq -r .stack "$CFG")" = nextjs-postgres ]; then
+  if [ -f package.json ]; then
+    if jq -e '.scripts.verify' package.json >/dev/null; then ok "verify script"; else fail "verify script" "package.json has no scripts.verify"; fi
+  else
+    info "foundation" "no package.json yet: the foundation ticket has not run"
+  fi
+fi
+
+finish
