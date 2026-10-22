@@ -51,7 +51,7 @@ The state of the work lives on GitHub: issues, labels, branches and PRs. Running
 5. **Review.** Dispatch a fresh `tiket:peninjau`, so it starts with a clean context. Give it the issue number, the branch and the base `main`.
    - `PASS`: go to step 6.
    - `FIX`: send the findings to `tiket:pelaksana`, then review again with another fresh `tiket:peninjau`. After 3 rounds that still end in `FIX`, go to **Park**.
-6. **Pull request.** Push the branch, then run `gh pr create`. Write the body from `.github/pull_request_template.md`. It contains:
+6. **Pull request.** Push the branch, then run `gh pr create` with the title `<ticket id>: <summary>`, for example `T13: Peringatan anggota ganda`. Write the body from `.github/pull_request_template.md`. It contains:
    - `Closes #<n>`;
    - the ticked acceptance criteria;
    - the implementer's technical decisions;
@@ -90,7 +90,7 @@ The state of the work lives on GitHub: issues, labels, branches and PRs. Running
 Write the final report for the owner, in plain words. It contains:
 - **Tickets done:** each ticket's title and PR link.
 - **Parked tickets:** one question per ticket.
-- **Non-blocking questions:** numbered, one per decision.
+- **Non-blocking questions:** numbered, one per decision. Every technical decision that starts with `Owner check:` becomes one.
 - **Flaky-test candidates**, if there are any.
 - **Next step:** answer the questions, record them with `/tiket:catat-keputusan`, then run `/tiket:jalankan` again. If every ticket of the milestone is closed, plan the next milestone with `/tiket:rencanakan-tahap` instead.
 

@@ -18,6 +18,12 @@ Findings from validating `/tiket:cek-proyek` and the first migration (0.1.0 → 
 - The 0.1.6 migration replaces the old CI line in `AGENTS.md` instead of adding a second one.
 - A PR for protected files waits for CI with `gh pr checks <pr> --watch` before the merge. Without that step, a session stopped after the owner's approval and waited for another message.
 
+Findings from running `/tiket:jalankan #12` (the parked ticket, after its decision) on the sample project:
+
+- The scope argument works: the follow-up ticket that came first on the frontier stayed untouched.
+- The implementer has a third kind of ambiguity: a cheap detail that a decided behaviour leaves open. It picks the option closest to the PRD and DESIGN, marks it `Owner check:`, and the coordinator asks it as a non-blocking question instead of parking the ticket.
+- The coordinator titles PRs `<ticket id>: <summary>`, as `docs/agents/issue-tracker.md` already says.
+
 ## 0.1.6 (unreleased)
 
 Findings from validating `/tiket:jalankan` on the sample project (four tickets merged, one parked):

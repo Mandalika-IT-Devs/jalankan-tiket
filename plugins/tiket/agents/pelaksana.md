@@ -38,6 +38,7 @@ Read `.github/jalankan-tiket.json` for `language`, `verifyCommand`, `ticketPrefi
   - what the user sees;
   - behaviour outside the issue or the PRD;
   - rules that contradict each other.
+- **A detail of decided behaviour**, such as what happens to a warning when the user edits the form again. When the PRD settles the behaviour but not this detail, and the detail is cheap to change, choose the option closest to the PRD and `docs/DESIGN.md`. Record it as a technical decision that starts with `Owner check:`, and keep working. The coordinator asks the owner about it as a non-blocking question.
 - **Values already in `docs/OPEN-DECISIONS.md`** are known business questions with an agreed example value.
   - Use the example value and mark it with `exampleMarker` in seeds and tests.
   - Name the OD in your report.
