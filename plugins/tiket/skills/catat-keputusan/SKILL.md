@@ -19,41 +19,51 @@ Number the questions the way the report numbered them. When there is no report, 
 
 This step is done when every question has its number, its options, its recommendation and its source issue.
 
-## 2. Read the answers
+## 2. Get the answers
+
+When the owner has not answered in this conversation yet, present every question with its source issue, in the format of `${CLAUDE_PLUGIN_ROOT}/reference/owner-questions.md`. Then end your turn and wait.
 
 The owner's answer takes one of these forms:
 - "setuju semua" or "agree to all": every recommendation applies;
-- "agree to all except 2: pick c": the recommendations apply, except for the questions the owner names, which get the owner's own choice.
+- "agree to all except 2: pick c": the recommendations apply, except for the questions the owner names, which get the owner's own choice;
+- the owner's own words for a question, such as an option with a change. Record it as the owner wrote it.
 
 When an answer is unclear, ask about that one question only.
 
-## 3. Apply each decision
+## 3. Open the decision issue
+
+Follow step 1 of `${CLAUDE_PLUGIN_ROOT}/reference/owner-pr.md`, with the title `[Keputusan] …` (`[Decision] …` in English projects).
+
+The tickets that wait for these decisions list this issue under "Blocked by". `/tiket:jalankan` then picks them up only after the decision PR has merged and closed the issue.
+
+## 4. Apply each decision
 
 1. **Write the rule.**
    - Write it as a block under the PRD text it changes or confirms: `▶ Keputusan YYYY-MM-DD: …` in Indonesian projects, `▶ Decision YYYY-MM-DD: …` in English ones.
    - A decision about wording goes to `GLOSSARY.md` instead. One about the look of the interface goes to `docs/DESIGN.md`. One about a technical direction goes to a new ADR.
 2. **Update the supporting files.**
    - When the decision settles an entry in `docs/OPEN-DECISIONS.md`, remove its row.
-   - When it adds a number or a formula, add the golden cases.
-3. **Update the source issue.**
-   - Comment the decision on it, quoting the owner's answer.
-   - Remove the needs-info label.
-4. **Handle merged work.** When a decision changes what an already-merged ticket built, create a small follow-up ticket for the change. Do not change merged work silently. The follow-up ticket has:
+   - A new term gets an entry in `GLOSSARY.md`. New behaviour that the owner will check gets a scenario in `docs/UAT.md`.
+   - When the decision adds a number or a formula, add the golden cases.
+   - When the decision changes what merged code computes, put its golden cases in a new golden file that no test reads yet. The follow-up ticket connects that file to the tests. In a file the tests already read, the new cases would turn the verify command red, and the decision PR could never merge.
+3. **Handle merged work.** When a decision changes what an already-merged ticket built, create a small follow-up ticket for the change. Do not change merged work silently. The follow-up ticket has:
    - the title `[<prefix><nn>-b] …`;
    - the ready-for-agent label and the same milestone;
-   - "Blocked by" set to none.
+   - the decision issue under "Blocked by".
 
-This step is done when every answered question has its rule written, its source issue commented, and the needs-info label removed.
+This step is done when every answered question has its rule written and every follow-up ticket exists.
 
-## 4. Deliver
+## 5. Deliver
 
-The PRD and the other decision files are protected. They reach `main` through the steps in `${CLAUDE_PLUGIN_ROOT}/reference/owner-pr.md`:
-- the issue is titled `[Keputusan] …` (`[Decision] …` in English projects);
-- the branch is `keputusan-<YYYY-MM-DD>`.
+1. **Open the PR** with step 2 of `${CLAUDE_PLUGIN_ROOT}/reference/owner-pr.md`, on the branch `keputusan-<YYYY-MM-DD>`.
+2. **Update each source issue.**
+   - Comment the decision on it. Quote the owner's answer, link the PR, and use the issue's own question numbers.
+   - On a parked ticket, add the decision issue to its "Blocked by" section with `gh issue edit <n> --body-file <file>`. Then remove the needs-info label.
+3. **Finish** with steps 3 and 4 of `owner-pr.md`: the owner adds the label, and you merge once CI is green and the owner agrees.
 
-The decision PR must merge before `/tiket:jalankan` runs again. Until then, the reviewer checks the parked tickets against the old PRD.
+This step is done when every source issue is commented and no parked ticket still carries the needs-info label.
 
-## 5. Report
+## 6. Report
 
 Tell the owner, in plain words:
 - the decisions recorded;

@@ -41,7 +41,7 @@ Keadaan pekerjaan tersimpan di GitHub: issue, label, branch, dan PR. Kalau sesi 
 Inilah inti cara kerja kit.
 
 - **Teknis.** Contohnya nama berkas, pola kode, cara menguji, dan urutan tampil. Claude memutuskan sendiri, lalu mencatat keputusan, alasan, dan risikonya di PR.
-- **Bisnis.** Contohnya rumus, angka, ambang, hak akses, dan apa yang dilihat pengguna. Claude tidak menebak. Tiketnya diparkir dengan label `needs-info`, dan Anda menerima pertanyaan beserta pilihan jawaban, salah satunya rekomendasi.
+- **Bisnis.** Contohnya rumus, angka, ambang, hak akses, dan apa yang dilihat pengguna. Claude tidak menebak. Tiketnya diparkir dengan label `needs-info`, dan Anda menerima pertanyaan beserta pilihan jawaban, salah satunya rekomendasi. Jawaban Anda dicatat oleh `/tiket:catat-keputusan` lewat PR keputusan. Tiket yang diparkir menunggu PR itu di-merge, lalu dikerjakan lagi oleh `/tiket:jalankan`.
 
 Hal yang belum Anda putuskan dicatat di `docs/OPEN-DECISIONS.md`, lengkap dengan nilai contoh. Claude boleh memakai nilai contoh itu, ditandai `[CONTOH]`, supaya pekerjaan tidak berhenti. Nilai contoh tidak pernah menjadi aturan tetap.
 

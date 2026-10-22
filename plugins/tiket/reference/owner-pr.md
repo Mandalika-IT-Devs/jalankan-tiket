@@ -12,7 +12,7 @@ These PRs change protected files, so they reach `main` through the steps below. 
    - Title it with its kind, in the project language: `[Rencana] …` or `[Plan] …`, `[Keputusan] …` or `[Decision] …`, `[Kit] …`.
    - Leave off the ready-for-agent label. This issue is not a ticket.
    - In the body, quote the owner's instruction and list what will change.
-2. **Open the PR.** Create a branch, commit, push, then run `gh pr create --title "…" --body-file <file>`. The ticket template does not fit here. Write the body in this shape:
+2. **Open the PR.** Create a branch, commit, push, then run `gh pr create --title "…" --body-file <file>`. When the branch name is already taken, locally or on GitHub, add `-2`, `-3` and so on. The ticket template does not fit here. Write the body in this shape:
    1. `Closes #<issue>` on the first line;
    2. what changed, file by file;
    3. the decisions recorded, and any open decisions that are new;

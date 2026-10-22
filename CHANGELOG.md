@@ -2,6 +2,16 @@
 
 All notable changes to the `tiket` plugin. Versions follow `plugins/tiket/.claude-plugin/plugin.json`. Changes to files the kit writes into projects also get a section in `plugins/tiket/MIGRATIONS.md`.
 
+## 0.1.7 (unreleased)
+
+Findings from validating `/tiket:catat-keputusan` (five questions from three issues, two answers that differ from the recommendation):
+
+- `/tiket:catat-keputusan` opens the decision issue first. Parked tickets and follow-up tickets list it under "Blocked by", so `/tiket:jalankan` waits until the decision PR has merged. Before, only an instruction held the order.
+- Golden cases that change what merged code computes go into a new file that no test reads yet. In an existing file they turn the decision PR red, and it can never merge before its own follow-up ticket.
+- When the owner has not answered yet, the skill presents the questions in the owner-question format and waits. It also accepts an answer in the owner's own words, such as an option with a change.
+- Decisions also update `GLOSSARY.md` for a new term and `docs/UAT.md` for new behaviour. Source issues are commented after the PR exists, so the comment links it.
+- A PR for protected files adds `-2`, `-3` to a branch name that is already taken, for example a second decision PR on the same day.
+
 ## 0.1.6 (unreleased)
 
 Findings from validating `/tiket:jalankan` on the sample project (four tickets merged, one parked):

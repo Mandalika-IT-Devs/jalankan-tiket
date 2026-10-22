@@ -41,7 +41,7 @@ The state of the work is stored on GitHub: issues, labels, branches and PRs. If 
 This is the core of how the kit works.
 
 - **Technical.** For example file names, code patterns, how to test and display order. Claude decides by itself, then records the decision, its reason and its risk in the PR.
-- **Business.** For example formulas, numbers, thresholds, access rights and what users see. Claude does not guess. The ticket is parked with the label `needs-info`, and you get a question with answer options. One of the options is the recommended one.
+- **Business.** For example formulas, numbers, thresholds, access rights and what users see. Claude does not guess. The ticket is parked with the label `needs-info`, and you get a question with answer options. One of the options is the recommended one. `/tiket:catat-keputusan` records your answers in a decision PR. The parked ticket waits until that PR is merged, and then `/tiket:jalankan` works it again.
 
 Things you have not decided yet are recorded in `docs/OPEN-DECISIONS.md`, each with an example value. Claude may use that example value so that work does not stop. Claude marks it with the example marker (`[CONTOH]` in Indonesian projects, `[EXAMPLE]` in English ones). An example value never becomes a fixed rule.
 
