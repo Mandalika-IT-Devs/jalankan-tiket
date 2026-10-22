@@ -13,6 +13,8 @@
 
 `/tiket:jalankan` works every ready ticket. To limit a run, add issue numbers or a milestone name after the command, for example `/tiket:jalankan #12 #15` or `/tiket:jalankan M2`.
 
+To add or change a feature, write the request after `/tiket:rencanakan-tahap`, for example `/tiket:rencanakan-tahap add a PDF export of the report`. Claude writes the feature's rules into the PRD first, then splits it into tickets.
+
 In Claude Desktop, type `/tiket`, then pick the command from the menu.
 
 ## Skills from mattpocock-skills that the kit uses

@@ -28,6 +28,8 @@ The `tiket` plugin from the jalankan-tiket kit works on tickets without waiting 
 
 The product owner only answers parked tickets and runs UAT. The owner's guide is in `docs/GUIDE.md`.
 
+When the owner asks for a feature or a change in a plain conversation, without a `/tiket:` command, suggest `/tiket:rencanakan-tahap` followed by the description, so that its rules reach the PRD and the work becomes tickets. Do the work directly only when the owner asks for that.
+
 A ticket counts as done when all four of these conditions are met:
 - every acceptance criterion is ticked;
 - `{{VERIFY_COMMAND}}` is green;

@@ -28,13 +28,13 @@ Kalau sesi terputus, misalnya karena kuota habis atau laptop mati, buka sesi bar
   2. Jawab, misalnya "setuju semua" atau "setuju semua kecuali 2: pilih c".
   3. Jalankan `/tiket:jalankan` lagi.
 - **Keputusan Anda mengubah berkas terlindungi**, misalnya PRD. PR-nya membutuhkan label `{{LABEL_OWNER_APPROVED}}`, dan label itu Anda pasang sendiri di GitHub.
-- **Semua tiket di tahap ini sudah tertutup.** Lanjutkan dengan merencanakan tahap berikutnya.
+- **Semua tiket di tahap ini sudah tertutup.** Lakukan UAT. Tahap berikutnya direncanakan saat ada pekerjaan baru.
 
 ## Merencanakan
 
 Ada dua sesi yang membutuhkan Anda aktif menjawab:
 - `/tiket:rencanakan-produk`: sekali di awal proyek, atau saat produk berubah besar. Sesi ini menyusun PRD, glosarium, ADR, keputusan terbuka, skenario UAT, dan contoh hitungan dari bahan di `docs/input/`.
-- `/tiket:rencanakan-tahap`: sekali per tahap. Sesi ini menanyakan keputusan yang dibutuhkan tahap itu, lalu membuat tiket di milestone-nya.
+- `/tiket:rencanakan-tahap`: sekali per tahap, juga saat Anda ingin menambah atau mengubah fitur. Tulis permintaannya di belakang perintah, misalnya `/tiket:rencanakan-tahap tambah ekspor laporan ke PDF`. Sesi ini menuliskan aturan fitur itu ke PRD lewat PR, menanyakan keputusan yang dibutuhkan, lalu membuat tiket di milestone-nya.
 
 Setelah satu tahap selesai, jalankan `/retro` dari mattpocock-skills. Perintah ini memperbaiki aturan dan CI berdasarkan pengalaman di tahap itu.
 
@@ -44,4 +44,4 @@ Setelah satu tahap selesai, jalankan `/retro` dari mattpocock-skills. Perintah i
 
 ## UAT
 
-Setelah tiket paket UAT selesai, ikuti `docs/UAT.md`. Setiap temuan dilaporkan sebagai tiket perbaikan baru.
+Setelah tiket paket UAT selesai, ikuti `docs/UAT.md`. Laporkan setiap temuan dengan `/tiket:rencanakan-tahap` diikuti deskripsinya.

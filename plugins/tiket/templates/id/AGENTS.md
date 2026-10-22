@@ -28,6 +28,8 @@ Tiket dikerjakan tanpa menunggu manusia oleh plugin `tiket` dari kit jalankan-ti
 
 Pemilik produk hanya menjawab tiket yang diparkir dan melakukan UAT. Panduan pemilik ada di `docs/GUIDE.md`.
 
+Bila pemilik meminta fitur atau perubahan di percakapan biasa, tanpa perintah `/tiket:`, sarankan `/tiket:rencanakan-tahap` diikuti deskripsinya, supaya aturannya masuk PRD dan pekerjaannya menjadi tiket. Kerjakan langsung hanya bila pemilik memintanya.
+
 Satu tiket dianggap selesai bila keempat syarat ini terpenuhi:
 - semua kriteria penerimaan tercentang;
 - `{{VERIFY_COMMAND}}` hijau;

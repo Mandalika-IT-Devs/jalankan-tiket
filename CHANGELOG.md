@@ -2,6 +2,11 @@
 
 All notable changes to the `tiket` plugin. Versions follow `plugins/tiket/.claude-plugin/plugin.json`. Changes to files the kit writes into projects also get a section in `plugins/tiket/MIGRATIONS.md`.
 
+## 1.0.1
+
+- `/tiket:rencanakan-tahap` takes the feature or change the owner wants after the command. When the PRD does not describe it yet, the session grills the owner, writes the rules into the PRD with golden cases and UAT scenarios, and merges that PR before it publishes tickets. It also names the next milestone after the highest in use, also when milestones are labels.
+- Project `AGENTS.md` tells Claude to suggest `/tiket:rencanakan-tahap` when the owner asks for a feature in a plain conversation, and the owner's guide explains how to request one. Migration 1.0.1 brings both to existing projects.
+
 ## 1.0.0
 
 First public release. The workflow is validated end to end on a new project (setup, product and milestone planning, automatic tickets, a parked ticket and its decision, a kit migration) and on an existing project that already ran an earlier copy of the workflow (adoption and a kit migration). Self-hosted runners are not validated through the kit yet; `docs/en/versions.md` lists the validated paths.

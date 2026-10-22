@@ -28,13 +28,13 @@ If the session is interrupted, for example because the quota runs out or the lap
   2. Answer, for example "agree to all" or "agree to all except 2: pick c".
   3. Run `/tiket:jalankan` again.
 - **Your decision changes a protected file**, for example the PRD. Its PR needs the label `{{LABEL_OWNER_APPROVED}}`, and you add that label yourself on GitHub.
-- **Every ticket in this milestone is closed.** Continue by planning the next milestone.
+- **Every ticket in this milestone is closed.** Run UAT. The next milestone is planned when there is new work.
 
 ## Planning
 
 Two sessions need you to answer questions actively:
 - `/tiket:rencanakan-produk`: once at the start of the project, or when the product changes a lot. This session writes the PRD, the glossary, the ADRs, the open decisions, the UAT scenarios and the calculation examples, from the material in `docs/input/`.
-- `/tiket:rencanakan-tahap`: once per milestone. This session asks about the decisions that the milestone needs, then creates the tickets in that milestone.
+- `/tiket:rencanakan-tahap`: once per milestone, and also when you want to add or change a feature. Write the request after the command, for example `/tiket:rencanakan-tahap add a PDF export of the report`. This session writes the feature's rules into the PRD through a PR, asks about the decisions it needs, then creates the tickets in that milestone.
 
 After a milestone is finished, run `/retro` from mattpocock-skills. This command improves the rules and CI, based on what happened in that milestone.
 
@@ -44,4 +44,4 @@ After a milestone is finished, run `/retro` from mattpocock-skills. This command
 
 ## UAT
 
-When the UAT package ticket is done, follow `docs/UAT.md`. Report each finding as a new fix ticket.
+When the UAT package ticket is done, follow `docs/UAT.md`. Report each finding with `/tiket:rencanakan-tahap` followed by its description.

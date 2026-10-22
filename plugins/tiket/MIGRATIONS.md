@@ -13,6 +13,12 @@ Format of a section:
 
 Paths such as `stacks/…` are relative to the plugin folder.
 
+## 1.0.1
+
+- **`AGENTS.md`** (or `CLAUDE.md` when the project keeps its rules there): in the section on the automatic workflow, add the paragraph about requests in a plain conversation from `templates/<language>/AGENTS.md`, unless the file already says it.
+- **`docs/GUIDE.md`**: take the new wording of the `/tiket:rencanakan-tahap` line, the closed-milestone line and the UAT findings line from `templates/<language>/docs/GUIDE.md`. Keep the project's other text.
+- Last step: set `kitVersion` in `.github/jalankan-tiket.json` to `1.0.1`.
+
 ## 0.1.11
 
 - **Projects on the `nextjs-postgres` stack only.** Claude Code may create worktrees in `.claude/worktrees/`, and their files must stay out of the project's checks.

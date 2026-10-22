@@ -13,6 +13,8 @@
 
 `/tiket:jalankan` mengerjakan semua tiket yang siap. Untuk membatasinya, tulis nomor issue atau nama milestone di belakang perintah, misalnya `/tiket:jalankan #12 #15` atau `/tiket:jalankan M2`.
 
+Untuk menambah atau mengubah fitur, tulis permintaannya di belakang `/tiket:rencanakan-tahap`, misalnya `/tiket:rencanakan-tahap tambah ekspor laporan ke PDF`. Claude menuliskan aturan fitur itu ke PRD lebih dulu, baru memecahnya menjadi tiket.
+
 Di Claude Desktop, ketik `/tiket` lalu pilih perintahnya dari menu.
 
 ## Skill mattpocock-skills yang dipakai kit
