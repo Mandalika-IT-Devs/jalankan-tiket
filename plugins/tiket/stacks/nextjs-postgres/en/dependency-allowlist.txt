@@ -1,0 +1,53 @@
+# Dependencies that the owner has approved (ADR-0001). One name or glob pattern per line.
+# A dependency outside this list turns CI red, and its ticket is parked until the owner decides.
+
+# Framework
+next
+react
+react-dom
+typescript
+@types/*
+@next/*
+
+# User interface (Tailwind 4 + shadcn/ui)
+tailwindcss
+@tailwindcss/*
+postcss
+tw-animate-css
+radix-ui
+@radix-ui/*
+class-variance-authority
+clsx
+tailwind-merge
+lucide-react
+sonner
+react-hook-form
+@hookform/resolvers
+
+# Data
+drizzle-orm
+drizzle-kit
+postgres
+zod
+
+# When the product needs them (ADR-0001)
+better-auth
+pg-boss
+
+# Tools
+vitest
+@vitest/*
+@playwright/test
+@testing-library/*
+jsdom
+eslint
+eslint-config-*
+eslint-plugin-*
+@eslint/*
+typescript-eslint
+@typescript-eslint/*
+knip
+dependency-cruiser
+dotenv
+tsx
+prettier

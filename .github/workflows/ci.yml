@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  periksa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+      - name: Install Claude Code (only to validate the plugin; no login needed)
+        run: npm install --global @anthropic-ai/claude-code
+      - name: Validate the marketplace and the plugin
+        run: |
+          claude plugin validate . --strict
+          claude plugin validate plugins/tiket --strict
+      - name: Shell scripts
+        run: shellcheck plugins/tiket/scripts/*.sh plugins/tiket/templates/runner/*.sh tools/*.sh
+      - name: Guide, templates and placeholders agree across languages
+        run: bash tools/periksa-kit.sh

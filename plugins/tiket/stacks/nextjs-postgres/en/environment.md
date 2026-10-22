@@ -1,0 +1,3 @@
+- **Local:** copy `.env.example` to `.env`, then run `docker compose up -d` to start PostgreSQL on port {{PORT_DEV_POSTGRES}}.
+- **CI:** CI provides its own PostgreSQL for tests. The test variables are in `.env.ci`, with no real secrets, and CI loads them automatically.
+- **CI order:** CI runs `pnpm verify`, then `pnpm test:e2e` if that script exists.

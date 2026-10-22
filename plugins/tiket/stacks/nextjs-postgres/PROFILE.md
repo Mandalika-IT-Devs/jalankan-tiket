@@ -24,6 +24,7 @@ A single Next.js application on PostgreSQL. This is the kit's tested reference p
 
 | From | To |
 |---|---|
+| `files/.gitignore` | `.gitignore`. In an existing project, add the missing lines instead. |
 | `files/scripts/verify.mjs` | `scripts/verify.mjs` |
 | `files/.dependency-cruiser.cjs` | `.dependency-cruiser.cjs` |
 | `files/docker-compose.yml` | `docker-compose.yml` |
@@ -52,7 +53,10 @@ Several projects can share one machine, both for development and as a self-hoste
 
 `<lang>/ticket-deploy.md` holds two tickets. `/tiket:rencanakan-tahap` creates them only when the owner wants a deploy:
 - **Ticket A** is for the owner: the server, the domain and the repository secrets.
-- **Ticket B** is for the agent: the Dockerfile, the production compose file, `deploy/deploy.sh`, backups, and the `docs/DEPLOY.md` runbook. It also adds `.github/workflows/deploy.yml`, copied from `${CLAUDE_PLUGIN_ROOT}/ci/deploy-ssh.yml` with `{{DEPLOY_PATH}}` set to the repository's folder on the server (for example `/opt/<slug>/repo`). This is a protected file, so ticket B's PR needs the owner-approved label.
+- **Ticket B** is for the agent: the Dockerfile, the production compose file, `deploy/deploy.sh`, backups, and the `docs/DEPLOY.md` runbook. It also adds `.github/workflows/deploy.yml`.
+  - The implementer cannot read the plugin's folder. So put the content of `${CLAUDE_PLUGIN_ROOT}/ci/deploy-ssh.yml` in ticket B's body, as a code block.
+  - Set `{{DEPLOY_PATH}}` to the repository's folder on the server, for example `/opt/<slug>/repo`.
+  - Write in the body that the owner explicitly instructs adding this protected file. Its PR then needs the owner-approved label.
 
 ## Foundation ticket
 

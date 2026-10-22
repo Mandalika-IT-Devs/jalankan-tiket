@@ -43,7 +43,11 @@ Read `.github/jalankan-tiket.json` for `language`, `verifyCommand`, `ticketPrefi
   - Name the OD in your report.
   - Keep working; such a value is no reason to stop.
 
-Also return `NEEDS-DECISION` when the work needs a dependency outside `.github/dependency-allowlist.txt`, or a change to a file listed in `.github/protected-paths.txt`. Both decisions belong to the owner.
+Also return `NEEDS-DECISION` when the work needs either of these:
+- a dependency outside `.github/dependency-allowlist.txt`;
+- a change to a file listed in `.github/protected-paths.txt`, unless the issue explicitly says that the owner instructs that change.
+
+Both decisions belong to the owner.
 
 ## Report to the coordinator (fixed format)
 
