@@ -18,6 +18,6 @@ These PRs change protected files, so they reach `main` through the steps below. 
    3. the decisions recorded, and any open decisions that are new;
    4. how the owner can check the change.
 3. **Ask the owner to add the owner-approved label.** Only the owner adds it, and CI runs again when the label is added.
-4. **Merge** with `gh pr merge <pr> --squash --delete-branch`, once CI is green and the owner agrees.
+4. **Merge** once the owner agrees and CI is green. Wait for CI with `gh pr checks <pr> --watch`; this wait is part of the task the owner gave, also in apps that offer their own CI monitoring. Then run `gh pr merge <pr> --squash --delete-branch`.
 
 A PR description is never edited after the PR is created. To correct something, post a PR comment.

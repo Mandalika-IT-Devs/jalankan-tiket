@@ -16,6 +16,7 @@ Findings from validating `/tiket:cek-proyek` and the first migration (0.1.0 → 
 
 - `/tiket:cek-proyek` names an open owner PR (plan, decision or kit) as the next step, before `/tiket:jalankan`.
 - The 0.1.6 migration replaces the old CI line in `AGENTS.md` instead of adding a second one.
+- A PR for protected files waits for CI with `gh pr checks <pr> --watch` before the merge. Without that step, a session stopped after the owner's approval and waited for another message.
 
 ## 0.1.6 (unreleased)
 
