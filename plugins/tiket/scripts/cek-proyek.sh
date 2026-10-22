@@ -44,10 +44,18 @@ for key in kitVersion language verifyCommand domainModulePath ticketPrefix examp
 done
 if [ -z "$MISSING_KEYS" ]; then ok "config"; else fail "config" "missing keys:$MISSING_KEYS"; fi
 
-# Kit version
+# Kit version: a newer plugin matters only when MIGRATIONS.md lists changes to project files after kitVersion
 KIT=$(jq -r .kitVersion "$CFG")
 PLUGIN=$(jq -r .version "$ROOT/.claude-plugin/plugin.json")
-if [ "$KIT" = "$PLUGIN" ]; then ok "kit version $KIT"; else warn "kit version" "project files are at $KIT, the plugin is at $PLUGIN: apply MIGRATIONS.md"; fi
+PENDING=""
+for v in $(grep -oE '^## [0-9]+\.[0-9]+\.[0-9]+' "$ROOT/MIGRATIONS.md" | awk '{print $2}'); do
+  if [ "$v" != "$KIT" ] && [ "$(printf '%s\n%s\n' "$KIT" "$v" | sort -V | tail -1)" = "$v" ]; then PENDING="$PENDING $v"; fi
+done
+if [ -n "$PENDING" ]; then
+  warn "kit version" "project files are at $KIT; MIGRATIONS.md has changes for:$PENDING"
+else
+  ok "project files match the kit (kitVersion $KIT, plugin $PLUGIN)"
+fi
 
 # Required files
 DOMAIN=$(jq -r '.domainModulePath // empty' "$CFG")

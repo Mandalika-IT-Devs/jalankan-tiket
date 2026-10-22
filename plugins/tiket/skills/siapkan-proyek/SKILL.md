@@ -6,7 +6,13 @@ disable-model-invocation: true
 
 # Set up a project
 
-You set up the current folder for the jalankan-tiket workflow. Ask the owner first, then write. The templates, the stack profiles and the scripts all live in `${CLAUDE_PLUGIN_ROOT}`.
+You set up the current folder for the jalankan-tiket workflow. Ask the owner first, then write.
+
+The plugin's paths:
+- **Plugin root:** `${CLAUDE_PLUGIN_ROOT}`. It holds the templates, the stack profiles and the scripts.
+- **Plugin data folder:** `${CLAUDE_PLUGIN_DATA}`. It holds the port registry, `ports.json`.
+
+The supporting files you read (`RUNNER.md`, `EXISTING.md`, the stack's `PROFILE.md`) write these paths as the literal text `${CLAUDE_PLUGIN_ROOT}` and `${CLAUDE_PLUGIN_DATA}`. Read them as the two paths above.
 
 Talk to the owner in **one language only**, and never mix two languages in a message.
 - Before the project language is chosen, speak the language the owner writes in.
@@ -17,6 +23,7 @@ Talk to the owner in **one language only**, and never mix two languages in a mes
 
 Find out, without changing anything:
 - Whether the folder is a git repository, what its GitHub remote is (`git remote -v`), and whether `gh auth status` shows a login.
+- Whether git knows who commits: `git config user.name` and `git config user.email`. Commits fail without them.
 - Whether `.github/jalankan-tiket.json` already exists. If it does, the project is already set up: stop and tell the owner to run `/tiket:cek-proyek`.
 - Which **mode** applies:
   - **new project**: an empty or nearly empty folder;
@@ -36,9 +43,10 @@ Ask everything in one round, in the format of `${CLAUDE_PLUGIN_ROOT}/reference/o
 1. **Project language:** Indonesian or English. Recommend the language you are already speaking. It sets the language of the documents, issues, PRs and commits, and of every later conversation about this project.
 2. **Product name and summary:** one or two sentences on what the product is, who uses it, and what it leaves out.
 3. **Repository:**
-   - **New project:** the repository name and its visibility, or the name of the empty repository the owner already created on GitHub. For a new repository, recommend public when the owner has no paid GitHub plan. Two reasons:
-     - rulesets that protect `main` exist only on public repositories or paid plans;
-     - Actions minutes are free on public repositories.
+   - **New project:** the repository name and its visibility, or the name of the empty repository the owner already created on GitHub. For a new repository, recommend public unless the code must stay private.
+     - A public repository always gets the ruleset that protects `main`, and free Actions minutes.
+     - A private repository on a free plan gets neither the ruleset nor CI once its free minutes run out.
+     - Do not try to read the owner's GitHub plan. The token usually cannot see it.
    - **Existing project:** confirm the remote you found.
 4. **Stack:**
    - **New project:** recommend `nextjs-postgres`. Any other choice follows `${CLAUDE_PLUGIN_ROOT}/stacks/CONTRACT.md`.
@@ -48,6 +56,7 @@ Ask everything in one round, in the format of `${CLAUDE_PLUGIN_ROOT}/reference/o
    - Self-hosted on this machine is the other option. It needs Linux with Docker, and it suits private repositories that run out of Actions minutes.
 6. **User interface:** does the product have one?
 7. **Code owner for protected files:** default to the account that `gh auth status` shows.
+8. **Git identity, asked only when step 1 found none:** the name and email for commits in this project. Recommend the values from `gh api user --jq '.name, .email'`. When the email is empty, recommend `<id>+<login>@users.noreply.github.com`, using `gh api user --jq '.id, .login'`. Set them with `git config user.name` and `git config user.email` inside the project. The machine's global settings stay as they are.
 
 These have defaults, so do not ask about them:
 - the ticket prefix `T`;
@@ -78,10 +87,10 @@ Do this step before you write `.claude/settings.json`. That file's permission ru
 1. **Templates.** Copy `templates/<lang>/` and `templates/common/CLAUDE.md` into the project root, and fill every placeholder. Handle `<!-- ui -->` lines as `templates/README.md` describes.
 2. **Stack files.** Follow `stacks/<profile>/PROFILE.md`: values, files to copy, ports and CI. For a custom stack, follow `stacks/CONTRACT.md`.
 3. **CODEOWNERS.** Run `bash ${CLAUDE_PLUGIN_ROOT}/scripts/buat-codeowners.sh <@owner>`.
-4. **Ruleset file, public repositories and paid plans only.** Copy `templates/common/.github/ruleset-main.json` to `.github/ruleset-main.json`.
+4. **Ruleset file.** Copy `templates/common/.github/ruleset-main.json` to `.github/ruleset-main.json`. The owner applies it in step 6.
 5. **Permissions, last.** Copy `templates/common/.claude/settings.json` and fill `{{STACK_ALLOW_RULES}}` and `{{LABEL_OWNER_APPROVED}}`.
 6. **Check your work.**
-   - `grep -rn '{{' --exclude-dir=.git .` must find no unfilled placeholder.
+   - `grep -rnE '\{\{[A-Z_]+\}\}' --exclude-dir=.git .` must find no unfilled placeholder. Kit placeholders are written in capitals. GitHub Actions expressions such as `${{ github.ref }}` are not placeholders.
    - `bash ${CLAUDE_PLUGIN_ROOT}/scripts/cek-proyek.sh ${CLAUDE_PLUGIN_ROOT}` must report no FAIL. The one exception is the missing foundation code, which is reported as INFO.
 
 ## 5. Commit and push (new project)
@@ -92,7 +101,7 @@ Make one commit on `main`. Its message, in the project language, means "Set up t
 
 Some steps change GitHub settings or need the owner's password. Give the owner each of these as a ready-to-run command.
 
-- **Protect `main`** (when `.github/ruleset-main.json` was written). The owner types this in the Claude Code session:
+- **Protect `main`.** The owner types this in the Claude Code session:
 
   ```
   ! gh api -X POST repos/<owner>/<name>/rulesets --input .github/ruleset-main.json

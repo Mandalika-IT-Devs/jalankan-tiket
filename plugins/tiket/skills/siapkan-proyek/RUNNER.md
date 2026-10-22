@@ -7,7 +7,7 @@ A self-hosted runner is the owner's own Linux machine running GitHub Actions for
 Several projects can run CI on one machine, so each one needs its own ports.
 
 1. Read the port registry at `${CLAUDE_PLUGIN_DATA}/ports.json`. It is a JSON object keyed by `owner/name`. If the file does not exist yet, start from `{}`.
-2. Choose the ports that the stack profile asks for, such as `ciPostgres` and `ciE2e` for `nextjs-postgres`. Each port must be unused by every registered project and by every service listening right now (`ss -ltn`).
+2. Choose the ports that the stack profile asks for, such as `ciPostgres` and `ciE2e` for `nextjs-postgres`. The profile's **Ports** section says what counts as a used port, and where each search starts.
 3. Write the chosen ports into the project config under `ports`, and into the stack placeholders.
 4. Add the project's entry to the registry and save it.
 

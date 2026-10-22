@@ -12,7 +12,7 @@ disable-model-invocation: true
    - **No owner decision, no protected file:** fix it yourself.
    - **Labels, rulesets or other repository settings:** give the owner the command to type with `!` in the session. The project's permission rules keep these changes with the owner.
    - **A protected file:** make the change on a branch, open a PR, and ask the owner to add the owner-approved label.
-4. **Handle a kit-version warning.** Apply every section of `${CLAUDE_PLUGIN_ROOT}/MIGRATIONS.md` that is newer than `kitVersion`. Use one branch, `kit-v<newest version>`, and one PR. Then ask the owner to add the owner-approved label.
+4. **Handle a kit-version warning.** The script warns only when `${CLAUDE_PLUGIN_ROOT}/MIGRATIONS.md` lists changes to project files after `kitVersion`. Apply every section it names on one branch, `kit-v<newest version>`, in one PR. That PR also sets `kitVersion` to the newest version. Then ask the owner to add the owner-approved label.
 5. **Name the next step** from the project's state. Use the first row that applies:
 
    | Project state | Next step |

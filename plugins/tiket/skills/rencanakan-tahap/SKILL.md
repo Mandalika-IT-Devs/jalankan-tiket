@@ -8,6 +8,8 @@ disable-model-invocation: true
 
 You turn the next part of the PRD into tickets that `/tiket:jalankan` can work on its own. The owner answers questions in this session. Use the **project language** (`language` in `.github/jalankan-tiket.json`) for every question and every ticket.
 
+The plugin root is `${CLAUDE_PLUGIN_ROOT}`. Supporting files such as the stack's `PROFILE.md` write it as the literal text `${CLAUDE_PLUGIN_ROOT}`. Read that text as this path.
+
 ## 1. Gather
 
 Read all of these:

@@ -39,11 +39,18 @@ A single Next.js application on PostgreSQL. This is the kit's tested reference p
 
 Several projects can share one machine, both for development and as a self-hosted CI runner. Each project therefore needs its own ports.
 
-- **`devPostgres`** is the host port for the local PostgreSQL in `docker-compose.yml`.
-  - Use 5432 when nothing listens on it (check with `ss -ltn`) and no other project in the registry holds it.
-  - Otherwise take the next free port from 55432 upward.
+A port counts as **used** when any of these holds:
+- something listens on it now (`ss -ltn`);
+- a Docker container publishes it, including a stopped container. Check `docker ps -aq | xargs -r docker inspect --format '{{json .HostConfig.PortBindings}}'`;
+- the `docker-compose.yml`, `.env*` or `.github/workflows/*.yml` files of the other projects in the same parent folder mention it;
+- the registry lists it.
+
+Projects set up before the kit existed are missing from the registry, so check all four sources.
+
+- **`devPostgres`** is the host port for the local PostgreSQL in `docker-compose.yml`. Use 5432 when it is not used. Otherwise take the first unused port from 56432 upward.
 - **`ciPostgres` and `ciE2e`** are needed only for a self-hosted runner. They are the PostgreSQL service port and the end-to-end server port of CI on the runner machine.
-  - Pick ports that no other registered project uses: from 55500 for PostgreSQL and from 3500 for end-to-end tests.
+  - `ciPostgres` takes the first unused port from 56500 upward.
+  - `ciE2e` takes the first unused port from 3500 upward.
   - On GitHub-hosted runners, both stay `null`.
 - **The registry** is `${CLAUDE_PLUGIN_DATA}/ports.json`. It is a JSON object keyed by repository (`owner/name`), and each value holds that project's three ports.
   - Read the registry before choosing ports.
