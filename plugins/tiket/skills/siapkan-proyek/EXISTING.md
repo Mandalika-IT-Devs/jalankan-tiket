@@ -65,4 +65,4 @@ Compare the project's tools with `${CLAUDE_PLUGIN_ROOT}/stacks/CONTRACT.md`.
    - every file changed, with the reason;
    - the gaps in the verify contract.
 3. Once the PR is merged, continue with step 6 of `SKILL.md`.
-4. The next step after the merge is `/tiket:rencanakan-produk`. It writes the PRD and the glossary from the existing code and from questions to the owner. When the project's PRD already describes the product, the next step is `/tiket:rencanakan-tahap` instead.
+4. The next step after the merge is `/tiket:rencanakan-produk`. It writes the PRD and the glossary from the existing code and from questions to the owner. When the project's PRD already describes the product, the adoption is complete and nothing more is due. Parked tickets wait for `/tiket:catat-keputusan`, and new work starts with `/tiket:rencanakan-tahap` once the owner has some.

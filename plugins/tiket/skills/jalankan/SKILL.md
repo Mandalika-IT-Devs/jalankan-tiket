@@ -92,7 +92,7 @@ Write the final report for the owner, in plain words. It contains:
 - **Parked tickets:** one question per ticket.
 - **Non-blocking questions:** numbered, one per decision. Every technical decision that starts with `Owner check:` becomes one.
 - **Flaky-test candidates**, if there are any.
-- **Next step:** answer the questions, record them with `/tiket:catat-keputusan`, then run `/tiket:jalankan` again. If every ticket of the milestone is closed, plan the next milestone with `/tiket:rencanakan-tahap` instead.
+- **Next step:** answer the questions, record them with `/tiket:catat-keputusan`, then run `/tiket:jalankan` again. If every ticket of the milestone is closed, the milestone is ready for UAT with `docs/UAT.md`, and `/tiket:rencanakan-tahap` plans the next one once the owner has new work.
 
 Every question follows `${CLAUDE_PLUGIN_ROOT}/reference/owner-questions.md`.
 

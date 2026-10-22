@@ -15,7 +15,7 @@ You can install the kit in a repo that is already in use, without overwriting yo
 4. **Add the owner-approved label (`disetujui-pemilik` in Indonesian projects, `owner-approved` in English ones) to the adoption PR, then merge it.**
 5. **Run `/tiket:rencanakan-produk`.** Claude writes the PRD and the glossary from what the code does today, then asks you what it should do. You decide the rules, not the code.
 
-After that, the flow is the same as for a new project: `/tiket:rencanakan-tahap`, then `/tiket:jalankan`.
+After that, the flow is the same as for a new project: when there is work, `/tiket:rencanakan-tahap`, then `/tiket:jalankan`.
 
 ## Projects that already use an old copy of this workflow
 
@@ -25,7 +25,7 @@ If your repo already has its own coordinator in `.claude/skills/`, agents in `.c
 - Existing CI jobs are updated in place, without adding a duplicate job.
 - Existing labels stay in use. If milestones are labels such as `M3`, the next milestone becomes the GitHub milestone `M4`.
 - Ticket numbers continue from the last one.
-- The existing PRD, open decisions, UAT, design and ADRs are kept. If the PRD already describes the product, the step after the adoption PR is merged is `/tiket:rencanakan-tahap`.
+- The existing PRD, open decisions, UAT, design and ADRs are kept. If the PRD already describes the product, the adoption is complete once the adoption PR is merged, with no required step after it. `/tiket:rencanakan-tahap` is for when there is new work.
 
 ## Tips
 

@@ -2,6 +2,11 @@
 
 All notable changes to the `tiket` plugin. Versions follow `plugins/tiket/.claude-plugin/plugin.json`. Changes to files the kit writes into projects also get a section in `plugins/tiket/MIGRATIONS.md`.
 
+## 0.1.12 (unreleased)
+
+- After adopting a project whose PRD already describes the product, the kit no longer names planning a new milestone as the next step. The adoption is complete; `/tiket:rencanakan-tahap` is for when the owner has new work.
+- `/tiket:cek-proyek` names parked questions and ready tickets before "plan a milestone", and its last row says that nothing is due. Before, an open milestone with every ticket closed never reached its own row.
+
 ## 0.1.11 (unreleased)
 
 More findings from the same adoption:

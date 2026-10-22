@@ -23,7 +23,7 @@ disable-model-invocation: true
    | A setup file FAILs | the fixes above, or `/tiket:siapkan-proyek` |
    | An owner PR (`[Rencana]`, `[Keputusan]`, `[Kit]`, or their English titles) is still open | the owner checks it and adds the owner-approved label; merge it before `/tiket:jalankan` |
    | `docs/PRD.md` is still the empty template | put material in `docs/input/`, then run `/tiket:rencanakan-produk` |
-   | No open milestone holds open tickets | `/tiket:rencanakan-tahap` |
    | Open issues carry the needs-info label | the owner answers them, then runs `/tiket:catat-keputusan` |
    | Ready tickets are on the frontier | `/tiket:jalankan` |
-   | Every ticket of the milestone is closed | `/retro`, then either `/tiket:rencanakan-tahap` for the next milestone or UAT with `docs/UAT.md` |
+   | An open milestone has every ticket closed | `/retro`, then UAT with `docs/UAT.md` |
+   | Anything else | nothing is due. When the owner has new work, `/tiket:rencanakan-tahap` turns it into tickets |

@@ -15,7 +15,7 @@ Kit bisa dipasang di repo yang sudah berjalan, tanpa menimpa berkas Anda.
 4. **Pasang label `disetujui-pemilik` pada PR adopsi, lalu merge.**
 5. **Jalankan `/tiket:rencanakan-produk`.** Claude menyusun PRD dan glosarium dari perilaku kode saat ini, lalu menanyakan kepada Anda apa yang seharusnya. Yang memutuskan aturan tetap Anda, bukan kode.
 
-Setelah itu alurnya sama seperti proyek baru: `/tiket:rencanakan-tahap`, lalu `/tiket:jalankan`.
+Setelah itu alurnya sama seperti proyek baru: saat ada pekerjaan, `/tiket:rencanakan-tahap`, lalu `/tiket:jalankan`.
 
 ## Proyek yang sudah memakai salinan lama workflow ini
 
@@ -25,7 +25,7 @@ Bila repo Anda sudah punya koordinator sendiri di `.claude/skills/`, agent di `.
 - Job CI yang sudah ada diperbarui di tempat, tidak ditambah job kembar.
 - Label yang sudah ada tetap dipakai. Bila tahap dicatat sebagai label seperti `M3`, tahap berikutnya menjadi milestone GitHub `M4`.
 - Nomor tiket melanjutkan nomor terakhir.
-- PRD, keputusan terbuka, UAT, desain, dan ADR yang sudah ada dipertahankan. Bila PRD sudah menggambarkan produk, langkah setelah PR adopsi di-merge adalah `/tiket:rencanakan-tahap`.
+- PRD, keputusan terbuka, UAT, desain, dan ADR yang sudah ada dipertahankan. Bila PRD sudah menggambarkan produk, adopsi selesai begitu PR adopsi di-merge, tanpa langkah wajib sesudahnya. `/tiket:rencanakan-tahap` baru dipakai saat ada pekerjaan baru.
 
 ## Tips
 
