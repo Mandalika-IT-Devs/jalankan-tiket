@@ -22,6 +22,11 @@ That PR changes a protected document or rule. If you did ask for the change, add
 **A test sometimes passes and sometimes fails.**
 If the change does not touch that test, the coordinator reruns the failed job once and notes the test in the report. Create a small ticket to fix it, because an unstable test can get tickets parked.
 
+**In Auto mode, merging a planning or decision PR is refused.**
+The Auto mode classifier accepts only an approval you type yourself in that session. An approval passed on from another session does not count. You can continue in either of two ways:
+- type the approval directly in that session, for example "go ahead and merge";
+- press **Squash and merge** on the PR page on GitHub.
+
 **Claude's quota runs out halfway.**
 That is fine. The state of the work is stored on GitHub. Type `/tiket:jalankan` again when the quota is back.
 
