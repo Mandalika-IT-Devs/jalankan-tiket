@@ -2,6 +2,12 @@
 
 A self-hosted runner is the owner's own Linux machine running GitHub Actions for this repository. It is still GitHub Actions: the coordinator reads its results with `gh pr checks`, exactly as with GitHub-hosted runners. GitHub runs service containers, such as the CI database, only on Linux, so the runner must be Linux with Docker.
 
+## A runner that already serves this repository
+
+When the project's workflow already runs on a self-hosted runner (`runs-on: [self-hosted, …]`), keep that runner and its ports:
+- skip **Registering the runner** below;
+- take the CI ports the workflow already uses instead of choosing new ones, and record them in the project config under `ports` and in the registry.
+
 ## Ports
 
 Several projects can run CI on one machine, so each one needs its own ports.

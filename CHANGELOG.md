@@ -2,6 +2,14 @@
 
 All notable changes to the `tiket` plugin. Versions follow `plugins/tiket/.claude-plugin/plugin.json`. Changes to files the kit writes into projects also get a section in `plugins/tiket/MIGRATIONS.md`.
 
+## 1.0.2
+
+Preparing the adoption of a project that runs CI on its own runner and has untracked files and worktrees in its folder:
+
+- Setup recommends the runner an existing project's CI already uses. A self-hosted runner that already serves the repository keeps its registration and its ports, which are recorded in the config and the port registry.
+- Adoption stages files by path, so the owner's untracked files stay out of the PR.
+- Adoption leaves worktrees in `.claude/worktrees/` in place and keeps them out of git, lint and tests.
+
 ## 1.0.1
 
 - `/tiket:rencanakan-tahap` takes the feature or change the owner wants after the command. When the PRD does not describe it yet, the session grills the owner, writes the rules into the PRD with golden cases and UAT scenarios, and merges that PR before it publishes tickets. It also names the next milestone after the highest in use, also when milestones are labels.

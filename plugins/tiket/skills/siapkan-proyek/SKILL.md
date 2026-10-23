@@ -54,6 +54,7 @@ Ask everything in one round, in the format of `${CLAUDE_PLUGIN_ROOT}/reference/o
    - **New project:** recommend `nextjs-postgres`. Any other choice follows `${CLAUDE_PLUGIN_ROOT}/stacks/CONTRACT.md`.
    - **Existing project:** propose the stack you found.
 5. **CI runner:**
+   - **Existing project:** recommend the runner its CI already uses.
    - GitHub-hosted is recommended.
    - Self-hosted on this machine is the other option. It needs Linux with Docker, and it suits private repositories that run out of Actions minutes.
 6. **User interface:** does the product have one?

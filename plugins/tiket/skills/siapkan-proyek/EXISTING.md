@@ -3,6 +3,8 @@
 An existing project already has its own files, so you add the kit beside them and never overwrite them. All the work happens on the branch `adopsi-jalankan-tiket` and reaches `main` through one PR. That PR changes protected paths, so the owner adds the owner-approved label before it can merge.
 
 - **Start from the latest `main`.** Run `git fetch origin`, then `git switch -c adopsi-jalankan-tiket origin/main`. A local `main` may be behind GitHub.
+- **Commit only what this setup changes.** Stage each file you create, change or delete by its path. Files the owner keeps untracked, such as notes or downloads, stay out of the PR.
+- **Worktrees in `.claude/worktrees/`** belong to other Claude Code sessions. Leave them in place. Add the folder to `.gitignore` and to the ignore lists of the project's lint and test tools, so the verify command never reads them.
 - **The project's own permission rules may deny a command this setup uses**, such as `gh api` or `gh label`. Read the same facts with another command, for example the labels on issues through `gh issue list --json labels`, or give the owner the command to type with `!`.
 
 ## An earlier copy of this workflow
