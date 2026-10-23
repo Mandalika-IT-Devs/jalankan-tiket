@@ -21,6 +21,13 @@
 - **Permission rules are not bulletproof.** They match the text of a command, so they are not an absolute security boundary. An unusual form of a command can slip through. They guard against mistakes, not against bad intent.
 - **CI runs from the PR's content.** For a PR from the same repo, GitHub runs the workflow from that PR's content. A PR that changes the CI workflow could skip its own checks. That is why `.github/` is protected, and why the reviewer flags every change there.
 
+## Library vulnerabilities
+
+- **Dependabot alerts.** At the end of `/tiket:siapkan-proyek`, Claude gives you one command that turns them on. GitHub then emails you when a library of the project gets a new advisory.
+- **`/tiket:cek-proyek`** runs `pnpm audit` or `npm audit`, and reports a FAIL for high or critical advisories. It also warns when Dependabot alerts are still off.
+- **The fix goes through a ticket.** Type `/tiket:rencanakan-tahap` followed by the libraries and the versions that close the advisories, then `/tiket:jalankan`.
+- **Dependabot's automatic PRs stay off.** They skip the ticket flow and carry no `Closes #n`, so CI rejects them.
+
 ## Secrets
 
 - `.env` is never committed.

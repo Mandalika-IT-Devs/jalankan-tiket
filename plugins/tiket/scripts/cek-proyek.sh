@@ -137,6 +137,43 @@ if [ -f "$INSTALLED" ]; then
   fi
 fi
 
+# Dependency advisories: high and critical ones need an upgrade ticket
+TOOL=""
+AUDIT=""
+if [ -f pnpm-lock.yaml ] && command -v pnpm >/dev/null; then
+  TOOL="pnpm audit --prod"
+  AUDIT=$(pnpm audit --prod --json 2>/dev/null)
+elif [ -f package-lock.json ] && command -v npm >/dev/null; then
+  TOOL="npm audit --omit=dev"
+  AUDIT=$(npm audit --omit=dev --json 2>/dev/null)
+fi
+if [ -n "$TOOL" ]; then
+  if SEVERE=$(printf '%s' "$AUDIT" | jq -er '(.metadata.vulnerabilities.high // 0) + (.metadata.vulnerabilities.critical // 0)' 2>/dev/null); then
+    if [ "$SEVERE" -gt 0 ]; then
+      PKGS=$(printf '%s' "$AUDIT" | jq -r '[((.advisories // {})[]? | select(.severity == "high" or .severity == "critical") | .module_name), ((.vulnerabilities // {}) | to_entries[]? | select(.value.severity == "high" or .value.severity == "critical") | .key)] | unique | join(", ")')
+      fail "dependencies" "$SEVERE high or critical advisories ($TOOL) in: $PKGS. Upgrade them through a ticket"
+    else
+      ok "dependencies: no high or critical advisories ($TOOL)"
+    fi
+  else
+    warn "dependencies" "could not run $TOOL"
+  fi
+elif [ -f package.json ]; then
+  info "dependencies" "no pnpm or npm lockfile, so no advisory check"
+fi
+
+# Dependabot alerts: GitHub emails the owner when a dependency gets a new advisory
+if command -v gh >/dev/null && gh auth status >/dev/null 2>&1; then
+  SLUG=$(gh repo view --json nameWithOwner --jq .nameWithOwner 2>/dev/null || true)
+  if [ -n "$SLUG" ]; then
+    if gh api "repos/$SLUG/vulnerability-alerts" >/dev/null 2>&1; then
+      ok "Dependabot alerts"
+    else
+      warn "Dependabot alerts" "off. The owner turns them on with: gh api -X PUT repos/$SLUG/vulnerability-alerts"
+    fi
+  fi
+fi
+
 # Foundation of the reference stack
 if [ "$(jq -r .stack "$CFG")" = nextjs-postgres ]; then
   if [ -f package.json ]; then

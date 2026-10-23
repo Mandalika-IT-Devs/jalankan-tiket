@@ -12,6 +12,7 @@ disable-model-invocation: true
    - **No owner decision, no protected file:** fix it yourself.
    - **Labels, rulesets or other repository settings:** give the owner the command to type with `!` in the session. The project's permission rules keep these changes with the owner.
    - **A protected file:** follow `${CLAUDE_PLUGIN_ROOT}/reference/owner-pr.md`, with an issue titled `[Kit] …`.
+   - **Dependencies with high or critical advisories:** an upgrade ticket. Give the owner `/tiket:rencanakan-tahap` followed by the packages and the versions that close the advisories, then `/tiket:jalankan`.
 4. **Handle a kit-version warning.** The script warns only when `${CLAUDE_PLUGIN_ROOT}/MIGRATIONS.md` lists changes to project files after `kitVersion`.
    - Apply every section the warning names in one PR, following `${CLAUDE_PLUGIN_ROOT}/reference/owner-pr.md`.
    - The issue is `[Kit] Pembaruan ke <newest version>` (`[Kit] Update to <newest version>` in English projects), and the branch is `kit-v<newest version>`.
@@ -22,6 +23,7 @@ disable-model-invocation: true
    |---|---|
    | A setup file FAILs | the fixes above, or `/tiket:siapkan-proyek` |
    | An owner PR (`[Rencana]`, `[Keputusan]`, `[Kit]`, or their English titles) is still open | the owner checks it and adds the owner-approved label; merge it before `/tiket:jalankan` |
+   | The dependency check FAILs | an upgrade ticket through `/tiket:rencanakan-tahap`, then `/tiket:jalankan` |
    | `docs/PRD.md` is still the empty template | put material in `docs/input/`, then run `/tiket:rencanakan-produk` |
    | Open issues carry the needs-info label | the owner answers them, then runs `/tiket:catat-keputusan` |
    | Ready tickets are on the frontier | `/tiket:jalankan` |

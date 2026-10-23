@@ -56,7 +56,9 @@ The result:
 - CI;
 - all the starting documents, still empty.
 
-At the end, Claude gives you one command that protects the `main` branch. You only get this command if your repo is public or your GitHub account is on a paid plan. Run the command yourself by typing `!` in front of it.
+At the end, Claude gives you two commands. Run both yourself by typing `!` in front of them:
+- one protects the `main` branch, which only works if your repo is public or your GitHub account is on a paid plan;
+- one turns on Dependabot alerts, so that GitHub emails you when a library of the project gets a new advisory.
 
 ## 3. Plan the product
 

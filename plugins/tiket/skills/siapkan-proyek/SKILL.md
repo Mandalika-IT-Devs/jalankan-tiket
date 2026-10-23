@@ -94,7 +94,7 @@ Do this step before you write `.claude/settings.json`. That file's permission ru
 5. **Permissions, last.** Copy `templates/common/.claude/settings.json` and fill `{{STACK_ALLOW_RULES}}` and `{{LABEL_OWNER_APPROVED}}`.
 6. **Check your work.**
    - `grep -rnE '\{\{[A-Z0-9_]+\}\}' --exclude-dir=.git .` must find no unfilled placeholder. Kit placeholders are written in capitals and digits. GitHub Actions expressions such as `${{ github.ref }}` are not placeholders.
-   - `bash ${CLAUDE_PLUGIN_ROOT}/scripts/cek-proyek.sh ${CLAUDE_PLUGIN_ROOT}` must report no FAIL. The one exception is the missing foundation code, which is reported as INFO.
+   - `bash ${CLAUDE_PLUGIN_ROOT}/scripts/cek-proyek.sh ${CLAUDE_PLUGIN_ROOT}` must report no FAIL. The one exception is the missing foundation code, which is reported as INFO. In an existing project, a dependency FAIL becomes a ticket, as `EXISTING.md` describes.
 
 ## 5. Commit and push (new project)
 
@@ -111,6 +111,13 @@ Some steps change GitHub settings or need the owner's password. Give the owner e
   ```
 
   A 403 response means the plan has no rulesets. In that case the agent guardrails and CI enforce the rule instead. When a ruleset already protects `main`, `EXISTING.md` says what to compare instead.
+- **Dependabot alerts.** GitHub then emails the owner when a dependency gets a new advisory. The owner types:
+
+  ```
+  ! gh api -X PUT repos/<owner>/<name>/vulnerability-alerts
+  ```
+
+  Dependabot security updates stay off: their PRs skip the ticket flow.
 - **Self-hosted runner.** Use the steps in `RUNNER.md`.
 
 ## 7. Report

@@ -55,6 +55,7 @@ Go through every file that `SKILL.md` step 4 would write:
 Compare the project's tools with `${CLAUDE_PLUGIN_ROOT}/stacks/CONTRACT.md`.
 - Use the closest existing command as `verifyCommand`.
 - Each contract item the project lacks becomes a ticket in milestone M1, before any feature work. Examples: dead-code checks, import boundaries, or a pure domain module. The first of these tickets is `[T00]`, or the next free number when the project already has tickets.
+- Dependencies with high or critical advisories, as the dependency check of `/tiket:cek-proyek` reports them, also become a ticket before any feature work.
 - List these gaps in your report, so the owner can see them before `/tiket:rencanakan-produk` runs.
 
 ## Finish

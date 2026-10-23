@@ -21,6 +21,13 @@
 - **Aturan izin tidak kebal.** Aturan itu mencocokkan teks perintah, jadi bukan batas keamanan mutlak. Bentuk perintah yang tidak lazim bisa lolos. Fungsinya pagar terhadap kesalahan, bukan terhadap niat jahat.
 - **CI berjalan dari isi PR.** Untuk PR dari repo yang sama, GitHub menjalankan workflow dari isi PR itu. PR yang mengubah workflow CI bisa saja melewati pemeriksaannya. Itulah sebabnya `.github/` termasuk berkas terlindungi, dan peninjau menandai setiap perubahan di sana.
 
+## Celah keamanan library
+
+- **Dependabot alerts.** Di akhir `/tiket:siapkan-proyek`, Claude memberi satu perintah untuk menyalakannya. Setelah itu GitHub mengirim email kepada Anda saat library proyek punya celah keamanan baru.
+- **`/tiket:cek-proyek`** menjalankan `pnpm audit` atau `npm audit`, dan menandai FAIL bila ada celah tingkat tinggi atau kritis. Ia juga memberi peringatan bila Dependabot alerts belum menyala.
+- **Perbaikannya lewat tiket.** Ketik `/tiket:rencanakan-tahap` diikuti library dan versi yang menutup celahnya, lalu `/tiket:jalankan`.
+- **PR otomatis dari Dependabot tetap dimatikan.** PR itu melewati alur tiket dan tidak memuat `Closes #n`, jadi CI menolaknya.
+
 ## Rahasia
 
 - `.env` tidak di-commit.

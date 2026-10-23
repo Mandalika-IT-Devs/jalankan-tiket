@@ -56,7 +56,9 @@ Hasilnya:
 - CI;
 - semua dokumen awal yang masih kosong.
 
-Di akhir, Claude memberi satu perintah untuk melindungi branch `main`. Perintah ini hanya ada bila repo Anda publik atau akun GitHub Anda berbayar. Jalankan perintah itu sendiri dengan mengetik `!` di depannya.
+Di akhir, Claude memberi dua perintah. Jalankan keduanya sendiri dengan mengetik `!` di depannya:
+- satu untuk melindungi branch `main`, yang hanya berlaku bila repo Anda publik atau akun GitHub Anda berbayar;
+- satu untuk menyalakan Dependabot alerts, supaya GitHub mengirim email saat library proyek punya celah keamanan baru.
 
 ## 3. Rencanakan produk
 

@@ -2,6 +2,11 @@
 
 All notable changes to the `tiket` plugin. Versions follow `plugins/tiket/.claude-plugin/plugin.json`. Changes to files the kit writes into projects also get a section in `plugins/tiket/MIGRATIONS.md`.
 
+## 1.0.3
+
+- `/tiket:cek-proyek` runs `pnpm audit` or `npm audit` and reports a FAIL for high or critical advisories, with an upgrade ticket as the next step. It also warns when Dependabot alerts are off and gives the owner the command. A project that adopted the kit was found on a Next.js release with two critical advisories, because no part of the kit looked at dependency advisories.
+- Setup gives the owner the command that turns on Dependabot alerts. Adoption turns advisories it finds into a ticket. Dependabot's automatic PRs stay off, because they skip the ticket flow.
+
 ## 1.0.2
 
 Preparing the adoption of a project that runs CI on its own runner and has untracked files and worktrees in its folder:
