@@ -62,6 +62,7 @@ In a Claude Code session (CLI or the Claude Desktop Code tab):
 | [Existing projects](docs/en/existing-projects.md) | [Proyek lama](docs/id/existing-projects.md) |
 | [Updates](docs/en/updates.md) | [Pembaruan](docs/id/updates.md) |
 | [Security and guardrails](docs/en/security.md) | [Keamanan dan pagar](docs/id/security.md) |
+| [Agent account](docs/en/agent-account.md) | [Akun agen](docs/id/agent-account.md) |
 | [FAQ](docs/en/faq.md) | [Tanya jawab](docs/id/faq.md) |
 | [Tested versions](docs/en/versions.md) | [Versi teruji](docs/id/versions.md) |
 
@@ -69,6 +70,7 @@ In a Claude Code session (CLI or the Claude Desktop Code tab):
 
 - Claude Code 2.1.299 or later.
 - `git`, the GitHub CLI `gh` (logged in with the `repo` and `workflow` scopes), and `jq`.
+- A separate GitHub account for the agent, such as a machine account. See [Agent account](docs/en/agent-account.md).
 - For the built-in Next.js + PostgreSQL stack, also:
   - Node.js 22 or 24 (LTS);
   - pnpm;

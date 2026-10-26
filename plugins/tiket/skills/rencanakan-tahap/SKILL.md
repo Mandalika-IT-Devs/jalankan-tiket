@@ -11,6 +11,8 @@ You turn the next part of the PRD, or a feature or change the owner asks for, in
 
 The plugin root is `${CLAUDE_PLUGIN_ROOT}`. Supporting files such as the stack's `PROFILE.md` write it as the literal text `${CLAUDE_PLUGIN_ROOT}`. Read that text as this path.
 
+Every write to GitHub follows `${CLAUDE_PLUGIN_ROOT}/reference/github-use.md`. Before your first write, check the agent account and the coordinator lock, as its sections 1 and 2 describe.
+
 ## 1. Gather
 
 The owner's request, typed after the command: "$ARGUMENTS". When it is empty, the milestone delivers the next part of the PRD.
@@ -76,6 +78,8 @@ Change the list until the owner agrees.
    ```
 
    The body follows `.github/ISSUE_TEMPLATE/ticket.md`. Put real issue numbers in "Blocked by".
+   - Wait at least 30 seconds between two issues, as section 3 of `github-use.md` says. To GitHub, a burst of new issues from one account looks like spam.
+   - Before the first issue, tell the owner how long publishing takes: about half a minute per ticket.
 3. **Tickets for the owner.** A ticket that needs a person, for example to handle credentials or a domain name, gets the `readyForHuman` label instead.
 
 This step is done when every agreed ticket exists on GitHub with its label, its milestone and its "Blocked by" section.

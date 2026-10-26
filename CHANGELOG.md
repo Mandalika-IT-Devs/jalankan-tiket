@@ -2,6 +2,23 @@
 
 All notable changes to the `tiket` plugin. Versions follow `plugins/tiket/.claude-plugin/plugin.json`. Changes to files the kit writes into projects also get a section in `plugins/tiket/MIGRATIONS.md`.
 
+## 1.1.0
+
+GitHub's abuse detection suspended an owner's personal account. Over three days the kit had run in four of the owner's repositories under that account, with about 40 PRs, bursts of new issues and comments for every ticket. ADR-0003 records the response.
+
+- **Agent account.** The agent writes to GitHub through an account of its own, such as a machine account, never the owner's. Before their first write, `/tiket:jalankan`, `/tiket:rencanakan-tahap`, `/tiket:catat-keputusan` and every owner PR stop when `gh` runs as a code owner or `origin` uses SSH. Setup still runs under the owner's account. A new guide page, `docs/<language>/agent-account.md`, walks the owner through the setup. `/tiket:cek-proyek` warns about both cases.
+- **Pace.** The shared rules live in `reference/github-use.md`:
+  - one coordinator per agent account, across repositories, guarded by `~/.cache/jalankan-tiket/koordinator.lock`;
+  - at least 10 seconds between writes, and 30 seconds between new issues;
+  - CI polled every 60 seconds;
+  - no polling while a PR waits for the owner's label;
+  - a full stop without retry on HTTP 403 or 429, rate limits or a suspension.
+- **Fewer comments.** The coordinator no longer comments when it starts a ticket or after a merge, because the PR description is the record. Non-blocking questions go in one comment per issue.
+- **Local checks before every push.** The implementer runs the end-to-end tests as well as the verify command, and the coordinator runs both again before it pushes. A machine that cannot run them stops the run instead of parking the ticket.
+- **PRs that wait for the owner's label.** The coordinator no longer waits on them. It reports them and works on other tickets, and a later run merges them once the label is on. Owner PRs (`[Rencana]`, `[Keputusan]`, `[Kit]`) stop after asking for the label, and the merge follows once the owner says it is on.
+- **The reviewer** gets the issue text from the coordinator instead of fetching it.
+- Not yet validated end to end.
+
 ## 1.0.3
 
 - `/tiket:cek-proyek` runs `pnpm audit` or `npm audit` and reports a FAIL for high or critical advisories, with an upgrade ticket as the next step. It also warns when Dependabot alerts are off and gives the owner the command. A project that adopted the kit was found on a Next.js release with two critical advisories, because no part of the kit looked at dependency advisories.

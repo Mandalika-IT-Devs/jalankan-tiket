@@ -11,6 +11,7 @@ disable-model-invocation: true
 3. **Explain each FAIL and WARN** in plain words, with its fix. Who carries out a fix depends on what it touches:
    - **No owner decision, no protected file:** fix it yourself.
    - **Labels, rulesets or other repository settings:** give the owner the command to type with `!` in the session. The project's permission rules keep these changes with the owner.
+   - **The GitHub account or the remote:** link the guide page `https://github.com/mandalikadev/jalankan-tiket/blob/main/docs/<language>/agent-account.md`. Switching accounts belongs to the owner, and `/tiket:jalankan` does not start until it is done.
    - **A protected file:** follow `${CLAUDE_PLUGIN_ROOT}/reference/owner-pr.md`, with an issue titled `[Kit] …`.
    - **Dependencies with high or critical advisories:** an upgrade ticket. Give the owner `/tiket:rencanakan-tahap` followed by the packages and the versions that close the advisories, then `/tiket:jalankan`.
 4. **Handle a kit-version warning.** The script warns only when `${CLAUDE_PLUGIN_ROOT}/MIGRATIONS.md` lists changes to project files after `kitVersion`.

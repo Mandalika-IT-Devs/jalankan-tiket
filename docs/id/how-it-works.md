@@ -23,15 +23,16 @@ siapkan-proyek → rencanakan-produk → rencanakan-tahap → jalankan ⇄ catat
    - berlabel `ready-for-agent`;
    - tidak berlabel `needs-info`;
    - semua tiket di bagian "Blocked by"-nya sudah tertutup.
-2. **Pelaksana menulis kode, test lebih dulu.** Setiap kriteria penerimaan dikerjakan dalam siklus merah → hijau. Pelaksana berhenti di commit, setelah perintah verify hijau.
+2. **Pelaksana menulis kode, test lebih dulu.** Setiap kriteria penerimaan dikerjakan dalam siklus merah → hijau. Pelaksana berhenti di commit, setelah perintah verify dan test e2e hijau.
 3. **Peninjau memeriksa dua sumbu.**
    - Spec: apakah ini yang diminta?
    - Standards: apakah ditulis dengan benar?
 
    Hasilnya `PASS` atau `FIX`. Bila `FIX`, temuan dikirim ke pelaksana. Setelah tiga putaran yang masih `FIX`, tiket diparkir.
-4. **PR dan CI.** Koordinator membuka PR, lalu menunggu CI.
+4. **Pemeriksaan lokal, PR, dan CI.** Koordinator menjalankan perintah verify dan test e2e sekali lagi di laptop. Baru setelah keduanya hijau, koordinator push dan membuka PR. Setelah itu CI dicek tiap 60 detik.
    - Bila CI merah, pelaksana memperbaikinya, paling banyak dua putaran.
    - Bila yang gagal adalah test yang tidak disentuh perubahan itu, job yang gagal dijalankan ulang sekali dulu.
+   - PR yang mengubah berkas terlindungi menunggu label dari Anda. Koordinator tidak ikut menunggu: ia lanjut ke tiket berikutnya, dan putaran berikutnya me-merge PR itu setelah labelnya terpasang.
 5. **Merge, lalu kembali ke langkah 1.**
 
 Keadaan pekerjaan tersimpan di GitHub: issue, label, branch, dan PR. Kalau sesi terputus, `/tiket:jalankan` berikutnya melanjutkan dari situ.
@@ -51,7 +52,8 @@ Hal yang belum Anda putuskan dicatat di `docs/OPEN-DECISIONS.md`, lengkap dengan
 - **Daftar izin dependency.** Library baru di luar daftar membuat CI merah, dan tiketnya diparkir sampai Anda memutuskan.
 - **CI hijau wajib.** Perubahan masuk ke `main` hanya lewat PR yang CI-nya hijau.
 - **Izin agent.** `.claude/settings.json` melarang beberapa perintah, misalnya force-push, push langsung ke `main`, mengubah label, dan perintah yang menyebut label persetujuan.
-- **Satu koordinator per repo.** Hanya satu orang yang menjalankan `/tiket:jalankan` pada satu waktu.
+- **Akun agen.** Agent menulis ke GitHub lewat akunnya sendiri, bukan akun Anda, dan menjaga lajunya. Lihat [Akun agen](agent-account.md).
+- **Satu koordinator per akun agen.** Hanya satu `/tiket:jalankan` yang berjalan pada satu waktu, di semua repo Anda.
 
 ## Kapan sebuah tiket dianggap selesai
 

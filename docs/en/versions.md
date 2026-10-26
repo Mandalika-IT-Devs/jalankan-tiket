@@ -15,6 +15,7 @@
 | New project, GitHub runner | Validated from setup to merged tickets, including parked tickets and owner decisions |
 | Existing project that already used an old copy of this workflow, GitHub runner | Validated from adoption to a kit version update |
 | Your own runner (self-hosted) | Not yet validated through the kit |
+| Agent account and pace (1.1.0) | Not yet validated through the kit |
 | Stacks other than `nextjs-postgres` | Through [Adapting your stack](adapting-your-stack.md), no tested profile yet |
 
 The tested versions of mattpocock-skills are also recorded in `plugins/tiket/reference/tested-versions.json`. `/tiket:cek-proyek` reads that file.

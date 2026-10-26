@@ -27,6 +27,8 @@
       "Bash(gh run list *)",
       "Bash(gh run rerun *)",
       "Bash(git push *)",
+      "Bash(gh auth status *)",
+      "Bash(sleep *)",
       {{STACK_ALLOW_RULES}}
     ],
     "deny": [
@@ -44,6 +46,12 @@
       "Bash(gh api *)",
       "Bash(gh repo edit *)",
       "Bash(gh repo delete *)",
+      "Bash(gh auth login *)",
+      "Bash(gh auth logout *)",
+      "Bash(gh auth switch *)",
+      "Bash(gh auth refresh *)",
+      "Bash(gh auth token *)",
+      "Bash(gh auth setup-git *)",
       "Bash(*{{LABEL_OWNER_APPROVED}}*)"
     ]
   }

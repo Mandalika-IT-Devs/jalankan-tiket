@@ -60,6 +60,8 @@ At the end, Claude gives you two commands. Run both yourself by typing `!` in fr
 - one protects the `main` branch, which only works if your repo is public or your GitHub account is on a paid plan;
 - one turns on Dependabot alerts, so that GitHub emails you when a library of the project gets a new advisory.
 
+After those two commands, set up the **agent account**: a separate GitHub account that the agent uses to write to GitHub, so your personal account does not look like a spam bot. The steps are in [Agent account](agent-account.md). The next skill stops while `gh` still uses your account.
+
 ## 3. Plan the product
 
 1. Put all your material about the product in `docs/input/`: notes, documents and sample files.

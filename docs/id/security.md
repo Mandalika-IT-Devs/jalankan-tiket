@@ -14,10 +14,12 @@
 | `main` hanya berubah lewat PR yang CI-nya hijau | Ruleset GitHub (bila tersedia), aturan *deny* untuk push ke `main` dan force-push, serta instruksi koordinator |
 | Agent tidak mengubah label, repo, atau API GitHub | Aturan *deny* di `.claude/settings.json` |
 | Agent tidak menyentuh label persetujuan | Aturan *deny* untuk setiap perintah yang menyebut nama label itu |
+| Agent tidak menulis lewat akun Anda | Pemeriksaan akun `gh` dan remote sebelum tulisan pertama, serta aturan *deny* untuk `gh auth`. Lihat [Akun agen](agent-account.md). |
+| Agent tidak membanjiri GitHub | Satu koordinator per akun agen, jeda di antara tulisan, dan berhenti saat GitHub membatasi |
 
 ## Batasan yang perlu Anda ketahui
 
-- **Agent memakai login `gh` Anda sendiri.** Bagi GitHub, label yang dipasang agent sama dengan label yang Anda pasang. Larangan memasang label persetujuan dijaga oleh aturan izin dan instruksi, bukan oleh GitHub.
+- **Akun agen punya akses Write.** Secara teknis akun itu bisa memasang label persetujuan. Larangannya dijaga oleh aturan izin dan instruksi, bukan oleh GitHub.
 - **Aturan izin tidak kebal.** Aturan itu mencocokkan teks perintah, jadi bukan batas keamanan mutlak. Bentuk perintah yang tidak lazim bisa lolos. Fungsinya pagar terhadap kesalahan, bukan terhadap niat jahat.
 - **CI berjalan dari isi PR.** Untuk PR dari repo yang sama, GitHub menjalankan workflow dari isi PR itu. PR yang mengubah workflow CI bisa saja melewati pemeriksaannya. Itulah sebabnya `.github/` termasuk berkas terlindungi, dan peninjau menandai setiap perubahan di sana.
 

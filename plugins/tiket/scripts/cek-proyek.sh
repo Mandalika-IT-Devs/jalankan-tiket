@@ -104,6 +104,21 @@ else
   warn "GitHub" "gh is not logged in"
 fi
 
+# Agent account: the agent writes through its own account, never a code owner's, and pushes over HTTPS
+if command -v gh >/dev/null && gh auth status >/dev/null 2>&1 && [ -f .github/CODEOWNERS ]; then
+  LOGIN=$(gh api user --jq .login 2>/dev/null || true)
+  if [ -z "$LOGIN" ]; then
+    warn "agent account" "could not read the active gh account"
+  elif awk -v u="@$LOGIN" 'BEGIN { u = tolower(u) } !/^#/ { for (i = 2; i <= NF; i++) if (tolower($i) == u) f = 1 } END { exit !f }' .github/CODEOWNERS; then
+    warn "agent account" "gh runs as $LOGIN, a code owner. The agent writes through its own account (docs/<language>/agent-account.md)"
+  else
+    ok "agent account ($LOGIN)"
+  fi
+fi
+case "$REMOTE" in
+  git@* | ssh://*) warn "remote" "origin uses SSH, so pushes go through the owner's key. Point it at the HTTPS address and run gh auth setup-git" ;;
+esac
+
 # CODEOWNERS covers every protected path
 if [ -f .github/protected-paths.txt ] && [ -f .github/CODEOWNERS ]; then
   GAPS=""

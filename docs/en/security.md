@@ -14,10 +14,12 @@
 | `main` changes only through a PR with green CI | The GitHub ruleset (when available), *deny* rules for pushing to `main` and for force-push, and the coordinator's instructions |
 | Agents do not change labels or the repo, and do not call the GitHub API | *Deny* rules in `.claude/settings.json` |
 | Agents do not touch the approval label | *Deny* rules for every command that names that label |
+| Agents do not write through your account | A check of the `gh` account and the remote before the first write, and *deny* rules for `gh auth`. See [Agent account](agent-account.md). |
+| Agents do not flood GitHub | One coordinator per agent account, pauses between writes, and a stop when GitHub sets a limit |
 
 ## Limits you should know about
 
-- **Agents use your own `gh` login.** To GitHub, a label added by an agent is the same as a label added by you. The ban on adding the approval label is enforced by permission rules and instructions, not by GitHub.
+- **The agent account has Write access.** Technically it can add the approval label. The ban is enforced by permission rules and instructions, not by GitHub.
 - **Permission rules are not bulletproof.** They match the text of a command, so they are not an absolute security boundary. An unusual form of a command can slip through. They guard against mistakes, not against bad intent.
 - **CI runs from the PR's content.** For a PR from the same repo, GitHub runs the workflow from that PR's content. A PR that changes the CI workflow could skip its own checks. That is why `.github/` is protected, and why the reviewer flags every change there.
 

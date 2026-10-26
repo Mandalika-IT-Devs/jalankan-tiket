@@ -60,6 +60,8 @@ Di akhir, Claude memberi dua perintah. Jalankan keduanya sendiri dengan mengetik
 - satu untuk melindungi branch `main`, yang hanya berlaku bila repo Anda publik atau akun GitHub Anda berbayar;
 - satu untuk menyalakan Dependabot alerts, supaya GitHub mengirim email saat library proyek punya celah keamanan baru.
 
+Setelah kedua perintah itu, siapkan **akun agen**: akun GitHub terpisah yang dipakai agent untuk menulis ke GitHub, supaya akun pribadi Anda tidak terlihat seperti bot spam. Langkahnya ada di [Akun agen](agent-account.md). Skill berikutnya berhenti selama `gh` masih memakai akun Anda.
+
 ## 3. Rencanakan produk
 
 1. Taruh semua bahan tentang produk di `docs/input/`: catatan, dokumen, dan contoh berkas.

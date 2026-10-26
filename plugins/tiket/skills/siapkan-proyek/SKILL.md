@@ -58,7 +58,7 @@ Ask everything in one round, in the format of `${CLAUDE_PLUGIN_ROOT}/reference/o
    - GitHub-hosted is recommended.
    - Self-hosted on this machine is the other option. It needs Linux with Docker, and it suits private repositories that run out of Actions minutes.
 6. **User interface:** does the product have one?
-7. **Code owner for protected files:** default to the account that `gh auth status` shows.
+7. **Code owner for protected files:** the owner's personal GitHub account, never the agent account. Default to the active account that `gh auth status` shows. When `gh` knows several accounts, ask which one is the owner's.
 8. **Git identity, asked only when step 1 found none:** the name and email for commits in this project. Recommend the values from `gh api user --jq '.name, .email'`. When the email is empty, recommend `<id>+<login>@users.noreply.github.com`, using `gh api user --jq '.id, .login'`. Set them with `git config user.name` and `git config user.email` inside the project. The machine's global settings stay as they are.
 
 These have defaults, so do not ask about them:
@@ -72,6 +72,8 @@ This step is done when every question has an answer.
 ## 3. Prepare GitHub
 
 Do this step before you write `.claude/settings.json`. That file's permission rules deny agents some of these commands, and the rules apply as soon as the file exists.
+
+Setup runs under the owner's own account, because it creates the repository and its labels. It is the one exception to the agent account rule in `${CLAUDE_PLUGIN_ROOT}/reference/github-use.md`. Every later skill writes through the agent account.
 
 1. **Connect the repository, new projects only.** Run `git init -b main` if the folder is not a repository yet. Then check whether the owner already created the repository on GitHub, with `gh repo view <owner>/<name> --json isEmpty`.
    - **It exists and is empty:** add it with `git remote add origin https://github.com/<owner>/<name>.git`.
@@ -119,10 +121,15 @@ Some steps change GitHub settings or need the owner's password. Give the owner e
 
   Dependabot security updates stay off: their PRs skip the ticket flow.
 - **Self-hosted runner.** Use the steps in `RUNNER.md`.
+- **Agent account, last.** From here on the agent writes to GitHub through an account of its own, never the owner's, as `${CLAUDE_PLUGIN_ROOT}/reference/github-use.md` explains. The commands above still need the owner's account, so this step comes after them. Give the owner the guide page `https://github.com/mandalikadev/jalankan-tiket/blob/main/docs/<language>/agent-account.md`, where `<language>` is `id` or `en`. On that page, the owner:
+  - creates a machine account, or reuses the one that serves their other projects;
+  - gives it write access to the repository;
+  - logs `gh` in with it and makes it the active account;
+  - points `origin` at the HTTPS address and runs `gh auth setup-git`, so pushes also go through that account.
 
 ## 7. Report
 
 Tell the owner, in plain words:
 - what was created: the repository link, the labels, milestone M1 and the CI runner;
-- the steps from step 6 that are still open;
+- the steps from step 6 that are still open. The agent account must be ready before the next skill, which opens issues and PRs and stops while `gh` still runs as the owner;
 - the next step: put raw material about the product in `docs/input/`, then run `/tiket:rencanakan-produk`. An existing project takes the next step that `EXISTING.md` names.

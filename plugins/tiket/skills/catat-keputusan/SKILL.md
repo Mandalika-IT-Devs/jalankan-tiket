@@ -8,6 +8,8 @@ disable-model-invocation: true
 
 The owner answers the questions that the coordinator or a planning session asked. You turn the answers into rules and update the tickets, so that `/tiket:jalankan` can continue. Use the **project language** (`language` in `.github/jalankan-tiket.json`) for every file you change and every message, including the one-line status updates between tool calls, such as "Sekarang PRD §4.1: blok ▶ Keputusan" in an Indonesian project. Never mix two languages in a message.
 
+Every write to GitHub follows `${CLAUDE_PLUGIN_ROOT}/reference/github-use.md`. Before your first write, check the agent account and the coordinator lock, as its sections 1 and 2 describe. Step 5 comments on several issues in a row, so keep its pause between writes.
+
 ## 1. Collect the questions
 
 The questions come from three sources:
@@ -59,7 +61,7 @@ This step is done when every answered question has its rule written and every fo
 2. **Update each source issue.**
    - Comment the decision on it. Quote the owner's answer, link the PR, and use the issue's own question numbers.
    - On a parked ticket, add the decision issue to its "Blocked by" section with `gh issue edit <n> --body-file <file>`. Then remove the needs-info label.
-3. **Finish** with steps 3 and 4 of `owner-pr.md`: the owner adds the label, and you merge once CI is green and the owner agrees.
+3. **Finish** with steps 3 and 4 of `owner-pr.md`: ask the owner for the label and stop, then merge after the owner says the label is on and CI is green.
 
 This step is done when every source issue is commented and no parked ticket still carries the needs-info label.
 

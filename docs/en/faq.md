@@ -30,6 +30,17 @@ The Auto mode classifier may refuse an approval that you did not type yourself i
 **Claude's quota runs out halfway.**
 That is fine. The state of the work is stored on GitHub. Type `/tiket:jalankan` again when the quota is back.
 
+**A skill stops because `gh` uses the owner's account, or because the remote uses SSH.**
+The agent writes to GitHub through its own account. Set up the agent account with the steps in [Agent account](agent-account.md), then run the skill again.
+
+**`/tiket:jalankan` stops because another coordinator is still running in another repository.**
+Wait until that coordinator is done. If its session is gone, delete `~/.cache/jalankan-tiket/koordinator.lock`. The file also counts as expired after 3 hours without an update.
+
+**GitHub answers 403 or 429, mentions a rate limit, or says the account is suspended.**
+The agent stops without retrying and reports the last state. Do not run the skill again and again right away.
+- **Rate limit:** wait about an hour, then run `/tiket:jalankan` again.
+- **Suspended account:** appeal to GitHub Support and explain the automation. Do not create a new account while the appeal is open.
+
 **Two people want to run tickets at the same time.**
 Don't. Two coordinators would take the same ticket. Agree on one person per repo at a time.
 

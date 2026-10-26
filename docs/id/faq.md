@@ -30,6 +30,17 @@ Pengklasifikasi mode Auto bisa menolak izin yang tidak Anda ketik sendiri di ses
 **Kuota Claude habis di tengah jalan.**
 Tidak apa-apa. Keadaan pekerjaan tersimpan di GitHub. Ketik `/tiket:jalankan` lagi setelah kuota pulih.
 
+**Skill berhenti karena `gh` memakai akun pemilik, atau karena remote memakai SSH.**
+Agent menulis ke GitHub lewat akunnya sendiri. Siapkan akun agen dengan langkah di [Akun agen](agent-account.md), lalu jalankan skill itu lagi.
+
+**`/tiket:jalankan` berhenti karena koordinator lain masih berjalan di repo lain.**
+Tunggu sampai koordinator itu selesai. Bila sesinya sudah tidak ada, hapus `~/.cache/jalankan-tiket/koordinator.lock`. Berkas itu juga dianggap kedaluwarsa setelah 3 jam tanpa pembaruan.
+
+**GitHub menjawab 403 atau 429, menyebut batas laju, atau akun disuspend.**
+Agent berhenti tanpa mencoba ulang dan melaporkan keadaan terakhir. Jangan langsung menjalankan skill lagi berulang-ulang.
+- **Batas laju:** tunggu sekitar satu jam, lalu jalankan `/tiket:jalankan` lagi.
+- **Akun disuspend:** ajukan banding ke GitHub Support dan jelaskan otomasinya. Jangan membuat akun baru selama banding berjalan.
+
 **Dua orang ingin menjalankan tiket bersamaan.**
 Jangan. Dua koordinator akan mengambil tiket yang sama. Sepakati satu orang per repo pada satu waktu.
 

@@ -15,6 +15,7 @@
 | Proyek baru, runner GitHub | Tervalidasi dari setup sampai tiket merged, termasuk tiket yang diparkir dan keputusan pemilik |
 | Proyek lama yang sudah memakai salinan lama workflow ini, runner GitHub | Tervalidasi dari adopsi sampai pembaruan versi kit |
 | Runner sendiri (self-hosted) | Belum tervalidasi lewat kit |
+| Akun agen dan laju kerja (1.1.0) | Belum tervalidasi lewat kit |
 | Stack selain `nextjs-postgres` | Lewat [Menyesuaikan stack](adapting-your-stack.md), belum ada profil yang teruji |
 
 Versi mattpocock-skills yang sudah diuji juga tercatat di `plugins/tiket/reference/tested-versions.json`. `/tiket:cek-proyek` membaca berkas itu.

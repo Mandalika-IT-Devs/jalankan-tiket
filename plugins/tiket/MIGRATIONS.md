@@ -13,6 +13,16 @@ Format of a section:
 
 Paths such as `stacks/…` are relative to the plugin folder.
 
+## 1.1.0
+
+- **Before this PR, on GitHub:** the PR goes out through the agent account, so the owner sets that account up first. The steps are in the guide page `docs/<language>/agent-account.md` of the kit repository. Write in the PR body that every machine that runs the kit for this project needs `gh` logged in with the agent account and an HTTPS `origin`.
+- **`.claude/settings.json`**: keep the project's own rules, and make these changes:
+  - add `Bash(gh auth status *)` and `Bash(sleep *)` to `permissions.allow`;
+  - add `Bash(gh auth login *)`, `Bash(gh auth logout *)`, `Bash(gh auth switch *)`, `Bash(gh auth refresh *)`, `Bash(gh auth token *)` and `Bash(gh auth setup-git *)` to `permissions.deny`.
+
+  When Auto mode refuses the edit as self-modification, prepare the file elsewhere, show the owner the difference, and write it after the owner agrees.
+- Last step: set `kitVersion` in `.github/jalankan-tiket.json` to `1.1.0`.
+
 ## 1.0.1
 
 - **`AGENTS.md`** (or `CLAUDE.md` when the project keeps its rules there): in the section on the automatic workflow, add the paragraph about requests in a plain conversation from `templates/<language>/AGENTS.md`, unless the file already says it.

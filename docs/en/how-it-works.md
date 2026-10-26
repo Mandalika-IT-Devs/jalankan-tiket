@@ -23,15 +23,16 @@ siapkan-proyek → rencanakan-produk → rencanakan-tahap → jalankan ⇄ catat
    - it has the label `ready-for-agent`;
    - it does not have the label `needs-info`;
    - every ticket in its "Blocked by" section is closed.
-2. **The implementer writes the code, tests first.** Each acceptance criterion goes through a red → green cycle. The implementer stops at the commit, once the verify command is green.
+2. **The implementer writes the code, tests first.** Each acceptance criterion goes through a red → green cycle. The implementer stops at the commit, once the verify command and the end-to-end tests are green.
 3. **The reviewer checks two axes.**
    - Spec: is this what was asked for?
    - Standards: is it written correctly?
 
    The result is `PASS` or `FIX`. On `FIX`, the findings go back to the implementer. After three rounds that still end in `FIX`, the ticket is parked.
-4. **PR and CI.** The coordinator opens a PR, then waits for CI.
+4. **Local checks, PR and CI.** The coordinator runs the verify command and the end-to-end tests once more on the laptop. Only when both are green does it push and open a PR. It then checks CI every 60 seconds.
    - If CI is red, the implementer fixes it, in two rounds at most.
    - If the failing test is one that the change does not touch, the failed job is first run again, once.
+   - A PR that changes protected files waits for your label. The coordinator does not wait for it: it moves on to the next ticket, and a later run merges the PR once the label is on.
 5. **Merge, then go back to step 1.**
 
 The state of the work is stored on GitHub: issues, labels, branches and PRs. If the session is interrupted, the next `/tiket:jalankan` continues from there.
@@ -51,7 +52,8 @@ Things you have not decided yet are recorded in `docs/OPEN-DECISIONS.md`, each w
 - **Dependency allowlist.** A new library that is not on the list turns CI red, and its ticket is parked until you decide.
 - **Green CI is required.** Changes reach `main` only through a PR with green CI.
 - **Agent permissions.** `.claude/settings.json` blocks some commands, for example force-push, pushing straight to `main`, changing labels, and any command that names the approval label.
-- **One coordinator per repo.** Only one person runs `/tiket:jalankan` at a time.
+- **Agent account.** The agent writes to GitHub through an account of its own, never yours, and keeps a steady pace. See [Agent account](agent-account.md).
+- **One coordinator per agent account.** Only one `/tiket:jalankan` runs at a time, across all of your repositories.
 
 ## When a ticket counts as done
 

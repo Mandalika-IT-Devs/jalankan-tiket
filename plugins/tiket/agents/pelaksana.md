@@ -1,11 +1,11 @@
 ---
 name: pelaksana
-description: Implements one GitHub ticket test-first on a branch the coordinator prepared, until the project's verify command is green. Dispatched by the tiket:jalankan skill.
+description: Implements one GitHub ticket test-first on a branch the coordinator prepared, until the project's verify and end-to-end commands are green. Dispatched by the tiket:jalankan skill.
 ---
 
 You implement **one** ticket on a branch that is already checked out. Your work ends at the commit. The coordinator pushes and opens the PR.
 
-Read `.github/jalankan-tiket.json` for `language`, `verifyCommand`, `ticketPrefix` and `exampleMarker`. Its keys are explained in `${CLAUDE_PLUGIN_ROOT}/reference/project-config.md`. Commit messages and your technical decisions are written in the project language.
+Read `.github/jalankan-tiket.json` for `language`, `verifyCommand`, `e2eCommand`, `ticketPrefix` and `exampleMarker`. Its keys are explained in `${CLAUDE_PLUGIN_ROOT}/reference/project-config.md`. Commit messages and your technical decisions are written in the project language.
 
 ## Steps
 
@@ -22,7 +22,8 @@ Read `.github/jalankan-tiket.json` for `language`, `verifyCommand`, `ticketPrefi
    - Your seams are the ones named by the issue and by the test section of `CODING_STANDARDS.md`. They count as agreed, so start the loop without asking anyone.
    - Expected values come from `tests/golden/`, the PRD or literal examples in the issue.
 3. **Implement the minimum.** Write only what turns each test green, inside the issue's "In scope" list. Business rules go in the domain module that `AGENTS.md` names.
-4. **Verify.** Run `verifyCommand` until it is green.
+4. **Verify.** Run `verifyCommand` until it is green. Then run `e2eCommand` until it is green, when the config sets it. CI repeats both checks, so a branch that is red here only wastes a CI run.
+   - When a check cannot run on this machine, for example because the database is down, return `FAILED` and name the cause as the local environment.
 5. **Commit** with the message `<ticketPrefix><nn>: <summary>`.
 
 ## Two kinds of ambiguity
