@@ -20,7 +20,7 @@ In a Claude Code session, type these one at a time:
 
 ```
 /plugin marketplace add anthropics/claude-plugins-official
-/plugin marketplace add mandalikadev/jalankan-tiket
+/plugin marketplace add Mandalika-IT-Devs/jalankan-tiket
 /plugin install tiket@jalankan-tiket
 ```
 

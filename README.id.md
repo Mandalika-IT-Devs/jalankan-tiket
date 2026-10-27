@@ -35,7 +35,7 @@ Di sesi Claude Code (CLI atau tab Code di Claude Desktop):
 
 ```
 /plugin marketplace add anthropics/claude-plugins-official
-/plugin marketplace add mandalikadev/jalankan-tiket
+/plugin marketplace add Mandalika-IT-Devs/jalankan-tiket
 /plugin install tiket@jalankan-tiket
 ```
 

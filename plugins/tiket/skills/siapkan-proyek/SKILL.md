@@ -121,7 +121,7 @@ Some steps change GitHub settings or need the owner's password. Give the owner e
 
   Dependabot security updates stay off: their PRs skip the ticket flow.
 - **Self-hosted runner.** Use the steps in `RUNNER.md`.
-- **Agent account, last.** From here on the agent writes to GitHub through an account of its own, never the owner's, as `${CLAUDE_PLUGIN_ROOT}/reference/github-use.md` explains. The commands above still need the owner's account, so this step comes after them. Give the owner the guide page `https://github.com/mandalikadev/jalankan-tiket/blob/main/docs/<language>/agent-account.md`, where `<language>` is `id` or `en`. On that page, the owner:
+- **Agent account, last.** From here on the agent writes to GitHub through an account of its own, never the owner's, as `${CLAUDE_PLUGIN_ROOT}/reference/github-use.md` explains. The commands above still need the owner's account, so this step comes after them. Give the owner the guide page `https://github.com/Mandalika-IT-Devs/jalankan-tiket/blob/main/docs/<language>/agent-account.md`, where `<language>` is `id` or `en`. On that page, the owner:
   - creates a machine account, or reuses the one that serves their other projects;
   - gives it write access to the repository;
   - logs `gh` in with it and makes it the active account;

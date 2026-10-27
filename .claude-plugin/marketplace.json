@@ -1,8 +1,8 @@
 {
   "name": "jalankan-tiket",
   "owner": {
-    "name": "mandalikadev",
-    "url": "https://github.com/mandalikadev"
+    "name": "Mandalika-IT-Devs",
+    "url": "https://github.com/Mandalika-IT-Devs"
   },
   "description": "The jalankan-tiket workflow for Claude Code. Plan a product with its owner, then let Claude work GitHub tickets autonomously through an implementer, a reviewer, a PR, CI and a merge.",
   "allowCrossMarketplaceDependenciesOn": ["claude-plugins-official"],

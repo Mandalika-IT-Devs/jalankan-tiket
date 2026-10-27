@@ -17,7 +17,7 @@ Before the first write of a session, check both of these:
 1. **The `gh` account.** Run `gh auth status --active` and read the login. Then read the owners in `.github/CODEOWNERS`. When the login is one of them, stop.
 2. **The remote.** Run `git remote get-url origin`. When it starts with `git@` or `ssh://`, stop. A push over SSH uses the owner's key, so it reaches GitHub as the owner.
 
-When you stop here, tell the owner in plain words what to change, and link the guide page `https://github.com/mandalikadev/jalankan-tiket/blob/main/docs/<language>/agent-account.md`, where `<language>` is `id` or `en`. Never switch, add or remove a `gh` account yourself, and never change git credentials. Those steps belong to the owner.
+When you stop here, tell the owner in plain words what to change, and link the guide page `https://github.com/Mandalika-IT-Devs/jalankan-tiket/blob/main/docs/<language>/agent-account.md`, where `<language>` is `id` or `en`. Never switch, add or remove a `gh` account yourself, and never change git credentials. Those steps belong to the owner.
 
 ## 2. One coordinator per account
 

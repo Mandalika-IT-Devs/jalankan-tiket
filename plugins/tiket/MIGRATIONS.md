@@ -17,6 +17,7 @@ Paths such as `stacks/…` are relative to the plugin folder.
 
 - **Before this PR, on GitHub:** the PR goes out through the agent account, so the owner sets that account up first. The steps are in the guide page `docs/<language>/agent-account.md` of the kit repository. Write in the PR body that every machine that runs the kit for this project needs `gh` logged in with the agent account and an HTTPS `origin`.
 - **`.claude/settings.json`**: keep the project's own rules, and make these changes:
+  - set `extraKnownMarketplaces.jalankan-tiket.source.repo` to `Mandalika-IT-Devs/jalankan-tiket`, the kit's new home;
   - add `Bash(gh auth status *)` and `Bash(sleep *)` to `permissions.allow`;
   - add `Bash(gh auth login *)`, `Bash(gh auth logout *)`, `Bash(gh auth switch *)`, `Bash(gh auth refresh *)`, `Bash(gh auth token *)` and `Bash(gh auth setup-git *)` to `permissions.deny`.
 

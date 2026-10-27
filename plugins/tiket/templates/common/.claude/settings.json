@@ -1,7 +1,7 @@
 {
   "extraKnownMarketplaces": {
     "jalankan-tiket": {
-      "source": { "source": "github", "repo": "mandalikadev/jalankan-tiket" },
+      "source": { "source": "github", "repo": "Mandalika-IT-Devs/jalankan-tiket" },
       "autoUpdate": true
     }
   },

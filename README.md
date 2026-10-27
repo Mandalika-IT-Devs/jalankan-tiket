@@ -32,7 +32,7 @@ In a Claude Code session (CLI or the Claude Desktop Code tab):
 
 ```
 /plugin marketplace add anthropics/claude-plugins-official
-/plugin marketplace add mandalikadev/jalankan-tiket
+/plugin marketplace add Mandalika-IT-Devs/jalankan-tiket
 /plugin install tiket@jalankan-tiket
 ```
 

@@ -17,6 +17,7 @@ GitHub's abuse detection suspended an owner's personal account. Over three days 
 - **Local checks before every push.** The implementer runs the end-to-end tests as well as the verify command, and the coordinator runs both again before it pushes. A machine that cannot run them stops the run instead of parking the ticket.
 - **PRs that wait for the owner's label.** The coordinator no longer waits on them. It reports them and works on other tickets, and a later run merges them once the label is on. Owner PRs (`[Rencana]`, `[Keputusan]`, `[Kit]`) stop after asking for the label, and the merge follows once the owner says it is on.
 - **The reviewer** gets the issue text from the coordinator instead of fetching it.
+- **New home.** The kit moves to `github.com/Mandalika-IT-Devs/jalankan-tiket`, because the old account is suspended. An existing install removes the `jalankan-tiket` marketplace and adds it again from the new address. Migration 1.1.0 points each project's `.claude/settings.json` there.
 - Not yet validated end to end.
 
 ## 1.0.3

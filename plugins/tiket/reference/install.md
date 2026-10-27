@@ -4,7 +4,7 @@ Run these commands in a Claude Code session. Each one is safe to run again.
 
 ```
 /plugin marketplace add anthropics/claude-plugins-official
-/plugin marketplace add mandalikadev/jalankan-tiket
+/plugin marketplace add Mandalika-IT-Devs/jalankan-tiket
 /plugin install tiket@jalankan-tiket
 ```
 

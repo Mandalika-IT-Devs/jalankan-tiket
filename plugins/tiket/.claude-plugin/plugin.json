@@ -4,11 +4,11 @@
   "version": "1.1.0",
   "description": "Autonomous GitHub-ticket workflow: set up a project, plan it through grilling, then run tickets through implementer and reviewer subagents, PR, CI and merge.",
   "author": {
-    "name": "mandalikadev",
-    "url": "https://github.com/mandalikadev"
+    "name": "Mandalika-IT-Devs",
+    "url": "https://github.com/Mandalika-IT-Devs"
   },
-  "homepage": "https://github.com/mandalikadev/jalankan-tiket",
-  "repository": "https://github.com/mandalikadev/jalankan-tiket",
+  "homepage": "https://github.com/Mandalika-IT-Devs/jalankan-tiket",
+  "repository": "https://github.com/Mandalika-IT-Devs/jalankan-tiket",
   "license": "MIT",
   "keywords": ["workflow", "github", "tickets", "autonomous", "ci", "grilling"],
   "dependencies": ["mattpocock-skills@claude-plugins-official"]
