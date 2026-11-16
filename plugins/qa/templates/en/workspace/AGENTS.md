@@ -10,6 +10,8 @@ This repository is a QA workspace, made by the `qa` plugin of the jalankan-tiket
 - `products/<slug>/source/`: a clone of the product's repository, for reading only. Never committed.
 - `products/<slug>/tests/`: Playwright suites. `auth.setup.ts` logs in once per role and saves the session in `.auth/`.
 - `products/<slug>/readiness.md`: the latest readiness audit.
+- `products/<slug>/requirements.md`, `questions.md`, `risks.md`, `cases/`: requirements, questions, risks and test cases.
+- `products/<slug>/cycles/<cycle>/`: one round of testing: results, bugs, exploratory logs. Evidence in `evidence/` is never committed.
 
 ## Rules
 
@@ -26,7 +28,12 @@ This repository is a QA workspace, made by the `qa` plugin of the jalankan-tiket
 
 | Command | Purpose |
 |---|---|
-| `/qa:siapkan-produk` | Create the workspace if it does not exist yet, then add one product |
+| `/qa:siapkan-produk` | Create the workspace if it does not exist yet, then add or complete one product |
 | `/qa:audit-kesiapan` | Check whether a product is ready for testing, ending in READY or BLOCKED |
+| `/qa:rencanakan-uji` | Write requirements, questions, risks, test cases and the test plan, then open a test cycle |
+| `/qa:jalankan-uji` | Run the test cases and exploration on staging, and confirm every bug |
+| `/qa:laporkan` | Create the bug cards on Trello and the test report in Google Docs |
+| `/qa:regresi` | Choose the regression tests after a new release, from the diff and the critical flows |
+| `/qa:siklus` | Run the whole cycle without stopping between commands |
 
 To run a product's suites from the workspace root: `npx playwright test -c products/<slug>`.

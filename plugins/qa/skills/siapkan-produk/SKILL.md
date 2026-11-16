@@ -23,9 +23,10 @@ Talk to the QA engineer in **one language only**. Before the workspace language 
 Find out, without changing anything:
 - **Where you are.**
   - `qa-workspace.json` in the current folder: this is the workspace. Read `language` and list `products/`.
+  - The product already has a folder in `products/`: complete it instead of adding it again. Fill only what is missing, such as empty Trello or Drive IDs after a connector was connected, or a missing file. Never overwrite an earlier answer without asking.
   - An empty folder: the workspace will be created here.
   - A folder with application code, or the product's own repository: stop. The QA workspace is a separate repository. Tell the QA engineer to open a session in an empty folder, such as `~/qa-workspace`, and run the command again.
-- **GitHub.** `gh auth status` shows a login, and `git config user.name` and `git config user.email` are set.
+- **GitHub.** `gh auth status` shows a login. Note whether `git config user.name` and `git config user.email` are set.
 - **Tools.** `node --version` is 20.12 or newer, and `jq` and `git` exist.
 - **Connectors.** Among your tools, find the Trello tools (names ending in `trelloReadBoard`) and the Google Drive tools (names ending in `create_file`).
 - **The product's repository,** when the QA engineer named it: `gh repo view <owner/name> --json name,visibility,defaultBranchRef,viewerPermission`.
@@ -38,6 +39,7 @@ Ask in one round, in the format of `questions.md`. Skip what you already know.
 1. **Workspace language,** only when there is no workspace: Indonesian or English. Recommend the language you are speaking. Reports, Trello cards, questions and commit messages use it.
 2. **Workspace repository,** only when there is no workspace: its name, `qa-workspace` by default, as a **private** repository under the active `gh` account. It holds test cases and results about other teams' products, so it never becomes public.
 3. **The product's repository** (`owner/name`), unless it was named after the command.
+4. **Git identity,** only when step 1 found none: the name and email for commits in the workspace. Recommend the values from `gh api user --jq '.name, .email'`, set inside the workspace only with `git config user.name` and `git config user.email` after `git init`. The machine's global settings stay as they are.
 
 ## 3. Create the workspace (first run only)
 
@@ -56,7 +58,7 @@ Ask in one round, in the format of `questions.md`. Skip what you already know.
    - **Staging:** deploy workflows and environment files that name a staging branch or host.
    - **Roles:** role names in the code, such as enums, permission maps and seed users. Never copy a password from a seed file.
    - **Login:** the login route, its field labels and submit button text, and something that only a logged-in user sees, such as a logout button. Look in the components and translation files.
-   - **Side effects:** integrations that send email, SMS or WhatsApp, or take payments: packages, config keys in `.env.example`, service clients.
+   - **Side effects:** integrations that send email, SMS or WhatsApp, take payments, or call other outward channels such as chat webhooks, push notifications or webhooks to other systems: packages, config keys in `.env.example`, service clients.
 
 This step is done when you can propose a slug, a branch, the roles, the login locators and a value for each side-effect channel.
 
@@ -67,7 +69,7 @@ Ask in one round, in the format of `questions.md`, with your recommendations fro
 2. **Branch** that staging runs.
 3. **Staging URL.** Ask the QA engineer to confirm it is not production. Ask for every other host the app needs, such as an API subdomain. Together they become `allowedHosts`.
 4. **Roles with test accounts.** List the roles you found, and ask which have an account. Each role gets a `key`, a `label` and an `env` prefix, such as `QA_KASIR`.
-5. **Side effects.** For each channel, propose `none`, `sandbox`, `real` or `unknown`. Recommend `unknown` whenever the code shows the channel and nobody has confirmed a sandbox.
+5. **Side effects.** For each channel, propose `none`, `sandbox`, `real` or `unknown`. Add a key for every other outward channel you found, such as `chat` or `webhook`. Recommend `unknown` whenever the code shows the channel and nobody has confirmed a sandbox.
 6. **Trello board** for bugs: its URL. Propose creating a list named `QA – Perlu Ditinjau` (`QA – Needs review` in English) when the board has no such list. New bug cards land there, and the QA engineer moves each one to the developers.
 7. **Google Drive folder:** recommend a new folder `QA – <product name>` with a subfolder `Bukti` (`Evidence`) in the QA engineer's Drive. The other option is the link of an existing folder.
 
@@ -81,7 +83,7 @@ Skip a part when its connector is missing, and report it in step 9. Wait at leas
 
 ## 7. Write the product files
 
-1. Copy `templates/common/product/` and `templates/<language>/product/` into `products/<slug>/`, except `readiness.md`, which `/qa:audit-kesiapan` writes.
+1. Copy `templates/common/product/` into `products/<slug>/`. The language files in `templates/<language>/product/` are written later by the other commands.
 2. Fill the placeholders in `product.json` and `.env.local.example` with the answers and the IDs from step 6. A missing Trello or Drive ID becomes an empty string.
 3. Fill the login locators in `tests/auth.setup.ts` from what you found in step 4. Prefer `getByLabel` and `getByRole` with the visible text. When the code leaves a locator unclear, open the staging login page with your browser tools and read its accessibility tree, without typing anything. When a role logs in differently, such as with a PIN, add a branch for that role in the same file.
 4. **Check your work.**

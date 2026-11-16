@@ -2,7 +2,9 @@
 
 The qa plugin reaches Trello and Google Drive through the claude.ai connectors that the QA engineer connects. Their tool names start with an account-specific prefix, so this file names each tool by its base name, such as `trelloWriteCard`. Find the full name among your tools.
 
-When a connector is missing, do not look for another way in: no API tokens, no scripts, no browser login. Report it as an audit FAIL with the fix: the QA engineer connects it in the claude.ai Connectors settings, then starts a new session.
+When a connector is missing, do not look for another way in: no API tokens, no scripts, no browser login. Report it with the fix:
+- The QA engineer connects it in the claude.ai Connectors settings, then starts a new session.
+- claude.ai connectors reach Claude Code only when it is signed in with a claude.ai account. A session that runs on an API key has none of them. The QA engineer then signs in with `/login`, or runs the command in the Claude Desktop Code tab.
 
 ## Trello
 

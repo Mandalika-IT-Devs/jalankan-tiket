@@ -1,12 +1,15 @@
 # QA workspace templates
 
-`/qa:siapkan-produk` copies these files. It fills each placeholder, then commits the result to the QA workspace.
+The qa skills copy these files into the QA workspace and fill each placeholder. `/qa:siapkan-produk` copies `common/` and `<language>/workspace/`; the other commands write the language files of `product/` and `cycle/` when they need them.
 
 ## Layout
 
 - `common/workspace/` holds the workspace root files that are the same in every language. They are copied once, when the workspace is created.
 - `common/product/` holds the files of one product folder, `products/<slug>/`. They are copied for every new product.
-- `id/` and `en/` hold the same files with content in Indonesian and in English. Copy the folder that matches the workspace language: `workspace/` into the root, `product/` into the product folder.
+- `id/` and `en/` hold the same files with content in Indonesian and in English. Use the folder that matches the workspace language:
+  - `workspace/` goes into the workspace root when the workspace is created;
+  - `product/` holds the product files that later commands write: `readiness.md` (`/qa:audit-kesiapan`), and `requirements.md`, `questions.md`, `risks.md` and `test-plan.html` (`/qa:rencanakan-uji`);
+  - `cycle/` holds the files of one cycle: `results.md` and `bug.md` (`/qa:jalankan-uji`), `test-report.html` (`/qa:laporkan`) and `regression.md` (`/qa:regresi`).
 - File names are in English whatever the language, so the skills can name a file without knowing the language.
 
 ## Placeholders
@@ -29,4 +32,10 @@
 | `{{DRIVE_FOLDER_ID}}`, `{{DRIVE_EVIDENCE_FOLDER_ID}}` | The product's Drive folder and its evidence subfolder, from the Google Drive connector |
 | `{{USERNAME_FIELD}}`, `{{PASSWORD_FIELD}}`, `{{SUBMIT_BUTTON}}`, `{{LOGGED_IN_CHECK}}` | Playwright locator expressions for the login form, such as `page.getByLabel('Email')`, `page.getByLabel('Kata sandi')`, `page.getByRole('button', { name: 'Masuk' })` and `page.getByRole('button', { name: 'Keluar' })` |
 | `{{DATE}}` | `YYYY-MM-DD` |
-| `{{VERSION_UNDER_TEST}}`, `{{VERDICT}}`, `{{CHECK_ROWS}}`, `{{QUESTIONS}}`, `{{NEXT_STEP}}` | Filled by `/qa:audit-kesiapan` in `readiness.md` |
+| `{{VERSION_UNDER_TEST}}`, `{{VERDICT}}`, `{{CHECK_ROWS}}`, `{{QUESTIONS}}`, `{{NEXT_STEP}}` | Filled by `/qa:audit-kesiapan` in `readiness.md`. `{{QUESTIONS}}` is also the list in `questions.md` |
+| `{{REQUIREMENT_ROWS}}`, `{{TRACE_ROWS}}`, `{{UNCOVERED}}`, `{{ORPHAN_CASES}}`, `{{RISK_ROWS}}`, `{{CRITICAL_FLOWS}}` | Filled by `/qa:rencanakan-uji` in `requirements.md` and `risks.md` |
+| `{{CYCLE_ID}}`, `{{SCOPE}}`, `{{OUT_OF_SCOPE}}`, `{{APPROACH}}`, `{{ROLE_LIST}}`, `{{ENTRY_CRITERIA}}`, `{{EXIT_CRITERIA}}`, `{{RISK_SUMMARY}}`, `{{CASE_COUNTS}}`, `{{OPEN_QUESTIONS}}`, `{{NOTES}}` | Filled by `/qa:rencanakan-uji` in `test-plan.html`, as HTML |
+| `{{COUNT_ROWS}}`, `{{EXIT_STATUS}}`, `{{BUG_ROWS}}`, `{{INCONCLUSIVE_ROWS}}`, `{{BLOCKED_ROWS}}`, `{{CASE_ROWS}}`, `{{EXPLORATORY_SUMMARY}}` | Filled by `/qa:jalankan-uji` in `results.md` |
+| `{{BUG_NUMBER}}`, `{{BUG_TITLE}}`, `{{SEVERITY}}`, `{{SEVERITY_REASON}}`, `{{PRIORITY}}`, `{{PRIORITY_REASON}}`, `{{BROWSER}}`, `{{ROLE}}`, `{{LINKS}}`, `{{FREQUENCY}}`, `{{CARD_URL}}`, `{{PRECONDITIONS}}`, `{{STEPS}}`, `{{EXPECTED}}`, `{{ACTUAL}}`, `{{EVIDENCE}}` | Filled by `/qa:jalankan-uji` in `bug.md`, following `reference/bugs.md`. `{{CARD_URL}}` stays as a dash until `/qa:laporkan` creates the card |
+| `{{RECOMMENDATION}}`, `{{RECOMMENDATION_REASONS}}`, `{{COUNT_TABLE}}`, `{{BUG_TABLE}}`, `{{RETEST_TABLE}}`, `{{OPEN_ITEMS}}`, `{{COVERAGE}}` | Filled by `/qa:laporkan` in `test-report.html`, as HTML. `{{EXIT_STATUS}}`, `{{EXPLORATORY_SUMMARY}}`, `{{OPEN_QUESTIONS}}` and `{{NEXT_STEP}}` mean the same as elsewhere |
+| `{{OLD_VERSION}}`, `{{PREVIOUS_CYCLE}}`, `{{CHANGE_SUMMARY}}`, `{{CHANGED_AREAS}}`, `{{SELECTED_ROWS}}`, `{{RETEST_ROWS}}`, `{{NEW_BEHAVIOUR}}`, `{{NOT_CHOSEN}}` | Filled by `/qa:regresi` in `regression.md` |

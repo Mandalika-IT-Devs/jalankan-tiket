@@ -10,6 +10,8 @@ Repo ini adalah workspace QA, dibuat oleh plugin `qa` dari kit jalankan-tiket. I
 - `products/<slug>/source/`: clone repo produk, hanya untuk dibaca. Tidak pernah di-commit.
 - `products/<slug>/tests/`: suite Playwright. `auth.setup.ts` login sekali per peran dan menyimpan sesinya di `.auth/`.
 - `products/<slug>/readiness.md`: hasil audit kesiapan terakhir.
+- `products/<slug>/requirements.md`, `questions.md`, `risks.md`, `cases/`: kebutuhan, pertanyaan, risiko, dan kasus uji.
+- `products/<slug>/cycles/<siklus>/`: satu putaran uji: hasil, bug, log eksplorasi. Bukti di `evidence/` tidak di-commit.
 
 ## Aturan
 
@@ -26,7 +28,12 @@ Repo ini adalah workspace QA, dibuat oleh plugin `qa` dari kit jalankan-tiket. I
 
 | Perintah | Gunanya |
 |---|---|
-| `/qa:siapkan-produk` | Membuat workspace bila belum ada, lalu menambahkan satu produk |
+| `/qa:siapkan-produk` | Membuat workspace bila belum ada, lalu menambahkan atau melengkapi satu produk |
 | `/qa:audit-kesiapan` | Memeriksa apakah produk siap diuji, dengan hasil SIAP atau TERBLOKIR |
+| `/qa:rencanakan-uji` | Menyusun kebutuhan, pertanyaan, risiko, kasus uji, dan rencana uji, lalu membuka siklus uji |
+| `/qa:jalankan-uji` | Menjalankan kasus uji dan eksplorasi di staging, dan mengonfirmasi setiap bug |
+| `/qa:laporkan` | Membuat kartu bug di Trello dan laporan uji di Google Docs |
+| `/qa:regresi` | Memilih uji regresi setelah rilis baru, dari diff dan alur kritis |
+| `/qa:siklus` | Menjalankan seluruh siklus tanpa berhenti di antara perintah |
 
 Menjalankan suite sebuah produk dari root workspace: `npx playwright test -c products/<slug>`.

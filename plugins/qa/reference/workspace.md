@@ -16,8 +16,18 @@ products/<slug>/
   .auth/<role>.json          saved sessions. Agents never read them
   source/                    read-only clone of the product's repository
   playwright.config.ts
-  tests/auth.setup.ts
+  tests/                     auth setup, suites per area, probes (see playwright.md)
   readiness.md               the latest readiness audit
+  requirements.md            requirements with IDs, and the traceability matrix
+  questions.md               questions for the product team
+  risks.md                   risk scores and the critical flows
+  cases/<area>.md            test cases, and the exploratory charters
+  cycles/<cycle>/
+    cycle.json               the cycle's state
+    results.json, results.md the newest result of every case
+    bugs/BUG-<nnn>.md        confirmed bugs
+    exploratory/<charter>.md exploratory logs
+    evidence/                screenshots and videos, never committed
 ```
 
 `.env.local`, `.auth/`, `source/` and every test output are in `.gitignore`.
@@ -39,7 +49,7 @@ products/<slug>/
 | `allowedHosts` | The host names the tests may visit. The QA engineer confirms each one as non-production |
 | `loginPath` | The login page's path |
 | `roles` | One entry per role with a test account: `key`, `label`, and `env`, the prefix of `<env>_USERNAME` and `<env>_PASSWORD` in `.env.local` |
-| `sideEffects` | One value per channel (`email`, `sms`, `whatsapp`, `payment`): `none` (the app has no such channel), `sandbox` (staging uses a test service or a mock), `real` (staging reaches real people or real money), or `unknown` |
+| `sideEffects` | One value per outward channel: always `email`, `sms`, `whatsapp` and `payment`, plus any other channel the code shows, such as `chat` (Slack, Teams or Google Chat webhooks), `push` or `webhook`. Each value is `none` (the app has no such channel), `sandbox` (staging uses a test service or a mock), `real` (staging reaches real people, real systems or real money), or `unknown` |
 | `testDataPrefix` | The prefix of every record a test creates. Default `QA-AUTO` |
 | `trello` | `boardId` and `boardUrl` of the team's board, `reviewListId` of the list where new bug cards go, `retestListId` of the list where developers put fixed cards, or `null` |
 | `drive` | `folderId` of the product's Drive folder, and `evidenceFolderId` of its evidence subfolder |
@@ -72,3 +82,42 @@ Example:
   "writtenPermission": { "loadTesting": null, "securityScanning": null }
 }
 ```
+
+## `cycles/<cycle>/cycle.json`
+
+A **cycle** is one round of testing one version of the product. `/qa:rencanakan-uji` opens it, `/qa:jalankan-uji` runs it, and `/qa:laporkan` reports it. The cycle ID is `<YYYY-MM-DD>-<short version>`.
+
+| Key | Meaning |
+|---|---|
+| `id` | The cycle ID, such as `"2026-03-02-a1b2c3d"` |
+| `version` | The version under test |
+| `scope` | The areas in scope, or `"all"` |
+| `status` | `planned`, `running`, `executed` or `reported` |
+| `plannedAt` | The date the plan was written |
+| `planDocUrl`, `reportDocUrl` | The Google Docs links, or `null` |
+| `cases` | Optional. The case IDs in the run, when `/qa:regresi` chose them. Without it, every case in scope runs |
+| `retest` | Optional. The bug IDs to retest in this cycle, such as `["BUG-003"]` |
+| `previousCycle` | Optional. The cycle this regression run compares with |
+
+## `cycles/<cycle>/results.json`
+
+The newest result of every case and charter in the cycle. States are always written in English here, and translated in `results.md`.
+
+```json
+{
+  "cycle": "2026-03-02-a1b2c3d",
+  "updatedAt": "2026-03-02T14:05:00+07:00",
+  "cases": [
+    { "id": "TC-KASIR-004", "priority": "P1", "state": "FAIL", "evidence": ["TC-KASIR-004-1.png"], "bug": "BUG-003", "note": "" },
+    { "id": "TC-KASIR-007", "priority": "P2", "state": "BLOCKED", "evidence": [], "bug": null, "note": "Q-004: payment sandbox unknown" }
+  ],
+  "charters": [
+    { "id": "EX-03", "probes": 18, "bugs": ["BUG-004"], "questions": ["Q-005"] }
+  ],
+  "retests": [
+    { "bug": "BUG-001", "state": "PASS", "note": "not reproduced in 3 of 3 runs" }
+  ]
+}
+```
+
+`state` is one of `PASS`, `FAIL`, `BLOCKED`, `NOT RUN` and `INCONCLUSIVE`, as `evidence.md` defines them.
