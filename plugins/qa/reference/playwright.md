@@ -18,16 +18,16 @@ products/<slug>/tests/
 ## Specs
 
 - **One test per case.** The title starts with the case ID: `test('TC-CUTI-004: pengajuan melebihi saldo ditolak', …)`. Results are mapped back to cases through that ID.
-- **Roles.** Each file or `describe` block picks a role's saved session:
+- **Roles.** Import `test` and `expect` from `support/session.ts`, never straight from `@playwright/test`, and pick the role per file or `describe` block:
 
   ```ts
-  import { test, expect } from '@playwright/test';
-  import { join } from 'node:path';
-  const session = (role: string) => join(__dirname, '..', '..', '.auth', `${role}.json`);
-  test.use({ storageState: session('karyawan') });
+  import { test, expect } from '../support/session';
+  test.use({ role: 'karyawan' });
   ```
 
-  Never log in inside a spec with a username and password. A case that needs a role without a session is BLOCKED.
+  The fixture writes the session back after every test, because many apps rotate their refresh token and log out a second test that starts from the same old file. A test that logs out sets `test.use({ saveSession: false })`. Never log in inside a spec with a username and password. A case that needs a role without a session is BLOCKED.
+- **Server-rendered pages.** Before filling a form, wait for a sign that the page's own script has run, as `auth.setup.ts` does with its ready check. A form used before it hydrates submits natively and loses its input.
+- **URLs in output.** Print or log a URL only through `redactUrl` from `support/redact.ts`. A URL can carry a password, a token or a one-time code in its query.
 - **Locators,** in this order: `getByRole` with the accessible name, `getByLabel`, `getByPlaceholder`, `getByText`, `getByTestId`. CSS or XPath only when nothing else works, with a comment that says why.
 - **Waiting.** Use web-first assertions (`await expect(locator).toBeVisible()`, `toHaveText`, `toHaveURL`). Never use `page.waitForTimeout`, and never wait for `networkidle`.
 - **Assertions prove the business outcome.** A URL or a title alone proves nothing. After an action that saves data, read it back: reload the list, open the record, or call the API, and assert the stored values. Where roles matter, check it as the other role too.
@@ -67,13 +67,14 @@ A probe is a short spec that looks at a page and reports what it sees. Explorato
 
 ```ts
 // products/<slug>/tests/explore/ex-03-01.probe.ts
-import { test } from '@playwright/test';
-import { join } from 'node:path';
-test.use({ storageState: join(__dirname, '..', '..', '.auth', 'kasir.json') });
+import { test } from '../support/session';
+import { redactUrl } from '../support/redact';
+test.use({ role: 'kasir' });
 
 test('EX-03 probe 1', async ({ page }, testInfo) => {
   await page.goto('/pos');
   // the actions of this probe
+  console.log(redactUrl(page.url()));
   console.log(await page.locator('body').ariaSnapshot());
   await page.screenshot({ path: testInfo.outputPath('ex-03-01.png'), fullPage: true });
 });

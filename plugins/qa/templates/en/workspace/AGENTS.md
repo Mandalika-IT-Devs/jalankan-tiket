@@ -9,6 +9,7 @@ This repository is a QA workspace, made by the `qa` plugin of the jalankan-tiket
 - `products/<slug>/.env.local`: test accounts. Only the QA engineer fills it in. Never committed.
 - `products/<slug>/source/`: a clone of the product's repository, for reading only. Never committed.
 - `products/<slug>/tests/`: Playwright suites. `auth.setup.ts` logs in once per role and saves the session in `.auth/`.
+- `products/<slug>/tests/support/`: `session.ts` loads and re-saves each role's session (specs use `import { test, expect } from '../support/session'` and `test.use({ role: '<role>' })`), and `redact.ts` redacts URLs before they are printed.
 - `products/<slug>/readiness.md`: the latest readiness audit.
 - `products/<slug>/requirements.md`, `questions.md`, `risks.md`, `cases/`: requirements, questions, risks and test cases.
 - `products/<slug>/cycles/<cycle>/`: one round of testing: results, bugs, exploratory logs. Evidence in `evidence/` is never committed.

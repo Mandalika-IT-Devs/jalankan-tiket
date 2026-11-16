@@ -21,6 +21,11 @@ Every qa skill and agent follows these rules. They protect a staging environment
 - Log in through the `setup` project of the product's Playwright config. Browser tools reuse the saved session in `.auth/<role>.json`.
 - Never type a password into a page, a command or a message. When a login is needed that the setup project does not cover, mark the check BLOCKED and ask the QA engineer.
 - A screenshot or video that shows a password, a token or a full payment card number is never shared. Retake it or crop it.
+- **Secrets in URLs.** A URL can carry a credential in its query. Print URLs only through `redactUrl` from `tests/support/redact.ts`, and redact the query of every URL you copy into a file, a card or a report. When a test account's password ever appears in a URL, the login setup stops: report it as a bug candidate, and ask the QA engineer to change that account's password, because the server may have logged it.
+
+## GitHub accounts
+
+The QA engineer's own GitHub account owns the workspace and reaches the product's repository. The active `gh` account can be another one, such as an agent account that the `tiket` plugin uses for other projects. Then git in the workspace and in `source/` needs the QA engineer's account, which `${CLAUDE_PLUGIN_ROOT}/scripts/akun-git.sh` sets per repository. The QA engineer runs that script, never an agent: it hands git a token from `gh`. Never switch, add or remove a `gh` account yourself.
 
 ## Data on staging
 

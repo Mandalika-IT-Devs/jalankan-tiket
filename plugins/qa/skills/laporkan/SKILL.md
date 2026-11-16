@@ -27,6 +27,7 @@ Read these first, and follow them throughout:
 2. **Look at every image** before it leaves the machine. When one shows a password, a token, a full card number or a real person's personal data, do not upload it: crop or retake it with a probe, or leave it out and say so in the bug.
 3. Create a subfolder named after the cycle in `evidenceFolderId`, unless it exists. Upload each file into it with `create_file`, as `connectors.md` describes. Wait at least 10 seconds between two uploads.
 4. Replace the file names in each bug file's Evidence section with their Drive links.
+5. **Check the text too.** Every URL in a bug file, a card or the report has its query values replaced by `REDACTED`, as `redactUrl` does, unless a value is needed to reproduce the bug and is not a secret.
 
 Never upload traces, `test-results/` folders or anything from `.auth/`.
 

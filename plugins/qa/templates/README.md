@@ -25,11 +25,12 @@ The qa skills copy these files into the QA workspace and fill each placeholder. 
 | `{{STAGING_URL}}` | The staging base URL, such as `https://staging.toko-buku.example` |
 | `{{ALLOWED_HOSTS}}` | A JSON array of host names the tests may visit, such as `["staging.toko-buku.example"]` |
 | `{{LOGIN_PATH}}` | The login page's path, such as `/login` |
-| `{{ROLES}}` | A JSON array of roles: `[{"key": "kasir", "label": "Kasir", "env": "QA_KASIR"}]`. `key` names the session file, `env` is the prefix of the role's two variables in `.env.local` |
+| `{{ROLES}}` | A JSON array of roles: `[{"key": "kasir", "label": "Kasir", "env": "QA_KASIR"}]`. `key` names the session file, `env` is the prefix of the role's two variables in `.env.local`. A role that logs in on another page, such as a back office, adds `"loginURL"` with the full URL |
 | `{{SIDE_EFFECTS}}` | A JSON object with one value per channel: `{"email": "unknown", "sms": "unknown", "whatsapp": "unknown", "payment": "unknown"}`. Values are listed in `reference/workspace.md` |
 | `{{ROLE_ENV_LINES}}` | Two empty lines per role, such as `QA_KASIR_USERNAME=` and `QA_KASIR_PASSWORD=` |
 | `{{TRELLO_BOARD_ID}}`, `{{TRELLO_BOARD_URL}}`, `{{TRELLO_REVIEW_LIST_ID}}` | The board's ARI and URL, and the review list's ARI, from the Trello connector |
 | `{{DRIVE_FOLDER_ID}}`, `{{DRIVE_EVIDENCE_FOLDER_ID}}` | The product's Drive folder and its evidence subfolder, from the Google Drive connector |
+| `{{PAGE_READY}}` | A Playwright locator expression for something that appears only once the login page's own script has run, such as a header link that the client renders. Use `page.locator('form')` when the page is plain HTML without client-side rendering |
 | `{{USERNAME_FIELD}}`, `{{PASSWORD_FIELD}}`, `{{SUBMIT_BUTTON}}`, `{{LOGGED_IN_CHECK}}` | Playwright locator expressions for the login form, such as `page.getByLabel('Email')`, `page.getByLabel('Kata sandi')`, `page.getByRole('button', { name: 'Masuk' })` and `page.getByRole('button', { name: 'Keluar' })` |
 | `{{DATE}}` | `YYYY-MM-DD` |
 | `{{VERSION_UNDER_TEST}}`, `{{VERDICT}}`, `{{CHECK_ROWS}}`, `{{QUESTIONS}}`, `{{NEXT_STEP}}` | Filled by `/qa:audit-kesiapan` in `readiness.md`. `{{QUESTIONS}}` is also the list in `questions.md` |

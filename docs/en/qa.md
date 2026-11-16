@@ -4,12 +4,12 @@ The `qa` plugin is for a QA engineer who tests web apps built by other teams, su
 
 The `tiket` plugin builds a product, while `qa` only tests and reports. `qa` never changes the product's repository or fixes its code.
 
-> **Status: 0.1.0, not released yet.** All seven commands exist, and they are being validated on public practice apps before use on a real product. The design is in [ADR-0004](../adr/0004-qa-plugin.md).
+> **Status: 0.1.1, not released yet.** All seven commands exist. Stage 1 has run on a real product, and stages 2–3 are being validated. The design is in [ADR-0004](../adr/0004-qa-plugin.md).
 
 ## What you need
 
 - **Access to the product:** read access to its GitHub repository, the staging URL, and a test account for each role, such as admin and cashier.
-- **On your machine:** Node.js 20.12 or later, `git`, `jq`, and the GitHub CLI `gh`, logged in.
+- **On your machine:** Node.js 20.12 or later, `git`, `jq`, and the GitHub CLI `gh`, logged in with your own GitHub account. When `gh` has another account active, such as an agent account for `tiket` projects, `/qa:siapkan-produk` gives you a command that keeps git in the workspace on your account.
 - **claude.ai connectors:** Trello and Google Drive. Connect them in the claude.ai Connectors settings, then open a new session. These connectors appear only when Claude Code is signed in with a claude.ai account. A session that runs on an API key does not get them.
 
 ## Install
@@ -71,7 +71,7 @@ Write the product's name after the command, such as `/qa:audit-kesiapan toko-buk
 
 - **The product's repository is read-only.** Claude never pushes, never opens issues, PRs or comments there, and never fixes its code.
 - **Only the hosts you list.** Tests stop before they start when the target is not a host in `allowedHosts`. Production is never listed.
-- **Passwords never pass through Claude.** A Playwright script that reads `.env.local` does the logins. The workspace's permission rules deny Claude reading that file. Screenshots are checked before they are uploaded.
+- **Passwords never pass through Claude.** A Playwright script that reads `.env.local` does the logins. The workspace's permission rules deny Claude reading that file. Screenshots are checked before they are uploaded, and URLs are always printed with their parameter values redacted. When a test account's password ever shows up in a URL, the login stops and you are asked to change that password.
 - **Test data is marked** with `QA-AUTO`. Data that QA did not create is never changed or deleted.
 - **Side effects.** Until it is clear whether staging sends real email, SMS or WhatsApp messages, or takes real payments, every test that triggers them is BLOCKED.
 - **Staging is shared,** so tests run one at a time and without automatic retries.
