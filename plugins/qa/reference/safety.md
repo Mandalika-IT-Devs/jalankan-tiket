@@ -30,7 +30,7 @@ Every qa skill and agent follows these rules. They protect a staging environment
 
 ## Side effects
 
-Read `sideEffects` in `product.json` before any test that may send a message or move money: registration, password reset, invoices, notifications, payment, payroll.
+Read `sideEffects` in `product.json` before any test that may send a message, call another system or move money: registration, password reset, invoices, notifications, chat or webhook integrations, payment, payroll.
 - `none` or `sandbox`: the test may run.
 - `unknown` or `real`: the test is BLOCKED. Name the channel in the readiness audit's questions.
 

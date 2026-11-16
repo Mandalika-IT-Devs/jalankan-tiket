@@ -41,7 +41,14 @@ export default defineConfig({
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
       dependencies: ['setup'],
-      testIgnore: /auth\.setup\.ts/,
+      testIgnore: [/auth\.setup\.ts/, /\.probe\.ts$/],
+    },
+    // Probes of exploratory sessions and reproductions. They run only when asked for.
+    {
+      name: 'probe',
+      use: { ...devices['Desktop Chrome'] },
+      dependencies: ['setup'],
+      testMatch: /\.probe\.ts$/,
     },
   ],
 });

@@ -54,7 +54,7 @@ Di sesi Claude Code (CLI atau tab Code di Claude Desktop):
 
 ## Plugin qa
 
-Marketplace yang sama juga memuat plugin kedua, `qa`, untuk QA engineer yang menguji aplikasi web buatan tim lain. Plugin ini menyimpan pekerjaan QA di workspace privat, menjalankan audit kesiapan, dan menguji dari luar di staging. Bug dilaporkan ke Trello dan laporan ditulis ke Google Docs. Repo produk tidak pernah diubah. Pasang dengan `/plugin install qa@jalankan-tiket`, lalu baca [Plugin qa](docs/id/qa.md). Status: 0.1.0, tahap 1 dari 3.
+Marketplace yang sama juga memuat plugin kedua, `qa`, untuk QA engineer yang menguji aplikasi web buatan tim lain. Plugin ini menyimpan pekerjaan QA di workspace privat, menjalankan audit kesiapan, menyusun rencana uji dari dokumen dan kode produk, menguji dari luar di staging, lalu melapor: bug ke Trello dan laporan Go/No-Go ke Google Docs. Repo produk tidak pernah diubah. Pasang dengan `/plugin install qa@jalankan-tiket`, lalu baca [Plugin qa](docs/id/qa.md). Status: 0.1.0, sedang divalidasi di aplikasi latihan.
 
 ## Panduan
 

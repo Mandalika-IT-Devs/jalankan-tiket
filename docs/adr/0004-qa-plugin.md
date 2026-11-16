@@ -42,7 +42,8 @@ qa-workspace/
     playwright.config.ts   refuses any host outside product.json's allowed hosts
     tests/                 auth setup, then smoke, E2E, API and accessibility suites
     readiness.md           the latest readiness audit
-    requirements.md, questions.md, risks.md, cases/, cycles/   (later stages)
+    requirements.md, questions.md, risks.md, cases/   requirements, questions, risks, test cases
+    cycles/<cycle>/        one round of testing: results, bugs, exploratory logs
 ```
 
 Each artefact has one home, chosen by who reads it:
@@ -87,20 +88,27 @@ A report counts each state separately. A check is never reported as passed becau
 - Cards go to a review list on the team's board (`QA – Perlu Ditinjau` or `QA – Needs review`). The QA engineer moves each card to the developers' list. That keeps automation and a human gate, at the cost of one drag per bug.
 - Severity and priority are separate fields. The Trello connector cannot create labels, so the card title carries the severity, and existing board labels are attached when they match.
 
-### Commands, delivered in stages
+### Commands, built in three stages
 
 | Stage | Commands | What it adds |
 |---|---|---|
-| 1 (0.1.0) | `siapkan-produk`, `audit-kesiapan` | The workspace, one product, a readiness audit that ends in READY or BLOCKED |
+| 1 | `siapkan-produk`, `audit-kesiapan` | The workspace, one product, a readiness audit that ends in READY or BLOCKED |
 | 2 | `rencanakan-uji`, `jalankan-uji`, agents `penguji` and `pemeriksa` | Requirements with IDs from the PRD, questions for ambiguities, risk-based priorities, test cases designed with ISTQB techniques, and execution with evidence |
 | 3 | `laporkan`, `regresi`, `siklus` | Trello cards and the Google Docs report with a Go/No-Go recommendation, regression chosen from the diff between releases, and one command for the whole cycle |
 
-Each stage is validated on a real product's staging before the next stage starts.
+The first release, 0.1.0, ships all three stages. They are validated on public practice apps whose code is open, such as the OrangeHRM demo and Sauce Demo, before any company product. That keeps a team's staging and Trello board out of the kit's own debugging. One real product follows before 1.0.
+
+User-invoked skills cannot invoke each other. `regresi` therefore only opens a cycle that `jalankan-uji` runs, and `siklus` reads the other skills' files and follows them in order.
 
 ### Tools
 
 - **Playwright Test** with `@axe-core/playwright`, pinned in the workspace's `package.json`, for every repeatable suite.
-- **A browser tool for exploratory sessions** in stage 2. The Playwright MCP server is the candidate, pinned to an exact version with `--isolated`. Unpinned `@latest` is not acceptable.
+- **Probes for exploratory sessions and reproductions.** A probe is a short Playwright spec, ending in `.probe.ts`, that uses a role's saved session, performs one to five actions, and prints the page's ARIA snapshot and a screenshot. The agent reads the output and writes the next probe. We chose probes over a browser MCP server for three reasons:
+  - a probe reuses the saved session, so the model never types a password, whereas an MCP server loads one storage state when it starts;
+  - its version is the workspace's pinned Playwright, whereas the official Playwright plugin runs `@playwright/mcp@latest`;
+  - it runs under the workspace's existing permission rule for `npx playwright test`.
+
+  The cost is speed: each probe starts a browser. A pinned MCP server can be reconsidered once sessions can be switched without a password.
 - **The claude.ai connectors for Trello and Google Drive.** Their tool names carry an account-specific prefix, so skills name the tool's base name, such as `trelloWriteCard` or `create_file`. When a connector is missing, the audit reports it and the work that needs it is BLOCKED.
 
 ### Borrowed ideas
@@ -117,8 +125,7 @@ Each stage is validated on a real product's staging before the next stage starts
 
 ## Consequences
 
-- Stage 1 alone already gives the QA engineer a repeatable setup and a readiness audit for every product.
-- The QA engineer needs the Trello and Google Drive connectors in claude.ai, and Node.js on the machine.
+- The QA engineer needs Node.js on the machine, and the Trello and Google Drive connectors in claude.ai. Those connectors reach Claude Code only when it is signed in with a claude.ai account, not with an API key.
 - The plugin can create lists and cards on a team's Trello board and files in the QA engineer's Drive, and nothing else outside the workspace.
 - `qa` has its own version, its own changelog (`plugins/qa/CHANGELOG.md`) and its own tags (`qa--v<version>`).
 - `tools/periksa-kit.sh` checks the `qa` templates in both languages, like the `tiket` templates.

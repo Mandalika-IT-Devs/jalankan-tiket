@@ -51,7 +51,7 @@ In a Claude Code session (CLI or the Claude Desktop Code tab):
 
 ## The qa plugin
 
-The same marketplace ships a second plugin, `qa`, for a QA engineer who tests web apps built by other teams. It keeps a private QA workspace, runs a readiness audit, and tests from the outside on staging, with bugs on Trello and reports in Google Docs. It never changes the product's repository. Install it with `/plugin install qa@jalankan-tiket`, and read [The qa plugin](docs/en/qa.md). Status: 0.1.0, stage 1 of 3.
+The same marketplace ships a second plugin, `qa`, for a QA engineer who tests web apps built by other teams. It keeps a private QA workspace, audits readiness, plans tests from the product's documents and code, tests from the outside on staging, and reports with bugs on Trello and a Go/No-Go report in Google Docs. It never changes the product's repository. Install it with `/plugin install qa@jalankan-tiket`, and read [The qa plugin](docs/en/qa.md). Status: 0.1.0, being validated on practice apps.
 
 ## Guide
 
