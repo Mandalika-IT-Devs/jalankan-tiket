@@ -9,6 +9,7 @@ Repo ini adalah workspace QA, dibuat oleh plugin `qa` dari kit jalankan-tiket. I
 - `products/<slug>/.env.local`: akun uji. Hanya QA engineer yang mengisinya. Tidak pernah di-commit.
 - `products/<slug>/source/`: clone repo produk, hanya untuk dibaca. Tidak pernah di-commit.
 - `products/<slug>/tests/`: suite Playwright. `auth.setup.ts` login sekali per peran dan menyimpan sesinya di `.auth/`.
+- `products/<slug>/tests/support/`: `session.ts` memuat dan menyimpan ulang sesi per peran (spec memakai `import { test, expect } from '../support/session'` dan `test.use({ role: '<peran>' })`), dan `redact.ts` menyensor URL sebelum dicetak.
 - `products/<slug>/readiness.md`: hasil audit kesiapan terakhir.
 - `products/<slug>/requirements.md`, `questions.md`, `risks.md`, `cases/`: kebutuhan, pertanyaan, risiko, dan kasus uji.
 - `products/<slug>/cycles/<siklus>/`: satu putaran uji: hasil, bug, log eksplorasi. Bukti di `evidence/` tidak di-commit.

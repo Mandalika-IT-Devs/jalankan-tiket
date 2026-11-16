@@ -17,6 +17,7 @@ products/<slug>/
   source/                    read-only clone of the product's repository
   playwright.config.ts
   tests/                     auth setup, suites per area, probes (see playwright.md)
+  tests/support/             session.ts (saved sessions per role) and redact.ts (URLs without secrets)
   readiness.md               the latest readiness audit
   requirements.md            requirements with IDs, and the traceability matrix
   questions.md               questions for the product team
@@ -48,7 +49,7 @@ products/<slug>/
 | `baseURL` | The staging base URL. Every test runs against it |
 | `allowedHosts` | The host names the tests may visit. The QA engineer confirms each one as non-production |
 | `loginPath` | The login page's path |
-| `roles` | One entry per role with a test account: `key`, `label`, and `env`, the prefix of `<env>_USERNAME` and `<env>_PASSWORD` in `.env.local` |
+| `roles` | One entry per role with a test account: `key`, `label`, and `env`, the prefix of `<env>_USERNAME` and `<env>_PASSWORD` in `.env.local`. Optional `loginURL`: the full URL of the role's login page, on a host in `allowedHosts`, when it differs from `loginPath`, such as a back office |
 | `sideEffects` | One value per outward channel: always `email`, `sms`, `whatsapp` and `payment`, plus any other channel the code shows, such as `chat` (Slack, Teams or Google Chat webhooks), `push` or `webhook`. Each value is `none` (the app has no such channel), `sandbox` (staging uses a test service or a mock), `real` (staging reaches real people, real systems or real money), or `unknown` |
 | `testDataPrefix` | The prefix of every record a test creates. Default `QA-AUTO` |
 | `trello` | `boardId` and `boardUrl` of the team's board, `reviewListId` of the list where new bug cards go, `retestListId` of the list where developers put fixed cards, or `null` |

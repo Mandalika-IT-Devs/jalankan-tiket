@@ -4,12 +4,12 @@ Plugin `qa` dibuat untuk QA engineer yang menguji aplikasi web buatan tim lain, 
 
 Plugin `tiket` membangun produk, sedangkan `qa` hanya menguji dan melaporkan. `qa` tidak pernah mengubah repo produk atau memperbaiki kodenya.
 
-> **Status: 0.1.0, belum dirilis.** Ketujuh perintah sudah ada, dan sedang divalidasi di aplikasi latihan publik sebelum dipakai pada produk sungguhan. Rancangannya ada di [ADR-0004](../adr/0004-qa-plugin.md).
+> **Status: 0.1.1, belum dirilis.** Ketujuh perintah sudah ada. Tahap 1 sudah dijalankan pada produk sungguhan, dan tahap 2–3 sedang divalidasi. Rancangannya ada di [ADR-0004](../adr/0004-qa-plugin.md).
 
 ## Yang perlu Anda siapkan
 
 - **Akses ke produk:** akses baca ke repo GitHub-nya, URL staging, dan akun uji untuk setiap peran, misalnya admin dan kasir.
-- **Di laptop:** Node.js 20.12 atau lebih baru, `git`, `jq`, dan GitHub CLI `gh` yang sudah login.
+- **Di laptop:** Node.js 20.12 atau lebih baru, `git`, `jq`, dan GitHub CLI `gh` yang sudah login dengan akun GitHub Anda sendiri. Kalau `gh` sedang aktif dengan akun lain, misalnya akun agen untuk proyek `tiket`, `/qa:siapkan-produk` memberi perintah agar git di workspace tetap memakai akun Anda.
 - **Konektor claude.ai:** Trello dan Google Drive. Sambungkan di pengaturan Connectors claude.ai, lalu buka sesi baru. Konektor ini hanya muncul bila Claude Code login dengan akun claude.ai. Sesi yang memakai API key tidak mendapatkannya.
 
 ## Pasang
@@ -71,7 +71,7 @@ Tulis nama produk di belakang perintah, misalnya `/qa:audit-kesiapan toko-buku`.
 
 - **Repo produk hanya dibaca.** Claude tidak push, tidak membuka issue, PR, atau komentar di sana, dan tidak memperbaiki kodenya.
 - **Hanya host yang Anda daftarkan.** Test berhenti sebelum mulai bila targetnya bukan host di `allowedHosts`. Production tidak pernah didaftarkan.
-- **Kata sandi tidak pernah lewat Claude.** Login dilakukan oleh skrip Playwright yang membaca `.env.local`. Aturan izin di workspace melarang Claude membaca berkas itu. Screenshot diperiksa dulu sebelum diunggah.
+- **Kata sandi tidak pernah lewat Claude.** Login dilakukan oleh skrip Playwright yang membaca `.env.local`. Aturan izin di workspace melarang Claude membaca berkas itu. Screenshot diperiksa dulu sebelum diunggah, dan URL selalu dicetak dengan isi parameternya disensor. Kalau kata sandi akun uji sampai muncul di URL, login dihentikan dan Anda diminta mengganti kata sandinya.
 - **Data uji diberi penanda** `QA-AUTO`. Data yang tidak dibuat QA tidak pernah diubah atau dihapus.
 - **Efek samping.** Selama belum jelas apakah staging mengirim email, SMS, atau WhatsApp sungguhan, atau menerima pembayaran sungguhan, test yang memicunya ditandai TERBLOKIR.
 - **Staging dipakai bersama**, jadi test berjalan satu per satu dan tanpa pengulangan otomatis.

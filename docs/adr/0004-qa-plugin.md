@@ -65,7 +65,8 @@ Each artefact has one home, chosen by who reads it:
 ### Rules of engagement
 
 - **Hosts.** Only the hosts in `allowedHosts` of `product.json`, which the QA engineer confirms as non-production. `playwright.config.ts` stops before any test when its base URL is not on that list.
-- **Credentials.** Test account credentials live in `products/<slug>/.env.local`. The QA engineer fills that file. Agents may not read it, because permission rules deny it. Logins happen in a Playwright setup project that saves one storage state per role in `.auth/`. Agents and the browser tools reuse that state, so a password never passes through the model. Reports, cards and screenshots never show a password.
+- **GitHub accounts.** The workspace belongs to the QA engineer's own account. When the active `gh` account is another one, such as an agent account for `tiket` projects, a per-repository credential helper (`scripts/akun-git.sh`) makes git use the QA engineer's account. The QA engineer installs it, because it hands git a token from `gh`.
+- **Credentials.** Test account credentials live in `products/<slug>/.env.local`. The QA engineer fills that file. Agents may not read it, because permission rules deny it. Logins happen in a Playwright setup project that saves one storage state per role in `.auth/`. Specs and probes reuse that state through a fixture that writes it back after every test, because many apps rotate their refresh token. A password never passes through the model. Reports, cards and screenshots never show a password, and URLs are printed only with their query redacted.
 - **Data.** Tests may create data on staging with test accounts. Every record they create carries the prefix in `testDataPrefix`, such as `QA-AUTO`. They never delete or change data they did not create.
 - **Side effects.** `product.json` records whether staging sends real email, SMS or WhatsApp messages, or takes real payments. While a channel is `unknown` or `real`, every test that would trigger it is BLOCKED.
 - **Not in scope without written permission.** Load tests, security scanners, brute force, and anything aimed at production. Those need the app owner's written permission, recorded in `product.json`. v0.x has no command for them.
@@ -96,7 +97,7 @@ A report counts each state separately. A check is never reported as passed becau
 | 2 | `rencanakan-uji`, `jalankan-uji`, agents `penguji` and `pemeriksa` | Requirements with IDs from the PRD, questions for ambiguities, risk-based priorities, test cases designed with ISTQB techniques, and execution with evidence |
 | 3 | `laporkan`, `regresi`, `siklus` | Trello cards and the Google Docs report with a Go/No-Go recommendation, regression chosen from the diff between releases, and one command for the whole cycle |
 
-The first release, 0.1.0, ships all three stages. They are validated on public practice apps whose code is open, such as the OrangeHRM demo and Sauce Demo, before any company product. That keeps a team's staging and Trello board out of the kit's own debugging. One real product follows before 1.0.
+The first release ships all three stages. We planned to validate them on public practice apps first, such as the OrangeHRM demo. The QA engineer chose to validate on their real work product instead, relying on the rules of engagement above: a read-only repository, listed hosts only, marked test data, blocked side effects, and bug cards that wait in a review list. The tag `qa--v<version>` follows one full cycle on that product.
 
 User-invoked skills cannot invoke each other. `regresi` therefore only opens a cycle that `jalankan-uji` runs, and `siklus` reads the other skills' files and follows them in order.
 
