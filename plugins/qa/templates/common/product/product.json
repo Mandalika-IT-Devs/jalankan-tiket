@@ -1,0 +1,26 @@
+{
+  "name": "{{PRODUCT_NAME}}",
+  "slug": "{{PRODUCT_SLUG}}",
+  "repo": "{{TARGET_REPO}}",
+  "branch": "{{TARGET_BRANCH}}",
+  "baseURL": "{{STAGING_URL}}",
+  "allowedHosts": {{ALLOWED_HOSTS}},
+  "loginPath": "{{LOGIN_PATH}}",
+  "roles": {{ROLES}},
+  "sideEffects": {{SIDE_EFFECTS}},
+  "testDataPrefix": "QA-AUTO",
+  "trello": {
+    "boardId": "{{TRELLO_BOARD_ID}}",
+    "boardUrl": "{{TRELLO_BOARD_URL}}",
+    "reviewListId": "{{TRELLO_REVIEW_LIST_ID}}",
+    "retestListId": null
+  },
+  "drive": {
+    "folderId": "{{DRIVE_FOLDER_ID}}",
+    "evidenceFolderId": "{{DRIVE_EVIDENCE_FOLDER_ID}}"
+  },
+  "writtenPermission": {
+    "loadTesting": null,
+    "securityScanning": null
+  }
+}

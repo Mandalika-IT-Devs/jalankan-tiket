@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+
+# Never committed: credentials, saved logins, the product's source code
+**/.env.local
+**/.auth/
+products/*/source/
+
+# Test output. Evidence goes to the product's Google Drive folder.
+**/test-results/
+**/test-results.json
+**/playwright-report/
+**/evidence/
+
+# Personal Claude Code settings
+.claude/settings.local.json
+
+# OS and editor files
+.DS_Store
+*.swp

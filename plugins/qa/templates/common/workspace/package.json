@@ -1,0 +1,12 @@
+{
+  "name": "qa-workspace",
+  "private": true,
+  "description": "QA workspace made by the qa plugin of the jalankan-tiket kit.",
+  "engines": {
+    "node": ">=20.12"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
+    "@playwright/test": "1.65.1"
+  }
+}

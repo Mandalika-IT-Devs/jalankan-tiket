@@ -26,19 +26,23 @@ pair() { # Indonesian folder, English folder
 pair docs/id docs/en
 pair plugins/tiket/templates/id plugins/tiket/templates/en
 pair plugins/tiket/stacks/nextjs-postgres/id plugins/tiket/stacks/nextjs-postgres/en
+pair plugins/qa/templates/id plugins/qa/templates/en
 
 # Plain JSON files
 while IFS= read -r f; do
   jq empty "$f" 2>/dev/null || fail "invalid JSON: $f"
-done < <(find . -name '*.json' -not -path './.git/*' -not -path './plugins/tiket/templates/common/*')
+done < <(find . -name '*.json' -not -path './.git/*' -not -path './plugins/tiket/templates/common/*' -not -path './plugins/qa/templates/common/*')
 
 # JSON templates, filled with sample values
 fill() {
   sed -e 's#"{{[A-Z0-9_]*}}"#"x"#g' -e 's#{{E2E_COMMAND}}#null#g' -e 's#{{PORTS}}#{}#g' \
+    -e 's#{{ALLOWED_HOSTS}}#[]#g' -e 's#{{ROLES}}#[]#g' -e 's#{{SIDE_EFFECTS}}#{}#g' \
     -e 's#{{STACK_ALLOW_RULES}}#"Bash(x *)"#g' -e 's#{{[A-Z0-9_]*}}#x#g' "$1"
 }
 for f in plugins/tiket/templates/common/.github/jalankan-tiket.json plugins/tiket/templates/common/.claude/settings.json \
-  plugins/tiket/templates/common/.github/ruleset-main.json; do
+  plugins/tiket/templates/common/.github/ruleset-main.json \
+  plugins/qa/templates/common/workspace/qa-workspace.json plugins/qa/templates/common/workspace/package.json \
+  plugins/qa/templates/common/workspace/.claude/settings.json plugins/qa/templates/common/product/product.json; do
   fill "$f" | jq empty 2>/dev/null || fail "template does not become valid JSON when filled: $f"
 done
 

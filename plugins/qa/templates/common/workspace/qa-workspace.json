@@ -1,0 +1,4 @@
+{
+  "qaKitVersion": "{{KIT_VERSION}}",
+  "language": "{{LANGUAGE}}"
+}

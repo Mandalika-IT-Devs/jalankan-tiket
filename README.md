@@ -49,6 +49,10 @@ In a Claude Code session (CLI or the Claude Desktop Code tab):
 | 5. Answer parked questions | `/tiket:catat-keputusan` |
 | Not sure what's next? | `/tiket:cek-proyek` |
 
+## The qa plugin
+
+The same marketplace ships a second plugin, `qa`, for a QA engineer who tests web apps built by other teams. It keeps a private QA workspace, runs a readiness audit, and tests from the outside on staging, with bugs on Trello and reports in Google Docs. It never changes the product's repository. Install it with `/plugin install qa@jalankan-tiket`, and read [The qa plugin](docs/en/qa.md). Status: 0.1.0, stage 1 of 3.
+
 ## Guide
 
 | English | Bahasa Indonesia |
@@ -65,6 +69,7 @@ In a Claude Code session (CLI or the Claude Desktop Code tab):
 | [Agent account](docs/en/agent-account.md) | [Akun agen](docs/id/agent-account.md) |
 | [FAQ](docs/en/faq.md) | [Tanya jawab](docs/id/faq.md) |
 | [Tested versions](docs/en/versions.md) | [Versi teruji](docs/id/versions.md) |
+| [The qa plugin](docs/en/qa.md) | [Plugin qa](docs/id/qa.md) |
 
 ## Requirements
 
