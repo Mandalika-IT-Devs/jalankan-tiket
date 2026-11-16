@@ -4,7 +4,7 @@
     "name": "Mandalika-IT-Devs",
     "url": "https://github.com/Mandalika-IT-Devs"
   },
-  "description": "The jalankan-tiket workflow for Claude Code. Plan a product with its owner, then let Claude work GitHub tickets autonomously through an implementer, a reviewer, a PR, CI and a merge.",
+  "description": "The jalankan-tiket workflow for Claude Code. Plan a product with its owner, then let Claude work GitHub tickets autonomously through an implementer, a reviewer, a PR, CI and a merge. A second plugin, qa, tests web apps built by other teams.",
   "allowCrossMarketplaceDependenciesOn": ["claude-plugins-official"],
   "plugins": [
     {
@@ -13,6 +13,13 @@
       "description": "Autonomous GitHub-ticket workflow: set up a project, plan it through grilling, then run tickets through implementer and reviewer subagents, PR, CI and merge.",
       "category": "engineering",
       "keywords": ["workflow", "github", "tickets", "autonomous", "ci", "grilling"]
+    },
+    {
+      "name": "qa",
+      "source": "./plugins/qa",
+      "description": "QA for web apps built by other teams: a private QA workspace, a readiness audit, and black-box tests against staging, with bugs on Trello and reports in Google Docs.",
+      "category": "testing",
+      "keywords": ["qa", "testing", "playwright", "black-box", "trello", "staging"]
     }
   ]
 }

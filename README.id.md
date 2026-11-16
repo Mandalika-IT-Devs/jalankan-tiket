@@ -52,6 +52,10 @@ Di sesi Claude Code (CLI atau tab Code di Claude Desktop):
 | 5. Jawab pertanyaan dari tiket yang diparkir | `/tiket:catat-keputusan` |
 | Ragu langkah berikutnya? | `/tiket:cek-proyek` |
 
+## Plugin qa
+
+Marketplace yang sama juga memuat plugin kedua, `qa`, untuk QA engineer yang menguji aplikasi web buatan tim lain. Plugin ini menyimpan pekerjaan QA di workspace privat, menjalankan audit kesiapan, dan menguji dari luar di staging. Bug dilaporkan ke Trello dan laporan ditulis ke Google Docs. Repo produk tidak pernah diubah. Pasang dengan `/plugin install qa@jalankan-tiket`, lalu baca [Plugin qa](docs/id/qa.md). Status: 0.1.0, tahap 1 dari 3.
+
 ## Panduan
 
 | Bahasa Indonesia | English |
@@ -68,6 +72,7 @@ Di sesi Claude Code (CLI atau tab Code di Claude Desktop):
 | [Akun agen](docs/id/agent-account.md) | [Agent account](docs/en/agent-account.md) |
 | [Tanya jawab](docs/id/faq.md) | [FAQ](docs/en/faq.md) |
 | [Versi teruji](docs/id/versions.md) | [Tested versions](docs/en/versions.md) |
+| [Plugin qa](docs/id/qa.md) | [The qa plugin](docs/en/qa.md) |
 
 ## Kebutuhan
 
