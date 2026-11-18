@@ -24,10 +24,11 @@ export default defineConfig({
   retries: 0,
   // Staging is shared with other people, so tests run one at a time.
   workers: 1,
+  // No HTML report: it stores every step title, and the title of a fill step holds the typed value, such as a
+  // password in the login setup. The JSON report keeps only test.step titles.
   reporter: [
     ['list'],
     ['json', { outputFile: 'test-results.json' }],
-    ['html', { outputFolder: 'playwright-report', open: 'never' }],
   ],
   use: {
     baseURL: product.baseURL,
@@ -36,7 +37,12 @@ export default defineConfig({
     video: 'retain-on-failure',
   },
   projects: [
-    { name: 'setup', testMatch: /auth\.setup\.ts/ },
+    // The setup project types real passwords. Traces, videos and screenshots would record them, so they stay off.
+    {
+      name: 'setup',
+      testMatch: /auth\.setup\.ts/,
+      use: { trace: 'off', video: 'off', screenshot: 'off' },
+    },
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },

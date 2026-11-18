@@ -17,7 +17,7 @@ products/<slug>/
   source/                    read-only clone of the product's repository
   playwright.config.ts
   tests/                     auth setup, suites per area, probes (see playwright.md)
-  tests/support/             session.ts (saved sessions per role) and redact.ts (URLs without secrets)
+  tests/support/             session.ts (saved sessions per role), login.ts (the login steps) and redact.ts (URLs without secrets)
   readiness.md               the latest readiness audit
   requirements.md            requirements with IDs, and the traceability matrix
   questions.md               questions for the product team
@@ -28,6 +28,9 @@ products/<slug>/
     results.json, results.md the newest result of every case
     bugs/BUG-<nnn>.md        confirmed bugs
     exploratory/<charter>.md exploratory logs
+    run/brief.md             what every agent of the run needs: the QA engineer's decisions and permissions, data, rate limits
+    run/candidates.md        bug candidates and their status with the pemeriksa
+    run/handoff.md           where the run stands, so that a new session can continue it
     evidence/                screenshots and videos, never committed
 ```
 
@@ -102,7 +105,7 @@ A **cycle** is one round of testing one version of the product. `/qa:rencanakan-
 
 ## `cycles/<cycle>/results.json`
 
-The newest result of every case and charter in the cycle. States are always written in English here, and translated in `results.md`.
+The newest result of every case and charter in the cycle. `/qa:jalankan-uji` updates it after every area and every verdict, so a run that stops loses nothing. States are always written in English here, and translated in `results.md`.
 
 ```json
 {

@@ -1,6 +1,6 @@
 ---
 name: laporkan
-description: Publish a test cycle's results - evidence to Google Drive, one Trello card per confirmed bug in the review list, retest comments on existing cards, and a Google Docs test report with a Go/No-Go recommendation.
+description: Publish a test cycle's results - evidence to Google Drive, one Trello card per confirmed bug in the review list, retest comments on existing cards, and a Google Docs test report with a Go/No-Go recommendation. During a run, creates the cards of bugs confirmed so far.
 disable-model-invocation: true
 ---
 
@@ -17,19 +17,20 @@ Read these first, and follow them throughout:
 ## 1. Find the cycle
 
 - Run from the workspace root. Read `language` from `qa-workspace.json`; every message, card and document uses it.
-- Pick the product as `/qa:audit-kesiapan` does, and the named cycle, or the newest one whose `status` is `executed` or `reported`. When there is none, stop and point to `/qa:jalankan-uji <slug>`.
-- Read `cycle.json`, `results.json`, `results.md` and every file in `bugs/`.
+- Pick the product as `/qa:audit-kesiapan` does, and the named cycle, or the newest one whose `status` is `running`, `executed` or `reported`. When there is none, stop and point to `/qa:jalankan-uji <slug>`.
+- **A cycle that is still `running` gets an early report.** It is meant for urgent bugs, and for long runs where developers should start on confirmed bugs before the run ends. Do steps 2 and 3 only, for the bug files that have no card yet. Skip steps 4 to 6 and leave `status` as it is. In step 7, commit only the bug files, with a message that means "Bug cards <name> <cycle>". The run may be committing in the same folder, so add the bug files by name. The full report follows once the run has ended.
+- Read `cycle.json`, `results.json`, `results.md` and every file in `bugs/`. A cycle that is still running has no `results.md` yet.
 - Check that the Trello and Drive connectors work: `trelloReadBoard` (`get`) on `boardId`, and `get_file_metadata` on `evidenceFolderId`. A missing connector makes its part BLOCKED. Do the other parts and report it.
 
 ## 2. Check and upload the evidence
 
 1. List the evidence that the bug files and `results.json` cite, in `cycles/<cycle>/evidence/`.
-2. **Look at every image** before it leaves the machine. When one shows a password, a token, a full card number or a real person's personal data, do not upload it: crop or retake it with a probe, or leave it out and say so in the bug.
+2. **Look at every image** before it leaves the machine. When one shows a password, a token, a full card number, a shared test account's email or avatar, or a real person's personal data, do not upload it as it is. Cover that part with `node ${CLAUDE_PLUGIN_ROOT}/scripts/samarkan.mjs <in.png> <out.png> <x,y,width,height> …` and upload the covered copy, retake it with a probe that uses `mask`, or leave it out and say so in the bug.
 3. Create a subfolder named after the cycle in `evidenceFolderId`, unless it exists. Upload each file into it with `create_file`, as `connectors.md` describes. Wait at least 10 seconds between two uploads.
 4. Replace the file names in each bug file's Evidence section with their Drive links.
 5. **Check the text too.** Every URL in a bug file, a card or the report has its query values replaced by `REDACTED`, as `redactUrl` does, unless a value is needed to reproduce the bug and is not a secret.
 
-Never upload traces, `test-results/` folders or anything from `.auth/`.
+Never upload traces, `test-results/` folders, `error-context.md` files or anything from `.auth/`.
 
 ## 3. Bug cards
 

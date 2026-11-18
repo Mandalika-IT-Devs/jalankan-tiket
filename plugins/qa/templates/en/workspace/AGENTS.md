@@ -9,16 +9,16 @@ This repository is a QA workspace, made by the `qa` plugin of the jalankan-tiket
 - `products/<slug>/.env.local`: test accounts. Only the QA engineer fills it in. Never committed.
 - `products/<slug>/source/`: a clone of the product's repository, for reading only. Never committed.
 - `products/<slug>/tests/`: Playwright suites. `auth.setup.ts` logs in once per role and saves the session in `.auth/`.
-- `products/<slug>/tests/support/`: `session.ts` loads and re-saves each role's session (specs use `import { test, expect } from '../support/session'` and `test.use({ role: '<role>' })`), and `redact.ts` redacts URLs before they are printed.
+- `products/<slug>/tests/support/`: `session.ts` loads and re-saves each role's session (specs use `import { test, expect } from '../support/session'` and `test.use({ role: '<role>' })`), `login.ts` holds the login steps, and `redact.ts` redacts URLs before they are printed.
 - `products/<slug>/readiness.md`: the latest readiness audit.
 - `products/<slug>/requirements.md`, `questions.md`, `risks.md`, `cases/`: requirements, questions, risks and test cases.
-- `products/<slug>/cycles/<cycle>/`: one round of testing: results, bugs, exploratory logs. Evidence in `evidence/` is never committed.
+- `products/<slug>/cycles/<cycle>/`: one round of testing: results, bugs, exploratory logs. `run/` keeps the state of a run, so that a new session can continue it. Evidence in `evidence/` is never committed.
 
 ## Rules
 
 1. **The product's repository is read-only.** Never push, never open issues, PRs or comments in it, and never fix its code. Findings go to Trello and the test report.
 2. **Only the hosts in `allowedHosts`.** Never open or test any other host, production above all. `playwright.config.ts` stops the tests when the host is not listed.
-3. **Passwords never pass through an agent.** Never read `.env.local` or `.auth/`, and never print what they hold. Logins use the sessions from `auth.setup.ts`. A password never appears in a report, a card, a commit or a screenshot.
+3. **Passwords never pass through an agent.** Never read `.env.local` or `.auth/`, and never print what they hold. Logins use the sessions from `auth.setup.ts`. A password never appears in a report, a card, a commit or a screenshot. Never turn on the Playwright HTML report, or traces and videos in the `setup` project: they record what a test types.
 4. **Test data is marked.** Every record a test creates starts with `testDataPrefix` from `product.json`. Never change or delete data that QA did not create.
 5. **Side effects.** While `sideEffects` of a channel (email, SMS, WhatsApp, payment) is `unknown` or `real`, every test that triggers it is BLOCKED.
 6. **Out of scope without written permission:** load tests, security scanners, brute force, and anything against production.

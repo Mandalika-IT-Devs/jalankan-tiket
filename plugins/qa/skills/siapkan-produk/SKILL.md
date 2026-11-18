@@ -93,8 +93,8 @@ Skip a part when its connector is missing, and report it in step 9. Wait at leas
 ## 7. Write the product files
 
 1. Copy `templates/common/product/` into `products/<slug>/`. The language files in `templates/<language>/product/` are written later by the other commands.
-2. Fill the placeholders in `product.json` and `.env.local.example` with the answers and the IDs from step 6. A missing Trello or Drive ID becomes an empty string.
-3. Fill the ready check and the login locators in `tests/auth.setup.ts` from what you found in step 4. The ready check matters most on server-rendered pages: a form used before it hydrates submits natively. Prefer `getByLabel` and `getByRole` with the visible text. When the code leaves a locator unclear, open the staging login page with your browser tools and read its accessibility tree, without typing anything. When a role logs in differently, such as with a PIN, add a branch for that role in the same file.
+2. Fill the placeholders in `product.json` and `.env.local.example` with the answers and the IDs from step 6. A missing Trello or Drive ID becomes an empty string. Work on `.env.local.example` with your Read and Write tools: the deny rule for `.env.local` also blocks shell commands that name the example file.
+3. Fill the ready check and the login locators in `tests/support/login.ts` from what you found in step 4. `auth.setup.ts` calls it for every role. The ready check matters most on server-rendered pages: a form used before it hydrates submits natively. Prefer `getByLabel` and `getByRole` with the visible text. When the code leaves a locator unclear, open the staging login page with your browser tools and read its accessibility tree, without typing anything. When a role logs in differently, such as with a PIN, add a branch for that role in `logIn`.
 4. **Check your work.**
    - `grep -rnE '\{\{[A-Z0-9_]+\}\}' products/<slug> --exclude-dir=source` finds nothing.
    - `npx playwright test -c products/<slug> --list` lists the login tests without an error.
@@ -112,7 +112,7 @@ Skip a part when its connector is missing, and report it in step 9. Wait at leas
 ## 9. Report
 
 Tell the QA engineer, in plain words:
-- what was created: the workspace repository link (first run), the product folder, the Trello list and the Drive folder links;
+- what was created: the workspace repository link (first run), the product folder, the Trello list and the Drive folder links. Name the Google account that owns the Drive folder: it is the account connected to the Drive connector, which can differ from the QA engineer's personal one;
 - what was skipped, and why, such as a missing connector;
 - the open steps: fill in `.env.local`, and share the Drive folder with the developers who will read the reports;
 - the next step: `/qa:audit-kesiapan <slug>`.

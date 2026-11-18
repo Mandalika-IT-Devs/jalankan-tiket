@@ -22,6 +22,10 @@ How soon it should be fixed. QA proposes it, and the product team decides.
 
 Severity and priority are separate fields. A typo on the login page can be Low severity and P1 priority.
 
+## Urgent bugs
+
+A bug is **urgent** when it is Critical, or High because it exposes credentials or personal data, loses data or money, or stops testing. An urgent candidate does not wait for the end of the run. `/qa:jalankan-uji` sends it to the `pemeriksa` agent right after the area that found it. Once it is confirmed, the QA engineer hears about it at once, with a message for the developers, and `/qa:laporkan` can create its card while the run goes on.
+
 ## The bug file
 
 `/qa:jalankan-uji` writes each confirmed bug to `cycles/<cycle>/bugs/BUG-<nnn>.md`. `/qa:laporkan` turns it into a Trello card. The file, and the card, hold:

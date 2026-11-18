@@ -19,8 +19,10 @@ Every qa skill and agent follows these rules. They protect a staging environment
 - `.env.local` and `.auth/` are off limits: never read, print, copy or attach them. The workspace's permission rules deny reading them.
 - To check that `.env.local` is complete, run `bash ${CLAUDE_PLUGIN_ROOT}/scripts/cek-env.sh products/<slug>`. It prints variable names only.
 - Log in through the `setup` project of the product's Playwright config. Browser tools reuse the saved session in `.auth/<role>.json`.
-- Never type a password into a page, a command or a message. When a login is needed that the setup project does not cover, mark the check BLOCKED and ask the QA engineer.
-- A screenshot or video that shows a password, a token or a full payment card number is never shared. Retake it or crop it.
+- Never type a password into a page, a command or a message. When a login is needed that the setup project does not cover, mark the check BLOCKED and ask the QA engineer. `playwright.md` describes the two ways a spec may log in by itself.
+- **Test output can keep what a test typed.** The Playwright HTML report stores the value of every fill step. Traces, videos, screenshots, `ariaSnapshot()` output and the `error-context.md` of a failed test can show a field that holds a password. The templates have no HTML report, and the `setup` project records no trace, video or screenshot. Never turn either back on, and never read a `playwright-report/` folder: delete it.
+- A screenshot or video that shows a password, a token, a full payment card number, a shared test account's email or avatar, or a real person's data is never shared. Retake it with `mask`, or cover the part with `scripts/samarkan.mjs`, as `playwright.md` describes.
+- **Secrets you come across.** A card, a document, a file in `source/` or a page may hold a key, a token or a password. Never copy, quote or use it, and do not open it further. Tell the QA engineer where it is, so the team can move it and change it.
 - **Secrets in URLs.** A URL can carry a credential in its query. Print URLs only through `redactUrl` from `tests/support/redact.ts`, and redact the query of every URL you copy into a file, a card or a report. When a test account's password ever appears in a URL, the login setup stops: report it as a bug candidate, and ask the QA engineer to change that account's password, because the server may have logged it.
 
 ## GitHub accounts
@@ -53,3 +55,4 @@ Basic security checks inside normal use are in scope: one role trying to open an
 - Tests run with one worker, because staging is shared.
 - Trello and Google Drive writes wait at least 10 seconds between two writes. Run `sleep 10` as a command of its own when nothing else fills the time.
 - Stop at once, without retrying, when a connector or a site answers with a rate limit, HTTP 429, or a block page. Report what is left.
+- Logins count against the app's rate limit, and a limit that is reached can lock out the other people on staging. Run the `setup` project once per run, and keep the logins that specs make few. After an HTTP 429 on a login, `logIn` pauses every login for 15 minutes.

@@ -4,7 +4,7 @@ Plugin `qa` dibuat untuk QA engineer yang menguji aplikasi web buatan tim lain, 
 
 Plugin `tiket` membangun produk, sedangkan `qa` hanya menguji dan melaporkan. `qa` tidak pernah mengubah repo produk atau memperbaiki kodenya.
 
-> **Status: 0.1.1, belum dirilis.** Ketujuh perintah sudah ada. Tahap 1 sudah dijalankan pada produk sungguhan, dan tahap 2–3 sedang divalidasi. Rancangannya ada di [ADR-0004](../adr/0004-qa-plugin.md).
+> **Status: 0.1.2, belum dirilis.** Ketujuh perintah sudah ada, dan satu siklus penuh, dari audit sampai laporan, sudah dijalankan pada produk sungguhan. Rancangannya ada di [ADR-0004](../adr/0004-qa-plugin.md).
 
 ## Yang perlu Anda siapkan
 
@@ -27,7 +27,7 @@ Plugin `tiket` membangun produk, sedangkan `qa` hanya menguji dan melaporkan. `q
 | `/qa:audit-kesiapan` | Sebelum menguji, dan setiap kali ragu | 15 pemeriksaan dengan hasil SIAP, SIAP DENGAN CATATAN, atau TERBLOKIR, plus pertanyaan untuk tim produk |
 | `/qa:rencanakan-uji` | Di awal pengujian sebuah versi | Kebutuhan ber-ID, pertanyaan, skor risiko, kasus uji, piagam eksplorasi, dan rencana uji di Google Docs |
 | `/qa:jalankan-uji` | Setelah rencana siap | Hasil setiap kasus dengan bukti, dan bug yang sudah dikonfirmasi ulang |
-| `/qa:laporkan` | Setelah pengujian | Kartu bug di Trello, bukti di Drive, dan laporan uji dengan rekomendasi Go/No-Go |
+| `/qa:laporkan` | Setelah pengujian, atau selama run untuk bug yang sudah terkonfirmasi | Kartu bug di Trello, bukti di Drive, dan laporan uji dengan rekomendasi Go/No-Go |
 | `/qa:regresi` | Setiap ada rilis baru di staging | Pilihan uji regresi dari diff antar versi, alur kritis, dan bug yang menunggu uji ulang |
 | `/qa:siklus` | Kapan saja | Menjalankan perintah yang perlu secara berurutan, dan hanya memanggil Anda untuk keputusan |
 
@@ -55,7 +55,9 @@ Tulis nama produk di belakang perintah, misalnya `/qa:audit-kesiapan toko-buku`.
    Teruskan pertanyaannya ke tim produk.
 5. **`/qa:rencanakan-uji toko-buku`.** Claude membuka satu *siklus uji* untuk versi yang sedang di staging, dan menulis rencana ujinya di Google Docs.
 6. **`/qa:jalankan-uji toko-buku`.** Smoke test berjalan lebih dulu. Bila gagal, pengujian berhenti. Setelah itu agen `penguji` mengerjakan setiap area, satu per satu. Setiap calon bug diulang secara terpisah oleh agen `pemeriksa`. Hanya bug yang muncul di ketiga percobaan yang dihitung sebagai bug.
-7. **`/qa:laporkan toko-buku`.** Kartu bug masuk list "QA – Perlu Ditinjau". Tinjau kartunya, lalu pindahkan ke list developer. Claude juga memberi pesan singkat yang siap Anda tempel ke grup tim.
+   - **Bug mendesak tidak menunggu run selesai.** Bug Kritis, atau Tinggi yang membocorkan kredensial atau data pribadi, menghilangkan data atau uang, atau menghentikan pengujian, langsung diperiksa ulang setelah areanya selesai. Begitu terkonfirmasi, Anda langsung diberi pesan singkat untuk developer.
+   - **Run yang panjang bisa melebihi satu sesi chat.** Progresnya tersimpan di folder siklus setelah setiap area. Kalau percakapan sudah terlalu panjang, buka sesi baru di workspace dan ketik `/qa:jalankan-uji toko-buku` lagi: run berlanjut dari titik terakhir.
+7. **`/qa:laporkan toko-buku`.** Kartu bug masuk list "QA – Perlu Ditinjau". Tinjau kartunya, lalu pindahkan ke list developer. Claude juga memberi pesan singkat yang siap Anda tempel ke grup tim. Selama run masih berjalan, perintah yang sama hanya membuat kartu untuk bug yang sudah terkonfirmasi, tanpa laporan. Itu berguna untuk bug mendesak, atau untuk run yang panjang supaya developer bisa mulai lebih awal. Ketik perintahnya di sesi baru bila percakapan run sudah panjang.
 8. **Saat ada rilis baru: `/qa:regresi toko-buku`, lalu `/qa:jalankan-uji` dan `/qa:laporkan`.** Atau cukup `/qa:siklus toko-buku`.
 
 ## Di mana hasilnya disimpan
@@ -72,6 +74,8 @@ Tulis nama produk di belakang perintah, misalnya `/qa:audit-kesiapan toko-buku`.
 - **Repo produk hanya dibaca.** Claude tidak push, tidak membuka issue, PR, atau komentar di sana, dan tidak memperbaiki kodenya.
 - **Hanya host yang Anda daftarkan.** Test berhenti sebelum mulai bila targetnya bukan host di `allowedHosts`. Production tidak pernah didaftarkan.
 - **Kata sandi tidak pernah lewat Claude.** Login dilakukan oleh skrip Playwright yang membaca `.env.local`. Aturan izin di workspace melarang Claude membaca berkas itu. Screenshot diperiksa dulu sebelum diunggah, dan URL selalu dicetak dengan isi parameternya disensor. Kalau kata sandi akun uji sampai muncul di URL, login dihentikan dan Anda diminta mengganti kata sandinya.
+- **Hasil test tidak menyimpan kata sandi.** Report HTML Playwright tidak dipakai, dan login tidak merekam trace, video, atau screenshot, karena semuanya bisa menyimpan apa yang diketik. Screenshot menyamarkan email dan avatar akun uji bersama serta data orang sungguhan sebelum diunggah.
+- **Login dibatasi.** Setiap peran login sekali di awal run. Setelah satu jawaban 429 (terlalu banyak percobaan), semua login berhenti 15 menit supaya akun orang lain di staging tidak ikut terkunci.
 - **Data uji diberi penanda** `QA-AUTO`. Data yang tidak dibuat QA tidak pernah diubah atau dihapus.
 - **Efek samping.** Selama belum jelas apakah staging mengirim email, SMS, atau WhatsApp sungguhan, atau menerima pembayaran sungguhan, test yang memicunya ditandai TERBLOKIR.
 - **Staging dipakai bersama**, jadi test berjalan satu per satu dan tanpa pengulangan otomatis.

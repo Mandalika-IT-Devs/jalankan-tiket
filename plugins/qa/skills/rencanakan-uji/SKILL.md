@@ -34,6 +34,8 @@ From Trello, when the connector works: cards on the board about earlier bugs (`t
 
 This step is done when you can list the product's areas, the roles, and the rules each area enforces.
 
+**A large product,** with many feature documents, does not fit in one agent's reading. Split steps 3 to 5 by groups of areas across subagents, with one shared brief: the roles, the conventions of `test-design.md`, and temporary IDs per group, such as `REQ-KASIR-01` and `Q-KASIR-01`. Then merge their work yourself: renumber the IDs across the product, merge questions that ask the same thing, and build the traceability matrix from the merged files.
+
 ## 3. Write requirements and questions
 
 1. Copy `templates/<language>/product/requirements.md` and `questions.md` into `products/<slug>/` when they do not exist yet.
@@ -54,8 +56,9 @@ Copy `templates/<language>/product/risks.md` when it does not exist yet, and fil
    - **API cases** where the UI calls an endpoint that changes data;
    - one **accessibility** case per main page type, and one **responsive** case per main page that users open on a phone.
 3. Write the exploratory charters in `cases/eksplorasi.md` / `cases/exploratory.md`, as section 6 describes.
-4. **Check your cases** against the rules in section 4 of `test-design.md`. Search the case files for vague expected results, such as "berhasil" or "works" alone, "sesuai", "correctly" or "properly", and rewrite each one into something observable.
-5. Write the traceability matrix at the end of `requirements.md`, as section 7 describes.
+4. **Check your cases** against the rules in section 4 of `test-design.md`. Search the case files for vague expected results, such as "berhasil" or "works" alone, "sesuai", "correctly" or "properly", and rewrite each one into something observable. A word inside a quoted UI text, such as the message "Alamat berhasil disimpan.", is not vague: it is the exact text to check.
+5. **Suspicions from the code,** such as a status change the API allows but the documents forbid, go into the charters as their goals, or into a case with the code location under its notes. They are not bugs until a test shows them.
+6. Write the traceability matrix at the end of `requirements.md`, as section 7 describes.
 
 This step is done when every P1 requirement has a case or a charter, and every case has a role, data, steps and observable expected results.
 
