@@ -9,16 +9,16 @@ Repo ini adalah workspace QA, dibuat oleh plugin `qa` dari kit jalankan-tiket. I
 - `products/<slug>/.env.local`: akun uji. Hanya QA engineer yang mengisinya. Tidak pernah di-commit.
 - `products/<slug>/source/`: clone repo produk, hanya untuk dibaca. Tidak pernah di-commit.
 - `products/<slug>/tests/`: suite Playwright. `auth.setup.ts` login sekali per peran dan menyimpan sesinya di `.auth/`.
-- `products/<slug>/tests/support/`: `session.ts` memuat dan menyimpan ulang sesi per peran (spec memakai `import { test, expect } from '../support/session'` dan `test.use({ role: '<peran>' })`), dan `redact.ts` menyensor URL sebelum dicetak.
+- `products/<slug>/tests/support/`: `session.ts` memuat dan menyimpan ulang sesi per peran (spec memakai `import { test, expect } from '../support/session'` dan `test.use({ role: '<peran>' })`), `login.ts` berisi langkah login, dan `redact.ts` menyensor URL sebelum dicetak.
 - `products/<slug>/readiness.md`: hasil audit kesiapan terakhir.
 - `products/<slug>/requirements.md`, `questions.md`, `risks.md`, `cases/`: kebutuhan, pertanyaan, risiko, dan kasus uji.
-- `products/<slug>/cycles/<siklus>/`: satu putaran uji: hasil, bug, log eksplorasi. Bukti di `evidence/` tidak di-commit.
+- `products/<slug>/cycles/<siklus>/`: satu putaran uji: hasil, bug, log eksplorasi. `run/` menyimpan keadaan run, supaya sesi baru bisa melanjutkannya. Bukti di `evidence/` tidak di-commit.
 
 ## Aturan
 
 1. **Repo produk hanya dibaca.** Jangan push, jangan buka issue, PR, atau komentar di repo produk, dan jangan memperbaiki kodenya. Temuan dilaporkan lewat Trello dan laporan uji.
 2. **Hanya host di `allowedHosts`.** Jangan membuka atau menguji host lain, terutama production. `playwright.config.ts` menghentikan test bila host-nya tidak terdaftar.
-3. **Kata sandi tidak pernah lewat agen.** Jangan membaca `.env.local` atau `.auth/`, dan jangan mencetak isinya. Login memakai sesi dari `auth.setup.ts`. Kata sandi tidak boleh muncul di laporan, kartu, commit, atau screenshot.
+3. **Kata sandi tidak pernah lewat agen.** Jangan membaca `.env.local` atau `.auth/`, dan jangan mencetak isinya. Login memakai sesi dari `auth.setup.ts`. Kata sandi tidak boleh muncul di laporan, kartu, commit, atau screenshot. Jangan menyalakan report HTML Playwright, atau trace dan video di project `setup`: semuanya merekam apa yang diketik test.
 4. **Data uji diberi penanda.** Setiap data yang dibuat test diawali `testDataPrefix` dari `product.json`. Jangan mengubah atau menghapus data yang tidak dibuat oleh QA.
 5. **Efek samping.** Selama `sideEffects` sebuah kanal (email, SMS, WhatsApp, pembayaran) bernilai `unknown` atau `real`, test yang memicunya berstatus TERBLOKIR.
 6. **Di luar cakupan tanpa izin tertulis:** uji beban, scanner keamanan, brute force, dan apa pun terhadap production.

@@ -7,6 +7,9 @@ The `penguji` and `pemeriksa` agents follow this file. Run everything from the w
 ```
 products/<slug>/tests/
   auth.setup.ts              logs in once per role (stage 1)
+  support/session.ts         saved sessions per role, written back after every test
+  support/login.ts           the product's login steps, for auth.setup.ts and the few specs that may log in
+  support/redact.ts          redactUrl and urlHasSecret
   smoke/smoke.spec.ts        the critical flows, short and read-only where possible
   <area>/<area>.spec.ts      automated cases of one area, such as cuti/cuti.spec.ts
   api/<area>.api.spec.ts     API checks
@@ -25,7 +28,12 @@ products/<slug>/tests/
   test.use({ role: 'karyawan' });
   ```
 
-  The fixture writes the session back after every test, because many apps rotate their refresh token and log out a second test that starts from the same old file. A test that logs out sets `test.use({ saveSession: false })`. Never log in inside a spec with a username and password. A case that needs a role without a session is BLOCKED.
+  The fixture writes the session back after every test, because many apps rotate their refresh token and log out a second test that starts from the same old file. A test that logs out sets `test.use({ saveSession: false })`. A case that needs a role without a session is BLOCKED.
+- **Logging in inside a spec.** Some cases need a fresh login, such as a session after logout, or a login on two devices. A spec may log in only through `logIn` from `support/login.ts`, and only in one of two ways:
+  - **With an account the test created itself,** with a password generated at runtime, such as `crypto.randomUUID()`. Allowed when creating the account triggers no `unknown` or `real` side effect. Never print, store or commit that password.
+  - **With a shared test account,** through `process.env` as `auth.setup.ts` does, only when the QA engineer allowed it for this run. The permission is written in the run's `run/brief.md`.
+
+  Such a spec sets `test.use({ trace: 'off', video: 'off', screenshot: 'off' })`, because they record what a test types. While a field holds a real password, never print the page, call `ariaSnapshot()`, take a screenshot or read the field's value. Every login counts against the app's rate limit: keep logins few, and after an HTTP 429 `logIn` pauses every login for 15 minutes.
 - **Server-rendered pages.** Before filling a form, wait for a sign that the page's own script has run, as `auth.setup.ts` does with its ready check. A form used before it hydrates submits natively and loses its input.
 - **URLs in output.** Print or log a URL only through `redactUrl` from `support/redact.ts`. A URL can carry a password, a token or a one-time code in its query.
 - **Locators,** in this order: `getByRole` with the accessible name, `getByLabel`, `getByPlaceholder`, `getByText`, `getByTestId`. CSS or XPath only when nothing else works, with a comment that says why.
@@ -75,16 +83,20 @@ test('EX-03 probe 1', async ({ page }, testInfo) => {
   await page.goto('/pos');
   // the actions of this probe
   console.log(redactUrl(page.url()));
+  // Never snapshot or screenshot a page while one of its fields holds a real password.
   console.log(await page.locator('body').ariaSnapshot());
   await page.screenshot({ path: testInfo.outputPath('ex-03-01.png'), fullPage: true });
 });
 ```
 
-Run one probe with `npx playwright test -c products/<slug> --project=probe ex-03-01`. Read the snapshot in its output, decide the next step, and write the next probe. Keep each probe small: one to five actions.
+A probe that types into a password field uses an obviously made-up value, never a test account's password.
+
+Run one probe with `npx playwright test -c products/<slug> --project=probe --no-deps ex-03-01`. Read the snapshot in its output, decide the next step, and write the next probe. Keep each probe small: one to five actions.
 
 ## Running and reading results
 
-- **Run:** `npx playwright test -c products/<slug> --project=chromium <files or folders>`. The `setup` project runs first and refreshes the sessions.
+- **Run:** `npx playwright test -c products/<slug> --project=chromium <files or folders>`. Without `--no-deps`, the `setup` project runs first and logs every role in again. Do that once at the start of a run. Later runs add `--no-deps` and reuse the saved sessions. Run `setup` again only when a role's session has ended, because every login counts against the app's rate limit.
 - **Results:** `products/<slug>/test-results.json`. Map each test to its case through the ID in the title. `passed` is PASS, `failed` and `timedOut` are FAIL candidates, `skipped` is BLOCKED or NOT RUN with its reason.
 - **Evidence:** screenshots, videos and traces of failed tests are in `products/<slug>/test-results/`. Copy the ones you cite into `cycles/<cycle>/evidence/` with clear names. Never share a trace outside the workspace: it holds the session's cookies.
+- **Screenshots without people.** A screenshot you take yourself masks what identifies a shared test account or a real person, such as the account's email, its avatar or initials, names and phone numbers: `page.screenshot({ path, mask: [page.getByText('qa@…'), page.getByRole('img', { name: 'Avatar' })] })`. To cover part of an image that already exists, run `node ${CLAUDE_PLUGIN_ROOT}/scripts/samarkan.mjs <in.png> <out.png> <x,y,width,height> …` from the workspace root. It paints black boxes, in image pixels from the top-left corner.
 - **Flakiness:** run a failed test twice more (`--repeat-each=3` on that test only). Failing every time is a FAIL candidate. Mixed results are INCONCLUSIVE, with the count.

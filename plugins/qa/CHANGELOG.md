@@ -2,6 +2,39 @@
 
 All notable changes to the `qa` plugin. Versions follow `plugins/qa/.claude-plugin/plugin.json`. ADR-0004 records the design.
 
+## 0.1.2
+
+Fixes from the first full cycle on a real product: 805 cases, 40 confirmed bugs, three sessions. None of them is specific to that product.
+
+- **Test output no longer keeps passwords.**
+  - The Playwright HTML report is gone from the template. It stored the value of every fill step, so the login setup wrote the shared accounts' passwords to disk.
+  - The `setup` project records no trace, video or screenshot.
+  - The workspace denies reading `playwright-report/`.
+  - `safety.md` lists every place a typed value can stay: the HTML report, traces, videos, screenshots, `ariaSnapshot()` output and `error-context.md`.
+  - The readiness audit's guardrail check now checks the Playwright config too. It fixes an older config and deletes an old report without opening it.
+- **One login helper.** The new `tests/support/login.ts` holds the product's login steps, and `auth.setup.ts` calls it. It empties the password field after each attempt, so a failure snapshot cannot record it. After an HTTP 429 it pauses every login for 15 minutes, because a reached login limit can lock out other people on staging.
+  - `playwright.md` describes the only two ways a spec may log in by itself: with an account the test created, using a password generated at runtime, or with a shared account when the QA engineer allowed it for the run.
+  - Agents run the `setup` project once per run, and `--no-deps` after that.
+- **Runs that outlast a conversation.** `/qa:jalankan-uji` keeps the run's state in `cycles/<cycle>/run/` and updates it after every area and every verdict, then commits:
+  - `brief.md`: the decisions, permissions, data and rate limits every agent needs;
+  - `candidates.md`: the bug candidates and their status;
+  - `handoff.md`: where the run stands.
+
+  `results.json` grows area by area. The same command, typed in a new session, continues a stopped run. The skill also checks the version before every area, because staging can be redeployed in the middle of a run.
+- **Urgent bugs reach developers early.** `bugs.md` defines an urgent bug: Critical, or High because it exposes credentials or personal data, loses data or money, or stops testing. The `penguji` marks such candidates. The coordinator has them confirmed right after their area, and gives the QA engineer a message for the developers at once.
+- **Cards during a run.** `/qa:laporkan` on a cycle that is still `running` creates the cards of bugs confirmed so far, and nothing else. The full report follows when the run ends.
+- **Screenshots without people.**
+  - Screenshots mask a shared test account's email and avatar, and real people's data, with Playwright's `mask` option.
+  - The new `scripts/samarkan.mjs` paints black boxes over part of an existing PNG, using the workspace's own Playwright.
+  - `/qa:laporkan` covers such parts instead of leaving the image out.
+- **Smaller fixes.**
+  - Agents never copy a secret they come across, such as keys on a Trello card. They tell the QA engineer where it is.
+  - Google Docs made from HTML keep their numbering.
+  - `/qa:rencanakan-uji` splits a large product across subagents and merges their IDs. It does not treat a word inside a quoted UI text as vague, and puts suspicions from code into charters.
+  - `/qa:siapkan-produk` names the Google account that owns the Drive folder, and works on `.env.local.example` with file tools, since the deny rule blocks shell commands that name it.
+
+Products set up with 0.1.1 keep their files. Run `/qa:audit-kesiapan <slug>` to bring the Playwright config and the deny rules up to date. To use `logIn` in specs, copy `tests/support/login.ts` from the templates, and fill in the locators from your `auth.setup.ts`.
+
 ## 0.1.1
 
 Four fixes from the first run on a real product. None of them is specific to that product.

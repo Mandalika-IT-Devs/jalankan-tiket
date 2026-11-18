@@ -4,7 +4,7 @@ The `qa` plugin is for a QA engineer who tests web apps built by other teams, su
 
 The `tiket` plugin builds a product, while `qa` only tests and reports. `qa` never changes the product's repository or fixes its code.
 
-> **Status: 0.1.1, not released yet.** All seven commands exist. Stage 1 has run on a real product, and stages 2–3 are being validated. The design is in [ADR-0004](../adr/0004-qa-plugin.md).
+> **Status: 0.1.2, not released yet.** All seven commands exist, and one full cycle, from the audit to the report, has run on a real product. The design is in [ADR-0004](../adr/0004-qa-plugin.md).
 
 ## What you need
 
@@ -27,7 +27,7 @@ The `tiket` plugin builds a product, while `qa` only tests and reports. `qa` nev
 | `/qa:audit-kesiapan` | Before testing, and whenever in doubt | 15 checks ending in READY, READY WITH NOTES or BLOCKED, plus questions for the product team |
 | `/qa:rencanakan-uji` | When testing of a version starts | Requirements with IDs, questions, risk scores, test cases, exploratory charters, and a test plan in Google Docs |
 | `/qa:jalankan-uji` | Once the plan is ready | A result with evidence for every case, and bugs confirmed by a second run |
-| `/qa:laporkan` | After testing | Bug cards on Trello, evidence on Drive, and a test report with a Go/No-Go recommendation |
+| `/qa:laporkan` | After testing, or during a run for bugs confirmed so far | Bug cards on Trello, evidence on Drive, and a test report with a Go/No-Go recommendation |
 | `/qa:regresi` | Whenever a new release reaches staging | A regression selection from the diff between versions, the critical flows, and the bugs waiting for a retest |
 | `/qa:siklus` | Any time | Runs the commands that are due, in order, and calls you only for decisions |
 
@@ -55,7 +55,9 @@ Write the product's name after the command, such as `/qa:audit-kesiapan toko-buk
    Forward its questions to the product team.
 5. **`/qa:rencanakan-uji toko-buku`.** Claude opens a *test cycle* for the version on staging, and writes its test plan in Google Docs.
 6. **`/qa:jalankan-uji toko-buku`.** The smoke test runs first. When it fails, testing stops. After that the `penguji` agent works each area, one at a time. The `pemeriksa` agent repeats every bug candidate on its own. Only a bug that appears in all three of its runs counts as a bug.
-7. **`/qa:laporkan toko-buku`.** Bug cards land in the "QA – Needs review" list. Review them, then move them to the developers' list. Claude also gives you a short message to paste into the team's chat.
+   - **Urgent bugs do not wait for the end of the run.** A Critical bug, or a High one that exposes credentials or personal data, loses data or money, or stops testing, is checked again right after its area. Once it is confirmed, you get a short message for the developers at once.
+   - **A long run can outlast one chat session.** Its progress is saved in the cycle folder after every area. When the conversation grows too long, open a new session in the workspace and type `/qa:jalankan-uji toko-buku` again: the run continues where it stopped.
+7. **`/qa:laporkan toko-buku`.** Bug cards land in the "QA – Needs review" list. Review them, then move them to the developers' list. Claude also gives you a short message to paste into the team's chat. While a run is still going, the same command only creates the cards of bugs confirmed so far, without a report. That helps with urgent bugs, and with long runs, so developers can start earlier. Type it in a new session when the run's conversation is long.
 8. **When a new release arrives: `/qa:regresi toko-buku`, then `/qa:jalankan-uji` and `/qa:laporkan`.** Or simply `/qa:siklus toko-buku`.
 
 ## Where results go
@@ -72,6 +74,8 @@ Write the product's name after the command, such as `/qa:audit-kesiapan toko-buk
 - **The product's repository is read-only.** Claude never pushes, never opens issues, PRs or comments there, and never fixes its code.
 - **Only the hosts you list.** Tests stop before they start when the target is not a host in `allowedHosts`. Production is never listed.
 - **Passwords never pass through Claude.** A Playwright script that reads `.env.local` does the logins. The workspace's permission rules deny Claude reading that file. Screenshots are checked before they are uploaded, and URLs are always printed with their parameter values redacted. When a test account's password ever shows up in a URL, the login stops and you are asked to change that password.
+- **Test output keeps no passwords.** There is no Playwright HTML report, and logins record no trace, video or screenshot, because all of them can keep what a test types. Screenshots cover a shared test account's email and avatar, and real people's data, before they are uploaded.
+- **Logins are limited.** Each role logs in once at the start of a run. After one HTTP 429 answer (too many attempts), every login pauses for 15 minutes, so other people's accounts on staging are not locked out.
 - **Test data is marked** with `QA-AUTO`. Data that QA did not create is never changed or deleted.
 - **Side effects.** Until it is clear whether staging sends real email, SMS or WhatsApp messages, or takes real payments, every test that triggers them is BLOCKED.
 - **Staging is shared,** so tests run one at a time and without automatic retries.

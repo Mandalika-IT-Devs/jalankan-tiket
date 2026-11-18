@@ -99,6 +99,11 @@ A report counts each state separately. A check is never reported as passed becau
 
 The first release ships all three stages. We planned to validate them on public practice apps first, such as the OrangeHRM demo. The QA engineer chose to validate on their real work product instead, relying on the rules of engagement above: a read-only repository, listed hosts only, marked test data, blocked side effects, and bug cards that wait in a review list. The tag `qa--v<version>` follows one full cycle on that product.
 
+The first full cycle ran in November 2026 with 0.1.1: 805 cases and 40 confirmed bugs, over three sessions. It changed three things, released as 0.1.2:
+- **Test output.** The Playwright HTML report and the traces of the login setup kept the shared accounts' passwords on disk. The templates no longer produce them.
+- **Run state.** A run of that size outlasts one conversation. The run's state now lives in the cycle folder, and the same command continues it.
+- **When cards are made.** Waiting for the end of the cycle kept a High bug about passwords in URLs from the developers for two days. Confirmed bugs may now get their cards while the run goes on, and urgent ones are announced at once. The pemeriksa's 3-of-3 confirmation and the review list stay as they were.
+
 User-invoked skills cannot invoke each other. `regresi` therefore only opens a cycle that `jalankan-uji` runs, and `siklus` reads the other skills' files and follows them in order.
 
 ### Tools

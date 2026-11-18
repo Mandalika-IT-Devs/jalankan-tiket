@@ -30,8 +30,8 @@ The qa skills copy these files into the QA workspace and fill each placeholder. 
 | `{{ROLE_ENV_LINES}}` | Two empty lines per role, such as `QA_KASIR_USERNAME=` and `QA_KASIR_PASSWORD=` |
 | `{{TRELLO_BOARD_ID}}`, `{{TRELLO_BOARD_URL}}`, `{{TRELLO_REVIEW_LIST_ID}}` | The board's ARI and URL, and the review list's ARI, from the Trello connector |
 | `{{DRIVE_FOLDER_ID}}`, `{{DRIVE_EVIDENCE_FOLDER_ID}}` | The product's Drive folder and its evidence subfolder, from the Google Drive connector |
-| `{{PAGE_READY}}` | A Playwright locator expression for something that appears only once the login page's own script has run, such as a header link that the client renders. Use `page.locator('form')` when the page is plain HTML without client-side rendering |
-| `{{USERNAME_FIELD}}`, `{{PASSWORD_FIELD}}`, `{{SUBMIT_BUTTON}}`, `{{LOGGED_IN_CHECK}}` | Playwright locator expressions for the login form, such as `page.getByLabel('Email')`, `page.getByLabel('Kata sandi')`, `page.getByRole('button', { name: 'Masuk' })` and `page.getByRole('button', { name: 'Keluar' })` |
+| `{{PAGE_READY}}` | In `tests/support/login.ts`: a Playwright locator expression for something that appears only once the login page's own script has run, such as a header link that the client renders. Use `page.locator('form')` when the page is plain HTML without client-side rendering |
+| `{{USERNAME_FIELD}}`, `{{PASSWORD_FIELD}}`, `{{SUBMIT_BUTTON}}`, `{{LOGGED_IN_CHECK}}` | In `tests/support/login.ts`: Playwright locator expressions for the login form, such as `page.getByLabel('Email')`, `page.getByLabel('Kata sandi')`, `page.getByRole('button', { name: 'Masuk' })` and `page.getByRole('button', { name: 'Keluar' })` |
 | `{{DATE}}` | `YYYY-MM-DD` |
 | `{{VERSION_UNDER_TEST}}`, `{{VERDICT}}`, `{{CHECK_ROWS}}`, `{{QUESTIONS}}`, `{{NEXT_STEP}}` | Filled by `/qa:audit-kesiapan` in `readiness.md`. `{{QUESTIONS}}` is also the list in `questions.md` |
 | `{{REQUIREMENT_ROWS}}`, `{{TRACE_ROWS}}`, `{{UNCOVERED}}`, `{{ORPHAN_CASES}}`, `{{RISK_ROWS}}`, `{{CRITICAL_FLOWS}}` | Filled by `/qa:rencanakan-uji` in `requirements.md` and `risks.md` |
