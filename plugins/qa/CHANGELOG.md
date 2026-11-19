@@ -2,6 +2,38 @@
 
 All notable changes to the `qa` plugin. Versions follow `plugins/qa/.claude-plugin/plugin.json`. ADR-0004 records the design.
 
+## 0.1.3
+
+Fixes from the first regression cycle on a real product: 93 cases, two retests that passed, and a staging that changed branch twice. None of them is specific to that product.
+
+- **Regression picks by feature.**
+  - `/qa:regresi` maps the diff to sections of a case file (`##` headings), not to whole areas, because one area file can hold several features.
+  - Chosen cases that change a shared setting are listed apart and put to the QA engineer, with a time window.
+- **Retests that the retest list misses.** `/qa:regresi` searches commit messages, merge messages and branch names between the two versions for bug numbers, and asks about a named bug whose card has not moved yet.
+- **The branch staging runs.**
+  - The readiness audit's version check now also checks that staging runs `branch`, by comparing something visible, such as an HTML attribute or an asset name, with each branch's code.
+  - `/qa:regresi` stops when staging runs another branch.
+- **Deploys during a check.**
+  - The coordinator checks the version before every `pemeriksa` too, not only before every area.
+  - The `pemeriksa` notes the version or uptime before and after its runs. It answers the new verdict STOPPED when it changed, instead of a misleading FLAKY.
+- **Retests of a fix that prevents a step.** When a retest's step cannot be done because the product now prevents it, such as a field that stays disabled until the page is ready, and that is what the fix does, the retest is PASS.
+- **Several login pages.** `tests/support/login.ts` holds a `loginPages` table: the `default` entry for `loginPath`, and one entry per other host, such as a back office.
+- **Fewer logins.** `/qa:jalankan-uji` skips the `setup` project when it ran less than an hour ago, such as in the audit of the same `/qa:siklus`.
+- **State that survives.**
+  - The `penguji` and `pemeriksa` keep their notes in `cycles/<cycle>/run/`, never in a scratchpad.
+  - The `penguji` writes `run/<area>-status.md` after each case that changes shared data, so an interrupted area can be restored.
+  - `playwright.md` warns that Playwright empties `test-results/` at every run.
+- **Restore with few writes.** Shared settings and content go back to their first values with as few writes as possible. Content whose published version did not change is never published again, because apps keep a permanent history.
+- **Reports.**
+  - `/qa:laporkan` uploads the evidence of bugs, retests, and FAIL and INCONCLUSIVE cases, not of every PASS case.
+  - A recommendation states when staging already runs a newer version than the one tested.
+- **Smaller fixes.**
+  - Question IDs are matched as whole words, because `REQ-462` contains `Q-462`.
+  - A cycle's short version is always 7 characters.
+  - A case from another area may join the dispatch that tests the same feature.
+
+Products set up with 0.1.2 keep their `login.ts`. To use the table, move its locators into a `loginPages` entry, as in the template.
+
 ## 0.1.2
 
 Fixes from the first full cycle on a real product: 805 cases, 40 confirmed bugs, three sessions. None of them is specific to that product.

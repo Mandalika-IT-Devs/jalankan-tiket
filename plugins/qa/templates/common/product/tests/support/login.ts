@@ -12,12 +12,28 @@
 //
 // Every login counts against the app's rate limit. After one answer with HTTP 429, logins pause for
 // PAUSE_MINUTES, in this run and in the next ones, and every login in that time is BLOCKED.
-import { expect, type Page, type Response } from '@playwright/test';
+import { expect, type Locator, type Page, type Response } from '@playwright/test';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { redactUrl, urlHasSecret } from './redact';
 
 export type Credentials = { username: string; password: string };
+
+type LoginPage = { ready: Locator; username: Locator; password: Locator; submit: Locator; loggedIn: Locator };
+
+// One entry per login page. "default" serves the login page at loginPath. A product whose roles log in on
+// another host, such as a back office, adds an entry keyed by that host name, with that page's locators.
+const loginPages: Record<string, (page: Page) => LoginPage> = {
+  default: (page) => ({
+    // Something that appears only once the page's own script has run. A server-rendered form that is used
+    // before it hydrates submits natively: the fields empty, and the password can end up in the URL.
+    ready: {{PAGE_READY}},
+    username: {{USERNAME_FIELD}},
+    password: {{PASSWORD_FIELD}},
+    submit: {{SUBMIT_BUTTON}},
+    loggedIn: {{LOGGED_IN_CHECK}},
+  }),
+};
 
 const PAUSE_MINUTES = 15;
 const authDir = join(__dirname, '..', '..', '.auth');
@@ -35,22 +51,20 @@ export async function logIn(page: Page, { username, password }: Credentials, log
   const watch = (response: Response) => {
     if (response.status() === 429) rateLimited = true;
   };
+  let form: LoginPage | undefined;
   page.on('response', watch);
   try {
     await page.goto(loginURL);
-
-    // Wait until the page's own script is ready. A server-rendered form that is used before it hydrates
-    // submits natively: the fields empty, and the password can end up in the URL.
-    await expect({{PAGE_READY}}).toBeVisible();
-
-    await {{USERNAME_FIELD}}.fill(username);
-    await {{PASSWORD_FIELD}}.fill(password);
-    await {{SUBMIT_BUTTON}}.click();
-    await expect({{LOGGED_IN_CHECK}}).toBeVisible();
+    form = (loginPages[new URL(page.url()).hostname] ?? loginPages.default)(page);
+    await expect(form.ready).toBeVisible();
+    await form.username.fill(username);
+    await form.password.fill(password);
+    await form.submit.click();
+    await expect(form.loggedIn).toBeVisible();
   } finally {
     page.off('response', watch);
     // Empty a field that still holds the password, so that the snapshot of a failed test cannot record it.
-    await {{PASSWORD_FIELD}}.fill('', { timeout: 1_000 }).catch(() => {});
+    await form?.password.fill('', { timeout: 1_000 }).catch(() => {});
     if (urlHasSecret(page.url(), [password])) {
       throw new Error(
         `BLOCKED: the login form sent the password in the URL (${redactUrl(page.url())}). ` +

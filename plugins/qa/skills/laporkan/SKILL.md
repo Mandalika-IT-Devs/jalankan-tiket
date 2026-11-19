@@ -24,7 +24,7 @@ Read these first, and follow them throughout:
 
 ## 2. Check and upload the evidence
 
-1. List the evidence that the bug files and `results.json` cite, in `cycles/<cycle>/evidence/`.
+1. List the evidence to share, in `cycles/<cycle>/evidence/`: what the bug files cite, and the evidence of retests and of FAIL and INCONCLUSIVE cases in `results.json`. The evidence of PASS cases stays on the machine; the report counts them.
 2. **Look at every image** before it leaves the machine. When one shows a password, a token, a full card number, a shared test account's email or avatar, or a real person's personal data, do not upload it as it is. Cover that part with `node ${CLAUDE_PLUGIN_ROOT}/scripts/samarkan.mjs <in.png> <out.png> <x,y,width,height> …` and upload the covered copy, retake it with a probe that uses `mask`, or leave it out and say so in the bug.
 3. Create a subfolder named after the cycle in `evidenceFolderId`, unless it exists. Upload each file into it with `create_file`, as `connectors.md` describes. Wait at least 10 seconds between two uploads.
 4. Replace the file names in each bug file's Evidence section with their Drive links.
@@ -52,6 +52,8 @@ For each entry in `retests` of `results.json`, add a comment to the bug's card: 
    - **GO** otherwise.
 
    Use the workspace language: `NO-GO`, `GO DENGAN SYARAT` / `GO WITH CONDITIONS`, `GO`.
+
+   The recommendation is about the version this cycle tested. When staging already runs a newer version, such as after a deploy in the middle of the run, say so next to the recommendation: it does not cover the newer version, which needs its own cycle.
 2. Fill `templates/<language>/cycle/test-report.html`:
    - the recommendation and its reasons;
    - the counts per state, and the exit criteria;

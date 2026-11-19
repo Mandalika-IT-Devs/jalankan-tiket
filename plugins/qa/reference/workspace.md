@@ -89,7 +89,7 @@ Example:
 
 ## `cycles/<cycle>/cycle.json`
 
-A **cycle** is one round of testing one version of the product. `/qa:rencanakan-uji` opens it, `/qa:jalankan-uji` runs it, and `/qa:laporkan` reports it. The cycle ID is `<YYYY-MM-DD>-<short version>`.
+A **cycle** is one round of testing one version of the product. `/qa:rencanakan-uji` opens it, `/qa:jalankan-uji` runs it, and `/qa:laporkan` reports it. The cycle ID is `<YYYY-MM-DD>-<short version>`. The short version is always the first 7 characters of the commit, even where `git` prints more, so that one version is written one way in every file.
 
 | Key | Meaning |
 |---|---|

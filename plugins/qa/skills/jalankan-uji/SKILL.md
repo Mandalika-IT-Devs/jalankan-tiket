@@ -33,12 +33,12 @@ Read these first, and follow them throughout:
 ## 2. Check the entry criteria
 
 1. **Staging answers:** the same `curl` as check 4 of the readiness audit.
-2. **Sessions:** `npx playwright test -c products/<slug> --project=setup`, once for the whole run. The agents run with `--no-deps` after that, because every login counts against the app's rate limit. A role that fails or is skipped makes every case of that role BLOCKED, with the reason.
+2. **Sessions:** `npx playwright test -c products/<slug> --project=setup`, once for the whole run. Skip it when it ran less than an hour ago, such as in the readiness audit of the same `/qa:siklus`: a role whose session has ended shows up as BLOCKED in the first area, and then gets one new login. The agents run with `--no-deps` after that, because every login counts against the app's rate limit. A role that fails or is skipped makes every case of that role BLOCKED, with the reason.
 3. **Version:** when staging now shows a version other than the cycle's, stop and ask the QA engineer, in the format of `questions.md`: continue in this cycle, or plan a new cycle with `/qa:rencanakan-uji` (recommended, because results from two versions do not mix).
 4. **Side effects:** mark every case that triggers an `unknown` or `real` channel as BLOCKED, naming the channel.
-5. **Open questions:** mark every case linked to an open question in `questions.md` as BLOCKED, naming the question.
+5. **Open questions:** mark every case linked to an open question in `questions.md` as BLOCKED, naming the question. Match question IDs as whole words, such as `\bQ-\d{3}\b`: a requirement ID like `REQ-462` contains `Q-462`.
 
-Set `status` in `cycle.json` to `running`, and write `cycles/<cycle>/run/brief.md`: what every `penguji` and `pemeriksa` of this run needs beyond its own area. That is the version under test, the QA engineer's decisions and permissions for this run, the data that may be used or changed and how to restore it, the rate limits you know of, and the channels that block cases. Add to it whenever the QA engineer decides something during the run.
+Set `status` in `cycle.json` to `running`, and write `cycles/<cycle>/run/brief.md`: what every `penguji` and `pemeriksa` of this run needs beyond its own area. That is the version under test and how to read it from staging, such as the uptime of a health endpoint, the QA engineer's decisions and permissions for this run, the data that may be used or changed and how to restore it, the rate limits you know of, and the channels that block cases. Add to it whenever the QA engineer decides something during the run.
 
 ## 3. Smoke first
 
@@ -48,7 +48,9 @@ Unless the filter excludes it, dispatch the `penguji` agent for the area `smoke`
 
 Dispatch the `penguji` agent once per area in the filter, **one area at a time**, because staging is shared. Start with the areas that hold P1 cases.
 
-**Before each dispatch,** check the version again, as in step 2.3. Staging can be redeployed in the middle of a run, such as an API that restarts with a newer build. Results from two versions do not mix, so stop and ask as step 2.3 does.
+**Before each dispatch** of a `penguji` or a `pemeriksa`, check the version again, as in step 2.3, with the uptime of a health endpoint where there is one. Staging can be redeployed in the middle of a run, such as an API that restarts with a newer build. Results from two versions do not mix, so stop and ask as step 2.3 does.
+
+A case that the change put in this run from another area, such as one back-office case about a store page, may join the dispatch of the area that tests the same feature. Write the reason in `run/handoff.md`. One agent for one case costs more than it gives.
 
 Give each dispatch:
 - the product slug, the cycle ID and the area;
@@ -85,8 +87,10 @@ When the conversation grows long, finish the current area or verdict, update `ru
 
 **Retests first.** For each bug in `retest`, dispatch the `pemeriksa` agent with the bug file as the candidate. Its verdict means:
 - **NOT REPRODUCED,** with every step followed: the fix holds. The retest is PASS.
+- **NOT REPRODUCED, because the product now prevents a step,** such as a field that stays disabled until the page is ready: when that prevention is what the fix does, the retest is PASS, with the observation. Read the fix's commit to judge it.
 - **CONFIRMED:** the bug is still there. The retest is FAIL, and the bug file gets a line under Notes with the cycle and the version.
-- **FLAKY,** or steps that could not be followed: the retest is INCONCLUSIVE, with the reason.
+- **FLAKY,** or steps that could not be followed for another reason: the retest is INCONCLUSIVE, with the reason.
+- **STOPPED:** staging changed version during the check. Nothing is concluded. Ask the QA engineer as step 2.3 does, then run the check again on the version you continue with.
 
 **Then the new candidates:**
 
@@ -97,6 +101,7 @@ When the conversation grows long, finish the current area or verdict, update `ru
    - **CONFIRMED,** but the source does not support the expected result: a question in `questions.md`. The cases are BLOCKED.
    - **FLAKY:** the cases are INCONCLUSIVE, with the count.
    - **NOT REPRODUCED:** the cases are INCONCLUSIVE, with the pemeriksa's reason.
+   - **STOPPED:** staging changed version during the check. Handle it as for a retest.
 4. After each verdict, set the candidate's status in `run/candidates.md`, update `results.json` and `run/handoff.md`, and commit with the bug file.
 
 ## 6. Record the results

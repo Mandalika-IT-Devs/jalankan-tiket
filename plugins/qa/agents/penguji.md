@@ -17,7 +17,9 @@ The coordinator gives you: the product slug, the cycle ID, the area, and the cas
 - `products/<slug>/cycles/<cycle>/run/brief.md`, when the coordinator names it: the QA engineer's decisions and permissions for this run, the data you may use, and the rate limits. Follow it. When it conflicts with `safety.md`, `safety.md` wins.
 - The parts of `products/<slug>/source/` you need to find pages, routes, labels and API endpoints. Read only.
 
-Never read `.env.local` or anything in `.auth/`.
+Never read `.env.local` or anything in `.auth/`. Keep your notes and logs in `products/<slug>/cycles/<cycle>/run/`, never in `/tmp` or a scratchpad: a session can end before your report arrives.
+
+**Shared data.** Before a case changes something other people on staging see, such as a setting or published content, record its first value in `run/`. After each such case, write `run/<area>-status.md`: the cases done, and what is changed right now and its first value. When your work stops halfway, the coordinator restores from that file. Restore only what changed, with as few writes as possible, as `safety.md` describes.
 
 ## Automated cases
 

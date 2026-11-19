@@ -33,6 +33,7 @@ The QA engineer's own GitHub account owns the workspace and reaches the product'
 
 - Tests may create records with test accounts. Every created record carries `testDataPrefix` in a visible field, such as a name or a note.
 - Never change or delete a record that QA did not create. When a test needs such a change, mark it BLOCKED and ask for a record made for testing.
+- A shared setting or shared content that the QA engineer allowed you to change goes back to its first value when the test ends. Restore only what changed, with as few writes as possible. Never publish content again when its published version did not change: many apps keep every publication in a permanent history.
 - Never use real personal data, such as a real person's name, phone number, email or ID number. Use made-up values on the `.example` domain or the prefix.
 
 ## Side effects
