@@ -4,7 +4,7 @@ The `qa` plugin is for a QA engineer who tests web apps built by other teams, su
 
 The `tiket` plugin builds a product, while `qa` only tests and reports. `qa` never changes the product's repository or fixes its code.
 
-> **Status: 0.1.2, not released yet.** All seven commands exist, and one full cycle, from the audit to the report, has run on a real product. The design is in [ADR-0004](../adr/0004-qa-plugin.md).
+> **Status: 0.1.3.** All seven commands exist. One full cycle and one regression cycle with bug retests have run on a real product. The design is in [ADR-0004](../adr/0004-qa-plugin.md).
 
 ## What you need
 
@@ -59,6 +59,9 @@ Write the product's name after the command, such as `/qa:audit-kesiapan toko-buk
    - **A long run can outlast one chat session.** Its progress is saved in the cycle folder after every area. When the conversation grows too long, open a new session in the workspace and type `/qa:jalankan-uji toko-buku` again: the run continues where it stopped.
 7. **`/qa:laporkan toko-buku`.** Bug cards land in the "QA – Needs review" list. Review them, then move them to the developers' list. Claude also gives you a short message to paste into the team's chat. While a run is still going, the same command only creates the cards of bugs confirmed so far, without a report. That helps with urgent bugs, and with long runs, so developers can start earlier. Type it in a new session when the run's conversation is long.
 8. **When a new release arrives: `/qa:regresi toko-buku`, then `/qa:jalankan-uji` and `/qa:laporkan`.** Or simply `/qa:siklus toko-buku`.
+   - Regression picks cases from the feature sections that the code change touches, not from whole areas. Cases that change shared settings on staging are put to you first.
+   - Retests come from the retest list on Trello, plus bugs whose number appears in a commit or a branch name. When such a bug's card has not moved, you are asked first.
+   - When staging turns out to run another branch, or is redeployed in the middle of a run, Claude stops and asks. Results from two versions are never mixed.
 
 ## Where results go
 

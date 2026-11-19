@@ -4,7 +4,7 @@ Plugin `qa` dibuat untuk QA engineer yang menguji aplikasi web buatan tim lain, 
 
 Plugin `tiket` membangun produk, sedangkan `qa` hanya menguji dan melaporkan. `qa` tidak pernah mengubah repo produk atau memperbaiki kodenya.
 
-> **Status: 0.1.2, belum dirilis.** Ketujuh perintah sudah ada, dan satu siklus penuh, dari audit sampai laporan, sudah dijalankan pada produk sungguhan. Rancangannya ada di [ADR-0004](../adr/0004-qa-plugin.md).
+> **Status: 0.1.3.** Ketujuh perintah sudah ada. Satu siklus penuh dan satu siklus regresi dengan uji ulang bug sudah dijalankan pada produk sungguhan. Rancangannya ada di [ADR-0004](../adr/0004-qa-plugin.md).
 
 ## Yang perlu Anda siapkan
 
@@ -59,6 +59,9 @@ Tulis nama produk di belakang perintah, misalnya `/qa:audit-kesiapan toko-buku`.
    - **Run yang panjang bisa melebihi satu sesi chat.** Progresnya tersimpan di folder siklus setelah setiap area. Kalau percakapan sudah terlalu panjang, buka sesi baru di workspace dan ketik `/qa:jalankan-uji toko-buku` lagi: run berlanjut dari titik terakhir.
 7. **`/qa:laporkan toko-buku`.** Kartu bug masuk list "QA – Perlu Ditinjau". Tinjau kartunya, lalu pindahkan ke list developer. Claude juga memberi pesan singkat yang siap Anda tempel ke grup tim. Selama run masih berjalan, perintah yang sama hanya membuat kartu untuk bug yang sudah terkonfirmasi, tanpa laporan. Itu berguna untuk bug mendesak, atau untuk run yang panjang supaya developer bisa mulai lebih awal. Ketik perintahnya di sesi baru bila percakapan run sudah panjang.
 8. **Saat ada rilis baru: `/qa:regresi toko-buku`, lalu `/qa:jalankan-uji` dan `/qa:laporkan`.** Atau cukup `/qa:siklus toko-buku`.
+   - Regresi memilih kasus dari bagian fitur yang tersentuh perubahan kode, bukan seluruh area. Kasus yang mengubah pengaturan bersama di staging ditanyakan dulu kepada Anda.
+   - Bug yang diuji ulang diambil dari list uji ulang di Trello, ditambah bug yang nomornya disebut di commit atau nama branch. Bug yang kartunya belum dipindah juga ditanyakan dulu.
+   - Kalau staging ternyata menjalankan branch lain, atau di-deploy ulang di tengah run, Claude berhenti dan bertanya. Hasil dari dua versi tidak dicampur.
 
 ## Di mana hasilnya disimpan
 

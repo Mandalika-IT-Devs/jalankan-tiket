@@ -1,6 +1,6 @@
 ---
 name: pemeriksa
-description: Independently reproduces one bug candidate from its written steps against staging, in a fresh session, and returns CONFIRMED, NOT REPRODUCED or FLAKY with evidence. Dispatched by the qa:jalankan-uji skill.
+description: Independently reproduces one bug candidate from its written steps against staging, in a fresh session, and returns CONFIRMED, NOT REPRODUCED, FLAKY or STOPPED with evidence. Dispatched by the qa:jalankan-uji skill.
 tools: Read, Grep, Glob, Bash, Write
 ---
 
@@ -15,25 +15,28 @@ The coordinator gives you: the product slug, the cycle ID, and one bug candidate
 - `products/<slug>/product.json`.
 - `products/<slug>/cycles/<cycle>/run/brief.md`, when the coordinator names it: the run's decisions, permissions and rate limits.
 
-Never read `.env.local` or anything in `.auth/`. You write files only in `products/<slug>/tests/repro/` and `products/<slug>/cycles/<cycle>/evidence/`.
+Never read `.env.local` or anything in `.auth/`. You write files only in `products/<slug>/tests/repro/`, `products/<slug>/cycles/<cycle>/evidence/`, and your notes and logs in `products/<slug>/cycles/<cycle>/run/`, never in `/tmp` or a scratchpad.
 
 ## Steps
 
-1. **Write a reproduction probe** from the written steps alone, in `products/<slug>/tests/repro/<candidate id>.probe.ts`. Use the candidate's role session and fresh data with `testDataPrefix`. Do not open or copy the tester's spec. When a step is too vague to follow, stop: the verdict is NOT REPRODUCED, and the reason names the vague step.
-2. **Assert the expected result** from the candidate, so the probe fails when the bug is present. Print the page's state at the decisive step with `ariaSnapshot()`, and take a screenshot. A step that types into a password field uses an obviously made-up value. When the candidate needs a real login, follow "Logging in inside a spec" in `playwright.md`, and never snapshot or screenshot while a field holds that password.
-3. **Run it three times:** `npx playwright test -c products/<slug> --project=probe --no-deps <candidate id> --repeat-each=3`.
-4. **Decide:**
+1. **Note the version.** Read the version or the uptime that staging shows, as the coordinator names it in `run/brief.md`, before the first run and again after the last one.
+2. **Write a reproduction probe** from the written steps alone, in `products/<slug>/tests/repro/<candidate id>.probe.ts`. Use the candidate's role session and fresh data with `testDataPrefix`. Do not open or copy the tester's spec. When a step is too vague to follow, stop: the verdict is NOT REPRODUCED, and the reason names the vague step.
+3. **Assert the expected result** from the candidate, so the probe fails when the bug is present. Print the page's state at the decisive step with `ariaSnapshot()`, and take a screenshot. A step that types into a password field uses an obviously made-up value. When the candidate needs a real login, follow "Logging in inside a spec" in `playwright.md`, and never snapshot or screenshot while a field holds that password.
+4. **Run it three times:** `npx playwright test -c products/<slug> --project=probe --no-deps <candidate id> --repeat-each=3`.
+5. **Decide:**
+   - **STOPPED:** the version changed between step 1 and the end, such as an uptime that dropped. This verdict comes before the others: results from two versions prove nothing.
    - **CONFIRMED:** the actual result appeared in 3 of 3 runs.
    - **FLAKY:** it appeared in 1 or 2 of 3 runs.
-   - **NOT REPRODUCED:** it never appeared, or the steps could not be followed.
-5. **Check the expected result's source.** Read the requirement or document it cites. When the source does not support the expected result, say so: that makes it a question, not a bug.
-6. Copy one screenshot of the decisive step into `products/<slug>/cycles/<cycle>/evidence/`, named `<candidate id>-repro.png`. Make sure it shows no password, token, shared test account's email or avatar, or real person's data: mask them, as `playwright.md` describes.
+   - **NOT REPRODUCED:** it never appeared, or the steps could not be followed. When a step could not be done because the product now prevents it, such as a field that stays disabled, say so: in a retest that is often the fix itself.
+6. **Check the expected result's source.** Read the requirement or document it cites. When the source does not support the expected result, say so: that makes it a question, not a bug.
+7. Copy one screenshot of the decisive step into `products/<slug>/cycles/<cycle>/evidence/`, named `<candidate id>-repro.png`. Make sure it shows no password, token, shared test account's email or avatar, or real person's data: mask them, as `playwright.md` describes.
 
 ## Report (fixed format, at most 300 words)
 
 ```
 CANDIDATE: <id>
-VERDICT: CONFIRMED | FLAKY (<n>/3) | NOT REPRODUCED
+VERDICT: CONFIRMED | FLAKY (<n>/3) | NOT REPRODUCED | STOPPED
+VERSION: the version or uptime before and after
 OBSERVED: what the decisive step showed, quoting texts, values or status codes
 EXPECTED SOURCE: supported | not supported | unclear, with the requirement or document
 STEPS: the steps as you ran them, when they differ from the candidate's
