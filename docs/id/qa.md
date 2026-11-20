@@ -4,7 +4,7 @@ Plugin `qa` dibuat untuk QA engineer yang menguji aplikasi web buatan tim lain, 
 
 Plugin `tiket` membangun produk, sedangkan `qa` hanya menguji dan melaporkan. `qa` tidak pernah mengubah repo produk atau memperbaiki kodenya.
 
-> **Status: 0.2.0, tervalidasi.** Ketujuh perintah sudah dijalankan pada produk sungguhan: satu siklus penuh dan dua siklus regresi, sekitar 1.000 kasus, 41 bug, dan 9 uji ulang. Run yang panjang juga sudah berhasil dilanjutkan di sesi baru. Beberapa jalur jarang, seperti uji ulang yang gagal dan bug mendesak, baru diuji dengan contoh. Rancangannya ada di [ADR-0004](../adr/0004-qa-plugin.md).
+> **Status: 0.3.0, tervalidasi.** Ketujuh perintah sudah dijalankan pada produk sungguhan: satu siklus penuh dan dua siklus regresi, sekitar 1.000 kasus, 41 bug, dan 9 uji ulang. Run yang panjang juga sudah berhasil dilanjutkan di sesi baru. Beberapa jalur jarang, seperti uji ulang yang gagal dan bug mendesak, baru diuji dengan contoh. Pemindahan kartu setelah uji ulang, tambahan 0.3.0, baru dicoba secara manual pada produk itu. Rancangannya ada di [ADR-0004](../adr/0004-qa-plugin.md).
 
 ## Yang perlu Anda siapkan
 
@@ -57,7 +57,7 @@ Tulis nama produk di belakang perintah, misalnya `/qa:audit-kesiapan toko-buku`.
 6. **`/qa:jalankan-uji toko-buku`.** Smoke test berjalan lebih dulu. Bila gagal, pengujian berhenti. Setelah itu agen `penguji` mengerjakan setiap area, satu per satu. Setiap calon bug diulang secara terpisah oleh agen `pemeriksa`. Hanya bug yang muncul di ketiga percobaan yang dihitung sebagai bug.
    - **Bug mendesak tidak menunggu run selesai.** Bug Kritis, atau Tinggi yang membocorkan kredensial atau data pribadi, menghilangkan data atau uang, atau menghentikan pengujian, langsung diperiksa ulang setelah areanya selesai. Begitu terkonfirmasi, Anda langsung diberi pesan singkat untuk developer.
    - **Run yang panjang bisa melebihi satu sesi chat.** Progresnya tersimpan di folder siklus setelah setiap area. Kalau percakapan sudah terlalu panjang, buka sesi baru di workspace dan ketik `/qa:jalankan-uji toko-buku` lagi: run berlanjut dari titik terakhir.
-7. **`/qa:laporkan toko-buku`.** Kartu bug masuk list "QA – Perlu Ditinjau". Tinjau kartunya, lalu pindahkan ke list developer. Claude juga memberi pesan singkat yang siap Anda tempel ke grup tim. Selama run masih berjalan, perintah yang sama hanya membuat kartu untuk bug yang sudah terkonfirmasi, tanpa laporan. Itu berguna untuk bug mendesak, atau untuk run yang panjang supaya developer bisa mulai lebih awal. Ketik perintahnya di sesi baru bila percakapan run sudah panjang.
+7. **`/qa:laporkan toko-buku`.** Kartu bug masuk list "QA – Perlu Ditinjau". Tinjau kartunya, lalu pindahkan ke list developer. Kartu yang diuji ulang ditawarkan untuk dipindah: yang lolos ke list berikutnya di alur tim, misalnya UAT, dan yang gagal kembali ke developer. Kartu baru dipindah setelah Anda setuju. Claude juga memberi pesan singkat yang siap Anda tempel ke grup tim. Selama run masih berjalan, perintah yang sama hanya membuat kartu untuk bug yang sudah terkonfirmasi, tanpa laporan. Itu berguna untuk bug mendesak, atau untuk run yang panjang supaya developer bisa mulai lebih awal. Ketik perintahnya di sesi baru bila percakapan run sudah panjang.
 8. **Saat ada rilis baru: `/qa:regresi toko-buku`, lalu `/qa:jalankan-uji` dan `/qa:laporkan`.** Atau cukup `/qa:siklus toko-buku`.
    - Regresi memilih kasus dari bagian fitur yang tersentuh perubahan kode, bukan seluruh area. Kasus yang mengubah pengaturan bersama di staging ditanyakan dulu kepada Anda.
    - Bug yang diuji ulang diambil dari list uji ulang di Trello, ditambah bug yang nomornya disebut di commit atau nama branch. Bug yang kartunya belum dipindah juga ditanyakan dulu.
@@ -69,7 +69,7 @@ Tulis nama produk di belakang perintah, misalnya `/qa:audit-kesiapan toko-buku`.
 
 | Apa | Tempat |
 |---|---|
-| Bug | Trello, satu kartu per bug. Kartu baru masuk list "QA – Perlu Ditinjau", lalu Anda memindahkannya ke developer |
+| Bug | Trello, satu kartu per bug. Kartu baru masuk list "QA – Perlu Ditinjau", lalu Anda memindahkannya ke developer. Setelah uji ulang, kartu pindah ke list berikutnya bila Anda setuju |
 | Rencana dan laporan uji | Google Docs, di folder produk |
 | Bukti (screenshot, video) | Folder "Bukti" di Google Drive, ditautkan dari kartu dan laporan |
 | Kebutuhan, kasus uji, test otomatis, hasil tiap siklus | Workspace QA di GitHub, repo privat |

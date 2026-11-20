@@ -1,6 +1,6 @@
 ---
 name: laporkan
-description: Publish a test cycle's results - evidence to Google Drive, one Trello card per confirmed bug in the review list, retest comments on existing cards, and a Google Docs test report with a Go/No-Go recommendation. During a run, creates the cards of bugs confirmed so far.
+description: Publish a test cycle's results - evidence to Google Drive, one Trello card per confirmed bug in the review list, retest comments on existing cards, and a Google Docs test report with a Go/No-Go recommendation. On the QA engineer's yes, moves retested cards along the team's lists. During a run, creates the cards of bugs confirmed so far.
 disable-model-invocation: true
 ---
 
@@ -18,7 +18,7 @@ Read these first, and follow them throughout:
 
 - Run from the workspace root. Read `language` from `qa-workspace.json`; every message, card and document uses it.
 - Pick the product as `/qa:audit-kesiapan` does, and the named cycle, or the newest one whose `status` is `running`, `executed` or `reported`. When there is none, stop and point to `/qa:jalankan-uji <slug>`.
-- **A cycle that is still `running` gets an early report.** It is meant for urgent bugs, and for long runs where developers should start on confirmed bugs before the run ends. Do steps 2 and 3 only, for the bug files that have no card yet. Skip steps 4 to 6 and leave `status` as it is. In step 7, commit only the bug files, with a message that means "Bug cards <name> <cycle>". The run may be committing in the same folder, so add the bug files by name. The full report follows once the run has ended.
+- **A cycle that is still `running` gets an early report.** It is meant for urgent bugs, and for long runs where developers should start on confirmed bugs before the run ends. Do steps 2 and 3 only, for the bug files that have no card yet. Skip steps 4 to 7 and leave `status` as it is. In step 8, commit only the bug files, with a message that means "Bug cards <name> <cycle>". The run may be committing in the same folder, so add the bug files by name. The full report follows once the run has ended.
 - Read `cycle.json`, `results.json`, `results.md` and every file in `bugs/`. A cycle that is still running has no `results.md` yet.
 - Check that the Trello and Drive connectors work: `trelloReadBoard` (`get`) on `boardId`, and `get_file_metadata` on `evidenceFolderId`. A missing connector makes its part BLOCKED. Do the other parts and report it.
 
@@ -48,7 +48,7 @@ For each entry in `retests` of `results.json`, add a comment to the bug's card: 
 
 Then read the cards in `retestListId`. Name every card there that this cycle did not retest, in the report and in a comment on the card, with the reason, such as a fix that is only on a branch the tested version does not contain.
 
-Never move or close a card. The QA engineer and the developers do that.
+Leave moves out of these comments, such as "QA did not move this card": step 7 offers them after the report.
 
 ## 5. The test report
 
@@ -80,11 +80,34 @@ Never move or close a card. The QA engineer and the developers do that.
 
 When a confirmed Critical or High bug sits in a flow that is not in the critical flows of `risks.md`, propose adding that flow to the list in the report to the QA engineer. Change `risks.md` only when they agree.
 
-## 7. Save and report
+## 7. Move retested cards
 
-1. Set `status` in `cycle.json` to `reported`. Commit the bug files, `cycle.json` and `results.md` with a message in the workspace language that means "Report <name> <cycle>", then `git push`.
+A retest decides where its card belongs in the team's flow. Moving a card is a write that developers see, so it waits for the QA engineer's yes.
+
+1. **Propose.** Read the board's lists with `trelloReadList` (`list_by_board`), and each retested card's current list with `trelloReadCard` (`get`). Propose:
+   - a retest that passed: to `retestPassedListId`;
+   - a retest that failed: to `retestFailedListId`.
+
+   No move for:
+   - a retest that passed with the note "obsolete: new design": the team decides whether to close the card;
+   - a retest that is BLOCKED, INCONCLUSIVE or NOT RUN;
+   - a card that is already in its target list;
+   - a passed card that sits in a list to the right of its target on the board (a higher `position`), such as one for released work;
+   - a target that is `"none"`.
+2. **Ask** in one round, in the format of `questions.md`: each card with its bug number, its current list and its target list.
+   - When a target key is `null` or missing, add a question for it in the same round. Offer the board's lists. For passed retests, recommend the list right after `retestListId`, such as a UAT list. For failed retests, recommend the list the developers work from. `"none"` is also an answer.
+   - Write each answer into `product.json`.
+3. **Move** only the cards the QA engineer agreed to, with `trelloWriteCard` (`move`, `pos` `bottom`).
+   - Read the card's list again right before you move it. When someone has moved it since step 1, leave it and say so.
+   - Wait at least 10 seconds between two writes.
+
+Never close or archive a card. Never move a new bug card out of `reviewListId`: the QA engineer reviews it first.
+
+## 8. Save and report
+
+1. Set `status` in `cycle.json` to `reported`. Commit the bug files, `cycle.json`, `results.md`, and `product.json` when step 7 changed it, with a message in the workspace language that means "Report <name> <cycle>", then `git push`.
 2. Tell the QA engineer, in plain words:
-   - the recommendation, the report link, and the cards created or commented on;
+   - the recommendation, the report link, the cards created or commented on, and the cards moved after their retest, with their new list;
    - their one manual step: review the cards in the review list and move each to the developers' list;
    - what was BLOCKED, such as a missing connector or evidence left out;
    - a short message they can paste into the team's chat, in the workspace language: the recommendation, the bug count per severity, and the report link.

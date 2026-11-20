@@ -4,7 +4,7 @@ The `qa` plugin is for a QA engineer who tests web apps built by other teams, su
 
 The `tiket` plugin builds a product, while `qa` only tests and reports. `qa` never changes the product's repository or fixes its code.
 
-> **Status: 0.2.0, validated.** All seven commands have run on a real product: one full cycle and two regression cycles, about 1,000 cases, 41 bugs and 9 retests. A long run has also continued in a new session. A few rare paths, such as a failed retest and an urgent bug, are tested with examples only. The design is in [ADR-0004](../adr/0004-qa-plugin.md).
+> **Status: 0.3.0, validated.** All seven commands have run on a real product: one full cycle and two regression cycles, about 1,000 cases, 41 bugs and 9 retests. A long run has also continued in a new session. A few rare paths, such as a failed retest and an urgent bug, are tested with examples only. Moving cards after a retest, added in 0.3.0, has only been tried by hand on that product. The design is in [ADR-0004](../adr/0004-qa-plugin.md).
 
 ## What you need
 
@@ -57,7 +57,7 @@ Write the product's name after the command, such as `/qa:audit-kesiapan toko-buk
 6. **`/qa:jalankan-uji toko-buku`.** The smoke test runs first. When it fails, testing stops. After that the `penguji` agent works each area, one at a time. The `pemeriksa` agent repeats every bug candidate on its own. Only a bug that appears in all three of its runs counts as a bug.
    - **Urgent bugs do not wait for the end of the run.** A Critical bug, or a High one that exposes credentials or personal data, loses data or money, or stops testing, is checked again right after its area. Once it is confirmed, you get a short message for the developers at once.
    - **A long run can outlast one chat session.** Its progress is saved in the cycle folder after every area. When the conversation grows too long, open a new session in the workspace and type `/qa:jalankan-uji toko-buku` again: the run continues where it stopped.
-7. **`/qa:laporkan toko-buku`.** Bug cards land in the "QA – Needs review" list. Review them, then move them to the developers' list. Claude also gives you a short message to paste into the team's chat. While a run is still going, the same command only creates the cards of bugs confirmed so far, without a report. That helps with urgent bugs, and with long runs, so developers can start earlier. Type it in a new session when the run's conversation is long.
+7. **`/qa:laporkan toko-buku`.** Bug cards land in the "QA – Needs review" list. Review them, then move them to the developers' list. Retested cards are offered a move: a passed one to the next list of the team's flow, such as UAT, and a failed one back to the developers. A card moves only after you agree. Claude also gives you a short message to paste into the team's chat. While a run is still going, the same command only creates the cards of bugs confirmed so far, without a report. That helps with urgent bugs, and with long runs, so developers can start earlier. Type it in a new session when the run's conversation is long.
 8. **When a new release arrives: `/qa:regresi toko-buku`, then `/qa:jalankan-uji` and `/qa:laporkan`.** Or simply `/qa:siklus toko-buku`.
    - Regression picks cases from the feature sections that the code change touches, not from whole areas. Cases that change shared settings on staging are put to you first.
    - Retests come from the retest list on Trello, plus bugs whose number appears in a commit or a branch name. When such a bug's card has not moved, you are asked first.
@@ -69,7 +69,7 @@ Write the product's name after the command, such as `/qa:audit-kesiapan toko-buk
 
 | What | Where |
 |---|---|
-| Bugs | Trello, one card per bug. New cards land in the "QA – Needs review" list, and you move each one to the developers |
+| Bugs | Trello, one card per bug. New cards land in the "QA – Needs review" list, and you move each one to the developers. After a retest, a card moves to the next list when you agree |
 | Test plans and reports | Google Docs, in the product's folder |
 | Evidence (screenshots, videos) | The "Evidence" folder on Google Drive, linked from cards and reports |
 | Requirements, test cases, automated tests, results per cycle | The QA workspace on GitHub, a private repository |

@@ -87,6 +87,7 @@ A report counts each state separately. A check is never reported as passed becau
 
 - A separate subagent, `pemeriksa`, repeats each bug's written steps in a fresh browser context before its card is created. A bug it cannot reproduce goes into the report as INCONCLUSIVE, with how often it appeared. It gets no card.
 - Cards go to a review list on the team's board (`QA – Perlu Ditinjau` or `QA – Needs review`). The QA engineer moves each card to the developers' list. That keeps automation and a human gate, at the cost of one drag per bug.
+- After a retest, `laporkan` offers to move the card along the team's flow: a passed one to the next list, such as UAT, and a failed one back to the developers. Each move waits for the QA engineer's yes. New cards never leave the review list without the QA engineer.
 - Severity and priority are separate fields. The Trello connector cannot create labels, so the card title carries the severity, and existing board labels are attached when they match.
 
 ### Commands, built in three stages
@@ -105,6 +106,8 @@ The first full cycle ran in November 2026 with 0.1.1: 805 cases and 40 confirmed
 - **When cards are made.** Waiting for the end of the cycle kept a High bug about passwords in URLs from the developers for two days. Confirmed bugs may now get their cards while the run goes on, and urgent ones are announced at once. The pemeriksa's 3-of-3 confirmation and the review list stay as they were.
 
 Two regression cycles followed, released as 0.1.3 and 0.2.0. They retested nine fixes, survived a staging that changed branch twice and a computer that shut down twice, and continued a run in a new session from its handoff file alone. With that, 0.2.0 counts as validated. Paths that did not occur on their own, such as a retest that fails, an urgent bug and an early report, are validated as they come up in normal QA work.
+
+0.3.0 adds the card moves after a retest. The QA engineer asked for them after the second regression, when cards that had passed still sat in the retest list and nobody could tell whose turn it was.
 
 User-invoked skills cannot invoke each other. `regresi` therefore only opens a cycle that `jalankan-uji` runs, and `siklus` reads the other skills' files and follows them in order.
 

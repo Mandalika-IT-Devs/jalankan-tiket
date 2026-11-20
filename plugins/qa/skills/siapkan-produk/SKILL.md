@@ -79,7 +79,7 @@ Ask in one round, in the format of `questions.md`, with your recommendations fro
 3. **Staging URL.** Ask the QA engineer to confirm it is not production. Ask for every other host the app needs, such as an API subdomain. Together they become `allowedHosts`.
 4. **Roles with test accounts.** List the roles you found, and ask which have an account. Each role gets a `key`, a `label` and an `env` prefix, such as `QA_KASIR`. A role that logs in on another page, such as a back office on its own host, also gets `loginURL`.
 5. **Side effects.** For each channel, propose `none`, `sandbox`, `real` or `unknown`. Add a key for every other outward channel you found, such as `chat` or `webhook`. Recommend `unknown` whenever the code shows the channel and nobody has confirmed a sandbox.
-6. **Trello board** for bugs: its URL. Propose creating a list named `QA – Perlu Ditinjau` (`QA – Needs review` in English) when the board has no such list. New bug cards land there, and the QA engineer moves each one to the developers.
+6. **Trello board** for bugs: its URL. Propose creating a list named `QA – Perlu Ditinjau` (`QA – Needs review` in English) when the board has no such list. New bug cards land there, and the QA engineer moves each one to the developers. Step 6 asks about the board's other lists once it can read them.
 7. **Google Drive folder:** recommend a new folder `QA – <product name>` with a subfolder `Bukti` (`Evidence`) in the QA engineer's Drive. The other option is the link of an existing folder.
 
 Never ask for passwords or usernames. The QA engineer writes them into `.env.local` in step 8.
@@ -88,12 +88,17 @@ Never ask for passwords or usernames. The QA engineer writes them into `.env.loc
 
 Skip a part when its connector is missing, and report it in step 9. Wait at least 10 seconds between two writes.
 - **Trello.** Read the board with `trelloReadBoard` (`get`, with the board URL) and its lists with `trelloReadList`. Create the review list with `trelloWriteList` only when the QA engineer agreed in step 5. Keep the board ARI, the board URL and the list ARI.
+  - Then ask in one round, in the format of `questions.md`, which of the board's lists play three roles in the team's flow. Recommend lists whose names fit, and accept "none" for each.
+    - `retestListId`: where developers put fixed cards, such as a list named "Review QA";
+    - `retestPassedListId`: where a card goes after its retest passes, such as "UAT";
+    - `retestFailedListId`: where a card goes back after its retest fails, such as the developers' list.
+  - Keep each answer: a list ARI, or `"none"`.
 - **Drive.** Create the folder and its evidence subfolder with `create_file`, or read the existing folder with `get_file_metadata`. Keep both IDs.
 
 ## 7. Write the product files
 
 1. Copy `templates/common/product/` into `products/<slug>/`. The language files in `templates/<language>/product/` are written later by the other commands.
-2. Fill the placeholders in `product.json` and `.env.local.example` with the answers and the IDs from step 6. A missing Trello or Drive ID becomes an empty string. Work on `.env.local.example` with your Read and Write tools: the deny rule for `.env.local` also blocks shell commands that name the example file.
+2. Fill the placeholders in `product.json` and `.env.local.example` with the answers and the IDs from step 6. A missing Trello or Drive ID becomes an empty string. Replace the `null` of each list key in `trello` that step 6 answered. Work on `.env.local.example` with your Read and Write tools: the deny rule for `.env.local` also blocks shell commands that name the example file.
 3. Fill the ready check and the login locators in `tests/support/login.ts` from what you found in step 4. `auth.setup.ts` calls it for every role. The ready check matters most on server-rendered pages: a form used before it hydrates submits natively. Prefer `getByLabel` and `getByRole` with the visible text. When the code leaves a locator unclear, open the staging login page with your browser tools and read its accessibility tree, without typing anything. When a role logs in on another page with other labels, such as a back office on its own host, add an entry for that host to `loginPages`, with that page's locators. When a role logs in differently, such as with a PIN, add a branch for that role in `logIn`.
 4. **Check your work.**
    - `grep -rnE '\{\{[A-Z0-9_]+\}\}' products/<slug> --exclude-dir=source` finds nothing.
