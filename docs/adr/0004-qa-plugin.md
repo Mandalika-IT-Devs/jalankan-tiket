@@ -104,6 +104,8 @@ The first full cycle ran in November 2026 with 0.1.1: 805 cases and 40 confirmed
 - **Run state.** A run of that size outlasts one conversation. The run's state now lives in the cycle folder, and the same command continues it.
 - **When cards are made.** Waiting for the end of the cycle kept a High bug about passwords in URLs from the developers for two days. Confirmed bugs may now get their cards while the run goes on, and urgent ones are announced at once. The pemeriksa's 3-of-3 confirmation and the review list stay as they were.
 
+Two regression cycles followed, released as 0.1.3 and 0.2.0. They retested nine fixes, survived a staging that changed branch twice and a computer that shut down twice, and continued a run in a new session from its handoff file alone. With that, 0.2.0 counts as validated. Paths that did not occur on their own, such as a retest that fails, an urgent bug and an early report, are validated as they come up in normal QA work.
+
 User-invoked skills cannot invoke each other. `regresi` therefore only opens a cycle that `jalankan-uji` runs, and `siklus` reads the other skills' files and follows them in order.
 
 ### Tools

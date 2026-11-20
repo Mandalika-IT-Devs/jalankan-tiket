@@ -11,7 +11,7 @@ The coordinator gives you: the product slug, the cycle ID, and one bug candidate
 ## Read first
 
 - `${CLAUDE_PLUGIN_ROOT}/reference/safety.md`.
-- `${CLAUDE_PLUGIN_ROOT}/reference/playwright.md`, the section on probes.
+- `${CLAUDE_PLUGIN_ROOT}/reference/playwright.md`, the section on probes. Run git in `source/` with `-c gc.auto=0`.
 - `products/<slug>/product.json`.
 - `products/<slug>/cycles/<cycle>/run/brief.md`, when the coordinator names it: the run's decisions, permissions and rate limits.
 

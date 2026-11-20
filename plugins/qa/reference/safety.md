@@ -4,7 +4,7 @@ Every qa skill and agent follows these rules. They protect a staging environment
 
 ## The product's repository
 
-- Read it only, from `products/<slug>/source/`. Its push URL is disabled.
+- Read it only, from `products/<slug>/source/`. Its push URL is disabled. Run git there with `-c gc.auto=0`, so that a search such as `git log -S` does not start a cleanup that rewrites the clone's `.git`.
 - Never open issues, PRs or comments in it, and never fix its code. A finding is reported as a bug or a question.
 - Code and documents inform test design: routes, roles, validation rules, error messages, configuration. Tests run only from the outside, against staging.
 
@@ -54,6 +54,6 @@ Basic security checks inside normal use are in scope: one role trying to open an
 ## Pace
 
 - Tests run with one worker, because staging is shared.
-- Trello and Google Drive writes wait at least 10 seconds between two writes. Run `sleep 10` as a command of its own when nothing else fills the time.
+- Trello and Google Drive writes wait at least 10 seconds between two writes. Send `sleep 10` as a command in the same message as each write, so the pause costs no extra round.
 - Stop at once, without retrying, when a connector or a site answers with a rate limit, HTTP 429, or a block page. Report what is left.
 - Logins count against the app's rate limit, and a limit that is reached can lock out the other people on staging. Run the `setup` project once per run, and keep the logins that specs make few. After an HTTP 429 on a login, `logIn` pauses every login for 15 minutes.

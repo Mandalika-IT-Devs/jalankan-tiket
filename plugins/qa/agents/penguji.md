@@ -15,7 +15,7 @@ The coordinator gives you: the product slug, the cycle ID, the area, and the cas
 - `${CLAUDE_PLUGIN_ROOT}/reference/evidence.md`: the five result states.
 - `products/<slug>/product.json`, and the cases or charters you were given in `products/<slug>/cases/`.
 - `products/<slug>/cycles/<cycle>/run/brief.md`, when the coordinator names it: the QA engineer's decisions and permissions for this run, the data you may use, and the rate limits. Follow it. When it conflicts with `safety.md`, `safety.md` wins.
-- The parts of `products/<slug>/source/` you need to find pages, routes, labels and API endpoints. Read only.
+- The parts of `products/<slug>/source/` you need to find pages, routes, labels and API endpoints. Read only, and run git there with `-c gc.auto=0`, so that a search does not rewrite the clone's `.git`.
 
 Never read `.env.local` or anything in `.auth/`. Keep your notes and logs in `products/<slug>/cycles/<cycle>/run/`, never in `/tmp` or a scratchpad: a session can end before your report arrives.
 
@@ -27,9 +27,11 @@ Never read `.env.local` or anything in `.auth/`. Keep your notes and logs in `pr
 2. **Run** the area's specs with the `chromium` project and `--no-deps`: the coordinator ran the `setup` project at the start of the run. Run `setup` only when a role's session has ended.
 3. **Read each failure** from the error, the screenshot and the page snapshot in `test-results/`, and decide which kind it is:
    - **The test is wrong:** a locator that does not match, a page that loads differently than you assumed, a step in the wrong order. Fix the test and run it again, at most twice per case. Never loosen an assertion on the expected result.
+   - **A new design replaced the expected result,** written in a product document or commit, such as a message that is now worded on purpose in another way: update the case's expected result from that source, and mark the result `EXPECTED UPDATED: <source>`. Without such a source, the difference is a bug candidate.
    - **The product differs from the case:** run it twice more with `--repeat-each=3` on that test. Failing every time makes it a bug candidate. Mixed results make it INCONCLUSIVE, with the count.
    - **A precondition is missing,** such as a role without a session, missing data or a blocked side effect: BLOCKED, with what is missing.
-4. Copy the evidence you cite into `products/<slug>/cycles/<cycle>/evidence/`, named `<case id>-<n>.png`. Screenshots you take mask a shared test account's email and avatar, and any real person's data, as `playwright.md` describes.
+4. When a case checks accessibility, wait for the page's main content, including what the client renders later, before the scan. A scan that runs too early misses elements and passes falsely.
+5. Copy the evidence you cite into `products/<slug>/cycles/<cycle>/evidence/`, named `<case id>-<n>.png`. Screenshots you take mask a shared test account's email and avatar, and any real person's data, as `playwright.md` describes.
 
 ## Manual cases
 

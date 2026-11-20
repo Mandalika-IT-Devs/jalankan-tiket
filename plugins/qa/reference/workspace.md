@@ -113,7 +113,7 @@ The newest result of every case and charter in the cycle. `/qa:jalankan-uji` upd
   "updatedAt": "2026-03-02T14:05:00+07:00",
   "cases": [
     { "id": "TC-KASIR-004", "priority": "P1", "state": "FAIL", "evidence": ["TC-KASIR-004-1.png"], "bug": "BUG-003", "note": "" },
-    { "id": "TC-KASIR-007", "priority": "P2", "state": "BLOCKED", "evidence": [], "bug": null, "note": "Q-004: payment sandbox unknown" }
+    { "id": "TC-KASIR-007", "priority": "P2", "state": "BLOCKED", "evidence": [], "bug": null, "note": "Q-004: payment sandbox unknown", "owner": "developer" }
   ],
   "charters": [
     { "id": "EX-03", "probes": 18, "bugs": ["BUG-004"], "questions": ["Q-005"] }
@@ -124,4 +124,6 @@ The newest result of every case and charter in the cycle. `/qa:jalankan-uji` upd
 }
 ```
 
-`state` is one of `PASS`, `FAIL`, `BLOCKED`, `NOT RUN` and `INCONCLUSIVE`, as `evidence.md` defines them.
+`state` is one of `PASS`, `FAIL`, `BLOCKED`, `NOT RUN` and `INCONCLUSIVE`, as `evidence.md` defines them. A BLOCKED case names in `owner` who can unblock it. A case that shows two bugs names in `bug` the one it failed on, and the other in `note`: a retest of the second can pass while the case still fails.
+
+Write the file with `node ${CLAUDE_PLUGIN_ROOT}/scripts/hasil.mjs <cycle dir> init | set | charter | retest | summary`, rather than by hand or with a script of your own. It keeps the format, and refuses a BLOCKED case without an owner.

@@ -39,7 +39,7 @@ This step is done when you can list the product's areas, the roles, and the rule
 ## 3. Write requirements and questions
 
 1. Copy `templates/<language>/product/requirements.md` and `questions.md` into `products/<slug>/` when they do not exist yet.
-2. Write the requirements as section 1 of `test-design.md` describes: one per checkable behaviour, with its source, its priority from step 4, and links to its questions.
+2. Write the requirements as section 1 of `test-design.md` describes: one per checkable behaviour, with its source, its priority from step 4, and links to its questions. A requirement says what its source says, and no more. When the documents name a few accessibility rules, such as contrast and labels, the requirement names those, not a whole standard such as WCAG 2.2 AA. When they name no accessibility target at all, ask the product owner which one applies.
 3. Write a question for every rule, number or threshold the documents leave open, and for every requirement taken only from code that matters for a P1 area. Use the format of `questions.md` in the reference folder, with who can answer and the requirements it affects.
 
 ## 4. Score the risks
@@ -48,7 +48,7 @@ Copy `templates/<language>/product/risks.md` when it does not exist yet, and fil
 
 ## 5. Design the test cases and charters
 
-1. Write `products/<slug>/cases/<area>.md` per area in scope, as sections 3 and 4 of `test-design.md` describe. Cover every P1 requirement, then P2, then P3 as far as it is useful. Choose the technique from the shape of each rule.
+1. Write `products/<slug>/cases/<area>.md` per area in scope, as sections 3 and 4 of `test-design.md` describe. Give each feature of the area its own `##` heading, even in a small file: `/qa:regresi` chooses cases per heading, and a file without headings is chosen as a whole. Cover every P1 requirement, then P2, then P3 as far as it is useful. Choose the technique from the shape of each rule.
 2. Always include:
    - the **critical flows** as cases in an area named `smoke`, short and read-only where possible;
    - an **authorization matrix** for every area where roles differ, with the denied cases that matter;

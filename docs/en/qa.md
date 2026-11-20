@@ -4,7 +4,7 @@ The `qa` plugin is for a QA engineer who tests web apps built by other teams, su
 
 The `tiket` plugin builds a product, while `qa` only tests and reports. `qa` never changes the product's repository or fixes its code.
 
-> **Status: 0.1.3.** All seven commands exist. One full cycle and one regression cycle with bug retests have run on a real product. The design is in [ADR-0004](../adr/0004-qa-plugin.md).
+> **Status: 0.2.0, validated.** All seven commands have run on a real product: one full cycle and two regression cycles, about 1,000 cases, 41 bugs and 9 retests. A long run has also continued in a new session. A few rare paths, such as a failed retest and an urgent bug, are tested with examples only. The design is in [ADR-0004](../adr/0004-qa-plugin.md).
 
 ## What you need
 
@@ -62,6 +62,8 @@ Write the product's name after the command, such as `/qa:audit-kesiapan toko-buk
    - Regression picks cases from the feature sections that the code change touches, not from whole areas. Cases that change shared settings on staging are put to you first.
    - Retests come from the retest list on Trello, plus bugs whose number appears in a commit or a branch name. When such a bug's card has not moved, you are asked first.
    - When staging turns out to run another branch, or is redeployed in the middle of a run, Claude stops and asks. Results from two versions are never mixed.
+   - A card in the retest list whose fix is not in the version on staging yet is put to you first, not retested blindly. The report names every card in that list that was not retested.
+   - When you decide not to run a P1 case, Claude warns at once that it makes the recommendation NO-GO, and offers to record it as BLOCKED, with its precondition and owner.
 
 ## Where results go
 
