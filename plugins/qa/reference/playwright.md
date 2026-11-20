@@ -40,7 +40,8 @@ products/<slug>/tests/
 - **Waiting.** Use web-first assertions (`await expect(locator).toBeVisible()`, `toHaveText`, `toHaveURL`). Never use `page.waitForTimeout`, and never wait for `networkidle`.
 - **Assertions prove the business outcome.** A URL or a title alone proves nothing. After an action that saves data, read it back: reload the list, open the record, or call the API, and assert the stored values. Where roles matter, check it as the other role too.
 - **Data.** Every value that creates a record carries `testDataPrefix`, plus something unique, such as `QA-AUTO cuti ${Date.now()}`. Never touch a record without the prefix, except to read it.
-- **No retries and no skipped assertions.** Never add `retries`, `test.fixme` or a looser assertion to make a test pass. When the expected result itself is in doubt, it is a question for the product team, not a reason to change the test.
+- **No retries and no skipped assertions.** Never add `retries`, `test.fixme` or a looser assertion to make a test pass. When the expected result itself is in doubt, it is a question for the product team, not a reason to change the test. The one exception is a new design written in a product document or commit that replaced the expected result: update it from that source, and mark the result `EXPECTED UPDATED: <source>`.
+- **Shared quotas.** When the run's `run/brief.md` limits something across agents, such as sign-up emails or chat messages, write the request's key to the quota's ledger in `run/` before you send it, and check the ledger first. A retry of the same key uses no new unit.
 
 ## API checks
 
@@ -62,6 +63,7 @@ const results = await new AxeBuilder({ page })
 expect(results.violations).toEqual([]);
 ```
 
+- Wait for the page's main content before `analyze()`, including what the client renders later, such as buttons in a cart row: `await expect(page.getByRole('button', { name: … })).toBeVisible()`. A scan that runs too early misses those elements and passes falsely.
 - Never disable a rule to get a clean result. Report each violation with its rule, its impact and the elements it found.
 - A clean scan covers only part of WCAG. Keyboard use, focus order, and the meaning of labels and messages need a manual or exploratory check, and the report says so.
 
@@ -99,5 +101,5 @@ Run one probe with `npx playwright test -c products/<slug> --project=probe --no-
 - **State across runs.** Playwright empties `test-results/` at the start of every run. A file that must outlive a run, such as a count of logins or a note on data to restore, goes in `cycles/<cycle>/run/`, or in `.auth/` as `support/login.ts` does for its pause after a rate limit.
 - **Results:** `products/<slug>/test-results.json`. Map each test to its case through the ID in the title. `passed` is PASS, `failed` and `timedOut` are FAIL candidates, `skipped` is BLOCKED or NOT RUN with its reason.
 - **Evidence:** screenshots, videos and traces of failed tests are in `products/<slug>/test-results/`. Copy the ones you cite into `cycles/<cycle>/evidence/` with clear names. Never share a trace outside the workspace: it holds the session's cookies.
-- **Screenshots without people.** A screenshot you take yourself masks what identifies a shared test account or a real person, such as the account's email, its avatar or initials, names and phone numbers: `page.screenshot({ path, mask: [page.getByText('qa@…'), page.getByRole('img', { name: 'Avatar' })] })`. To cover part of an image that already exists, run `node ${CLAUDE_PLUGIN_ROOT}/scripts/samarkan.mjs <in.png> <out.png> <x,y,width,height> …` from the workspace root. It paints black boxes, in image pixels from the top-left corner.
+- **Screenshots without people.** Often a screenshot of the element alone is enough, such as a table's footer or a summary card: `await locator.screenshot({ path })`. It holds no one's data. Otherwise, a screenshot you take yourself masks what identifies a shared test account or a real person, such as the account's email, its avatar or initials, names and phone numbers: `page.screenshot({ path, mask: [page.getByText('qa@…'), page.getByRole('img', { name: 'Avatar' })] })`. While a dialog is open, the rest of the page is hidden from the accessibility tree, so a mask that uses `getByRole` misses the header behind it: mask such parts with a CSS locator, such as `page.locator('header img')`. To cover part of an image that already exists, run `node ${CLAUDE_PLUGIN_ROOT}/scripts/samarkan.mjs <in.png> <out.png> <x,y,width,height> …` from the workspace root. It paints black boxes, in image pixels from the top-left corner.
 - **Flakiness:** run a failed test twice more (`--repeat-each=3` on that test only). Failing every time is a FAIL candidate. Mixed results are INCONCLUSIVE, with the count.

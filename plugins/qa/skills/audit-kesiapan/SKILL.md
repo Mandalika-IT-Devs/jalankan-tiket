@@ -39,7 +39,7 @@ Give every check a state with its evidence: the command and what it printed, or 
 | 10 | Requirements | The PRD, specs or user stories in `source/`. Compare `git log -1 --format=%ci -- <document>` with the newest code change | | no document exists, or the documents are much older than the code | |
 | 11 | Testability | Each feature in the documents has acceptance criteria, numbers and rules that a test can check | | a feature has none. Each gap becomes a question | |
 | 12 | Test data | The data the main flows need, from the documents and the code, such as items, customers, employees or price lists. Where a list page exists, check it with a short read-only test in `tests/audit/data.spec.ts`: `test` from `../support/session` with `test.use({ role: '<role>' })`, visit the page, and assert that it shows at least one record | | data is missing, or cannot be checked without changing anything | |
-| 13 | Side effects | `sideEffects` in `product.json`. Name the flows that trigger each `unknown` or `real` channel, from the code | | a channel is `unknown` or `real`. Those flows will be BLOCKED | |
+| 13 | Side effects | `sideEffects` in `product.json`. Name the flows that trigger each `unknown` or `real` channel, from the code. When an earlier cycle exists, also look for senders added since its version: `git -C products/<slug>/source diff --stat <old>..HEAD \| grep -iE 'mail\|smtp\|notif\|queue\|webhook'`, and for flows that now depend on one, such as sign-up that needs a link from an email | | a channel is `unknown` or `real`. Those flows will be BLOCKED | |
 | 14 | Trello | `trelloReadBoard` (`get`) on `boardId`, and the list `reviewListId` exists | | the connector is missing, or the board or list cannot be read. Bug cards are then BLOCKED | |
 | 15 | Google Drive | `get_file_metadata` on `folderId` and `evidenceFolderId` | | the connector is missing, or a folder cannot be read. The report and evidence are then BLOCKED | |
 
@@ -53,7 +53,7 @@ Follow `evidence.md`: **BLOCKED** (`TERBLOKIR`) when any check FAILs, **READY WI
 
 ## 4. Write the questions
 
-Turn every FAIL and WARN that someone else must resolve into a question, in the format of `questions.md`, with who can answer it. Typical questions:
+Turn every FAIL and WARN that someone else must resolve into a question, in the format of `questions.md`, with who can answer it. Add each one to `products/<slug>/questions.md` too, with the next free `Q-` number, so that later reports find it. Copy `templates/<language>/product/questions.md` first when the file does not exist yet. Typical questions:
 - which build staging runs, and where it can be seen;
 - whether a channel sends real messages or takes real payments on staging;
 - an account for a role that has none;

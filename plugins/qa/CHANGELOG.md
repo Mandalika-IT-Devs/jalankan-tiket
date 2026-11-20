@@ -2,6 +2,48 @@
 
 All notable changes to the `qa` plugin. Versions follow `plugins/qa/.claude-plugin/plugin.json`. ADR-0004 records the design.
 
+## 0.2.0
+
+The first validated version. Fixes from the second regression cycle on a real product: 183 cases, 7 of 7 retests passed, and a run that continued in a new session from its handoff file alone. None of them is specific to that product.
+
+- **Regression.**
+  - `/qa:regresi` tells a change of behaviour from a cosmetic change in a shared component, such as a new label in a table's pagination. The cosmetic change chooses only the cases that check it.
+  - A large diff goes to a subagent, which writes `run/diff-map.md`.
+  - New outward channels and new preconditions in the diff, such as sign-up that now needs a link from an email, become questions before the run.
+  - Cards in the retest list whose fix exists only on an unmerged branch are put to the QA engineer, not retested blindly.
+  - Charter IDs are checked for duplicates.
+  - Cases whose expected result a new design replaced are named, with their source.
+  - The version is checked again right before the cycle opens.
+- **Skipped P1 cases.** When the QA engineer decides not to run a P1 case, `/qa:regresi` and `/qa:jalankan-uji` warn at once that it makes the report NO-GO. They offer to record it as BLOCKED, with the precondition that would make it safe and its owner. `/qa:laporkan` asks before it changes such a state, and never softens a recommendation on its own.
+- **Planning.**
+  - Every case file has a `##` heading per feature, because regression chooses per heading.
+  - A requirement says what its source says, and no more: no whole accessibility standard when the documents name a few rules. When they name none, the product owner is asked which target applies.
+- **Readiness audit.** Check 13 looks for senders added since the last cycle. Its questions also go into `questions.md`, so reports find them.
+- **The run.**
+  - A run that stopped before its smoke suite runs it on resuming.
+  - A `pemeriksa` that stopped before its deciding run starts again from the beginning.
+  - `run/brief.md` stores staging's start time as a full timestamp, because a time of day breaks after midnight. It holds the quotas that agents share, each with a ledger written before a request is sent, so that a retry uses no second unit.
+  - The run's files may exist while the cycle is still `planned` and waits for an entry criterion.
+  - Questions for the QA engineer go to `run/handoff.md`, and questions for the product team to `questions.md`.
+  - A candidate that an open question already describes joins that question without a `pemeriksa`.
+  - A retest whose expected result a written new design replaced passes with the note "obsolete: new design", and the report proposes closing the card.
+- **`scripts/hasil.mjs`.** It records results in `results.json` (`init`, `set`, `charter`, `retest`, `summary`). It refuses an unknown state, and a BLOCKED case without an owner, now stored in the new field `owner`.
+- **Tests and evidence.**
+  - Accessibility scans wait for content the client renders later, because an early scan passes falsely.
+  - An expected result may be updated only from a product document or commit, marked `EXPECTED UPDATED`.
+  - Element screenshots are the simplest way to avoid personal data. Masks behind an open dialog use CSS locators.
+  - Agents run git in `source/` with `-c gc.auto=0`.
+- **Reports.**
+  - Image uploads set `disableConversionToGoogleType`, because Drive could turn a PNG into an empty Doc. Each upload's type and size is checked from its result.
+  - Evidence cited by the cycle's new questions is uploaded too.
+  - Cards get their ARI in the bug file next to the URL.
+  - Every card in the retest list that was not retested is named, with the reason.
+  - A retest that passed while its case fails on another bug says which.
+  - The report notes newer commits on the branch that staging does not run yet. It groups open questions by who can answer them, the audit's included, and has sections for data left on staging and for evidence links.
+  - Pauses between writes go in the same message as the write.
+
+Products set up with 0.1.3 keep their files. Case files without `##` headings still work, but regression then chooses the whole file. Add headings per feature when you next plan.
+
 ## 0.1.3
 
 Fixes from the first regression cycle on a real product: 93 cases, two retests that passed, and a staging that changed branch twice. None of them is specific to that product.

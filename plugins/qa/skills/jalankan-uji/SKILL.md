@@ -26,7 +26,7 @@ Read these first, and follow them throughout:
 - Run from the workspace root. Read `language` from `qa-workspace.json`; every message and file uses it.
 - Pick the product as `/qa:audit-kesiapan` does.
 - Pick the newest cycle in `products/<slug>/cycles/` whose `status` is `planned`, `running` or `executed`. When there is none, stop and point to `/qa:rencanakan-uji <slug>`, or `/qa:regresi <slug>` after a release.
-- **A run that stopped.** When the cycle is `running` and `cycles/<cycle>/run/handoff.md` exists, continue that run instead of starting over. Read `run/handoff.md`, `run/brief.md`, `run/candidates.md` and `results.json`. Skip the areas and the verdicts that are done. In step 2, run the `setup` project only for roles whose session has ended, and skip step 3 unless the version changed.
+- **A run that stopped.** When the cycle is `running` and `cycles/<cycle>/run/handoff.md` exists, continue that run instead of starting over. Read `run/handoff.md`, `run/brief.md`, `run/candidates.md` and `results.json`. Skip the areas and the verdicts that are done. In step 2, run the `setup` project only for roles whose session has ended. Run the smoke suite of step 3 unless `results.json` shows it already passed on this version: a run can stop before its smoke suite, for example while it waits for an answer about the build. A `pemeriksa` that stopped before its deciding run is dispatched again from the start, not continued.
 - Read the cases and charters in `products/<slug>/cases/`. When `cycle.json` lists `cases`, only those are in the run, as `/qa:regresi` chose them. Then apply the filter.
 - When `cycle.json` lists `retest`, those bugs are retested in step 5.
 
@@ -38,7 +38,14 @@ Read these first, and follow them throughout:
 4. **Side effects:** mark every case that triggers an `unknown` or `real` channel as BLOCKED, naming the channel.
 5. **Open questions:** mark every case linked to an open question in `questions.md` as BLOCKED, naming the question. Match question IDs as whole words, such as `\bQ-\d{3}\b`: a requirement ID like `REQ-462` contains `Q-462`.
 
-Set `status` in `cycle.json` to `running`, and write `cycles/<cycle>/run/brief.md`: what every `penguji` and `pemeriksa` of this run needs beyond its own area. That is the version under test and how to read it from staging, such as the uptime of a health endpoint, the QA engineer's decisions and permissions for this run, the data that may be used or changed and how to restore it, the rate limits you know of, and the channels that block cases. Add to it whenever the QA engineer decides something during the run.
+Write `cycles/<cycle>/run/brief.md`: what every `penguji` and `pemeriksa` of this run needs beyond its own area.
+- **The version under test,** and how to read it from staging. When a health endpoint shows an uptime, write the time staging started as a full timestamp with its offset, such as `2026-03-02T13:42:25+07:00`. A time of day alone breaks after midnight.
+- **The QA engineer's decisions and permissions** for this run. When a decision leaves out a P1 case, warn at once that a P1 case NOT RUN makes the report NO-GO, and offer to record it as BLOCKED instead, with the precondition that would make it safe and who can provide it.
+- **The data** that may be used or changed, and how to restore it.
+- **The rate limits** you know of, and the channels that block cases.
+- **Quotas the agents share,** such as "two sign-up emails for the whole run" or "five chat messages per role". Each quota gets a ledger file in `run/`. An agent writes the request's key to the ledger before it sends the request, so that a retry of the same request does not use up a second unit.
+
+Add to it whenever the QA engineer decides something during the run. When an entry criterion waits for an answer, such as which build staging runs, the run's files may already exist while `status` stays `planned`. Set `status` in `cycle.json` to `running` once the criteria are met.
 
 ## 3. Smoke first
 
@@ -59,8 +66,8 @@ Give each dispatch:
 - the path of `run/brief.md`.
 
 After each report:
-1. Record every result in `results.json`, as `workspace.md` describes. The newest result of a case wins.
-2. Add every question to `questions.md` with the next free `Q-` number, and mark the cases it affects as BLOCKED.
+1. Record every result in `results.json` with `node ${CLAUDE_PLUGIN_ROOT}/scripts/hasil.mjs`, as `workspace.md` describes. The newest result of a case wins. A BLOCKED case names who can unblock it; the script refuses one that does not.
+2. Sort the questions. A question for the product team goes into `questions.md` with the next free `Q-` number, and the cases it affects are BLOCKED. A question for the QA engineer, such as a permission for one more message or a time window, goes under "Waiting for the QA engineer" in `run/handoff.md`, and you ask it in the next round of questions.
 3. Add every bug candidate to `run/candidates.md`, with its draft and the status `waiting`.
 4. Send every candidate marked `URGENT` to the `pemeriksa` agent now, as "Urgent candidates" below describes.
 5. Update `run/handoff.md`, then commit the specs, probes, `questions.md`, `results.json` and `run/` with a message in the workspace language that means "Progress <name> <cycle>: <area>", and `git push`.
@@ -89,12 +96,13 @@ When the conversation grows long, finish the current area or verdict, update `ru
 - **NOT REPRODUCED,** with every step followed: the fix holds. The retest is PASS.
 - **NOT REPRODUCED, because the product now prevents a step,** such as a field that stays disabled until the page is ready: when that prevention is what the fix does, the retest is PASS, with the observation. Read the fix's commit to judge it.
 - **CONFIRMED:** the bug is still there. The retest is FAIL, and the bug file gets a line under Notes with the cycle and the version.
+- **NOT REPRODUCED, because a new design replaced the expected result,** such as a generic answer that now replaces the message the bug asked for, on purpose and written in a product document or commit: the retest is PASS, with the note "obsolete: new design" and its source. The report proposes closing the card, not moving it as fixed, and rewriting the requirement.
 - **FLAKY,** or steps that could not be followed for another reason: the retest is INCONCLUSIVE, with the reason.
 - **STOPPED:** staging changed version during the check. Nothing is concluded. Ask the QA engineer as step 2.3 does, then run the check again on the version you continue with.
 
 **Then the new candidates:**
 
-1. **Merge duplicates first:** candidates in `run/candidates.md` with the same symptom on the same page or endpoint become one candidate that links every case.
+1. **Merge duplicates first:** candidates in `run/candidates.md` with the same symptom on the same page or endpoint become one candidate that links every case. A candidate that an open question in `questions.md` already describes joins that question instead, without a `pemeriksa`.
 2. Dispatch the `pemeriksa` agent once per candidate, one at a time, with the path of `run/brief.md`. Candidates that change shared settings, such as a feature switch or a store's opening hours, wait for a time the QA engineer chooses.
 3. Act on its verdict:
    - **CONFIRMED,** with the expected result supported by its source: write `cycles/<cycle>/bugs/BUG-<nnn>.md` from `templates/<language>/cycle/bug.md`. Numbers run across the whole product: take the next one after the highest in any cycle of this product. Set the severity and priority as `bugs.md` describes, each with its reason. The cases it links are FAIL.

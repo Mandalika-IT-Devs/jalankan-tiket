@@ -4,7 +4,7 @@ Plugin `qa` dibuat untuk QA engineer yang menguji aplikasi web buatan tim lain, 
 
 Plugin `tiket` membangun produk, sedangkan `qa` hanya menguji dan melaporkan. `qa` tidak pernah mengubah repo produk atau memperbaiki kodenya.
 
-> **Status: 0.1.3.** Ketujuh perintah sudah ada. Satu siklus penuh dan satu siklus regresi dengan uji ulang bug sudah dijalankan pada produk sungguhan. Rancangannya ada di [ADR-0004](../adr/0004-qa-plugin.md).
+> **Status: 0.2.0, tervalidasi.** Ketujuh perintah sudah dijalankan pada produk sungguhan: satu siklus penuh dan dua siklus regresi, sekitar 1.000 kasus, 41 bug, dan 9 uji ulang. Run yang panjang juga sudah berhasil dilanjutkan di sesi baru. Beberapa jalur jarang, seperti uji ulang yang gagal dan bug mendesak, baru diuji dengan contoh. Rancangannya ada di [ADR-0004](../adr/0004-qa-plugin.md).
 
 ## Yang perlu Anda siapkan
 
@@ -62,6 +62,8 @@ Tulis nama produk di belakang perintah, misalnya `/qa:audit-kesiapan toko-buku`.
    - Regresi memilih kasus dari bagian fitur yang tersentuh perubahan kode, bukan seluruh area. Kasus yang mengubah pengaturan bersama di staging ditanyakan dulu kepada Anda.
    - Bug yang diuji ulang diambil dari list uji ulang di Trello, ditambah bug yang nomornya disebut di commit atau nama branch. Bug yang kartunya belum dipindah juga ditanyakan dulu.
    - Kalau staging ternyata menjalankan branch lain, atau di-deploy ulang di tengah run, Claude berhenti dan bertanya. Hasil dari dua versi tidak dicampur.
+   - Kartu di list uji ulang yang perbaikannya belum masuk versi di staging ditanyakan dulu, tidak langsung diuji ulang. Laporan menyebut setiap kartu di list itu yang tidak diuji ulang.
+   - Kalau Anda memutuskan sebuah kasus P1 tidak dijalankan, Claude langsung mengingatkan bahwa itu membuat rekomendasi NO-GO, dan menawarkan pencatatan sebagai TERBLOKIR dengan prasyarat dan pemiliknya.
 
 ## Di mana hasilnya disimpan
 
