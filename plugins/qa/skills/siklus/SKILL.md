@@ -34,7 +34,8 @@ Between steps, give a one-line status, such as "Audit selesai: SIAP DENGAN CATAT
 - the readiness audit is BLOCKED;
 - `jalankan-uji` asks whether to continue in a cycle whose version differs from staging;
 - a step's own instructions say to stop, such as a missing workspace or product;
-- a rate limit or a block from a site or a connector, as `safety.md` describes.
+- a rate limit or a block from a site or a connector, as `safety.md` describes;
+- `laporkan` asks which retested cards to move. It is the last step, so ask and wait.
 
 **Do not stop** for:
 - questions for the product team: their cases are BLOCKED, and the questions go into the final report;
@@ -47,6 +48,7 @@ One report for the whole cycle, in plain words:
 - the steps that ran, and where each one's output is;
 - the readiness verdict, and the test report's recommendation with its link;
 - the bugs per severity, with their cards;
+- the cards moved after their retest, with their new list;
 - what is BLOCKED or INCONCLUSIVE, and who can resolve it;
 - every open question, numbered, to forward to the product team;
 - the QA engineer's manual steps: review the cards in the review list and move them to the developers' list, and forward the questions.

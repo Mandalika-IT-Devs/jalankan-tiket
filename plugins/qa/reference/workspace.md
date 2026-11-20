@@ -55,7 +55,7 @@ products/<slug>/
 | `roles` | One entry per role with a test account: `key`, `label`, and `env`, the prefix of `<env>_USERNAME` and `<env>_PASSWORD` in `.env.local`. Optional `loginURL`: the full URL of the role's login page, on a host in `allowedHosts`, when it differs from `loginPath`, such as a back office |
 | `sideEffects` | One value per outward channel: always `email`, `sms`, `whatsapp` and `payment`, plus any other channel the code shows, such as `chat` (Slack, Teams or Google Chat webhooks), `push` or `webhook`. Each value is `none` (the app has no such channel), `sandbox` (staging uses a test service or a mock), `real` (staging reaches real people, real systems or real money), or `unknown` |
 | `testDataPrefix` | The prefix of every record a test creates. Default `QA-AUTO` |
-| `trello` | `boardId` and `boardUrl` of the team's board, `reviewListId` of the list where new bug cards go, `retestListId` of the list where developers put fixed cards, or `null` |
+| `trello` | `boardId` and `boardUrl` of the team's board, and the lists of the team's flow. `reviewListId`: where new bug cards go. `retestListId`: where developers put fixed cards. `retestPassedListId`: where a card goes after its retest passes, such as a UAT list. `retestFailedListId`: where a card goes back after its retest fails, such as the developers' list. Each of the last three is a list ARI, `null` while nobody has said, or `"none"` when the QA engineer wants no such list. A workspace made before 0.3.0 lacks the last two keys, which counts as `null` |
 | `drive` | `folderId` of the product's Drive folder, and `evidenceFolderId` of its evidence subfolder |
 | `writtenPermission` | For `loadTesting` and `securityScanning`: `null`, or where the app owner's written permission is recorded, such as a link to the message |
 
@@ -80,7 +80,9 @@ Example:
     "boardId": "ari:cloud:trello::board/workspace/…",
     "boardUrl": "https://trello.com/b/…",
     "reviewListId": "ari:cloud:trello::list/workspace/…",
-    "retestListId": null
+    "retestListId": "ari:cloud:trello::list/workspace/…",
+    "retestPassedListId": "ari:cloud:trello::list/workspace/…",
+    "retestFailedListId": null
   },
   "drive": { "folderId": "1AbC…", "evidenceFolderId": "1DeF…" },
   "writtenPermission": { "loadTesting": null, "securityScanning": null }

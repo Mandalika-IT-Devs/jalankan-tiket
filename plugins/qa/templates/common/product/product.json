@@ -13,7 +13,9 @@
     "boardId": "{{TRELLO_BOARD_ID}}",
     "boardUrl": "{{TRELLO_BOARD_URL}}",
     "reviewListId": "{{TRELLO_REVIEW_LIST_ID}}",
-    "retestListId": null
+    "retestListId": null,
+    "retestPassedListId": null,
+    "retestFailedListId": null
   },
   "drive": {
     "folderId": "{{DRIVE_FOLDER_ID}}",

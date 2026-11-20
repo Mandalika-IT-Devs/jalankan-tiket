@@ -2,6 +2,16 @@
 
 All notable changes to the `qa` plugin. Versions follow `plugins/qa/.claude-plugin/plugin.json`. ADR-0004 records the design.
 
+## 0.3.0
+
+- **Card moves after a retest.** `/qa:laporkan` proposes moving each retested card along the team's flow, and moves only the cards the QA engineer agrees to:
+  - a retest that passed goes to `retestPassedListId`, such as a UAT list;
+  - a retest that failed goes back to `retestFailedListId`, such as the developers' list.
+
+  It never moves a card that passed as "obsolete: new design", one that is already in its target list, or a passed one already further along the board. New bug cards still wait in the review list for the QA engineer.
+- **List keys.** `product.json` has the two new keys in `trello`. `/qa:siapkan-produk` asks for them together with `retestListId` once it can read the board, and `/qa:laporkan` asks the first time it needs one. A workspace made before 0.3.0 needs no change. Check 14 of `/qa:audit-kesiapan` checks that every list named exists.
+- `/qa:siklus` waits for the move question at the end, and names the moved cards in its final report.
+
 ## 0.2.0
 
 The first validated version. Fixes from the second regression cycle on a real product: 183 cases, 7 of 7 retests passed, and a run that continued in a new session from its handoff file alone. None of them is specific to that product.
